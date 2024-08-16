@@ -1,0 +1,3 @@
+---
+providerRegex: ^(talos-test)$
+bypassDnsResolution: true
