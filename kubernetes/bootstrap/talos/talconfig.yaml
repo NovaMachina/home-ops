@@ -119,7 +119,7 @@ nodes:
         mtu: 1500
   - hostname: "talos-storage-01"
     ipAddress: "10.0.40.115"
-    installDisk: "/dev/sda"
+    installDisk: "/dev/sdb"
     talosImageURL: factory.talos.dev/installer/ce4c980550dd2ab1b17bbf2b08801c7eb59418eafe8f279833297925d67c7515
     controlPlane: false
     networkInterfaces:
@@ -134,7 +134,7 @@ nodes:
         mtu: 1500
   - hostname: "talos-storage-02"
     ipAddress: "10.0.40.116"
-    installDisk: "/dev/sda"
+    installDisk: "/dev/sdb"
     talosImageURL: factory.talos.dev/installer/ce4c980550dd2ab1b17bbf2b08801c7eb59418eafe8f279833297925d67c7515
     controlPlane: false
     networkInterfaces:
@@ -149,7 +149,7 @@ nodes:
         mtu: 1500
   - hostname: "talos-storage-03"
     ipAddress: "10.0.40.117"
-    installDisk: "/dev/sda"
+    installDisk: "/dev/sdb"
     talosImageURL: factory.talos.dev/installer/ce4c980550dd2ab1b17bbf2b08801c7eb59418eafe8f279833297925d67c7515
     controlPlane: false
     networkInterfaces:
