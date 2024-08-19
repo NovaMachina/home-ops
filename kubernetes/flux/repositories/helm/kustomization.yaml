@@ -21,4 +21,5 @@ resources:
   - ./piraeus.yaml
   - ./backube.yaml
   - ./grafana.yaml
-  - ./cloudnative-pg.yaml
+  - ./cloudnative-pg.yaml\
+  - ./node-feature-discovery.yaml

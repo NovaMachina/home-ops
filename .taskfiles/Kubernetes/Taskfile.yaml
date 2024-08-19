@@ -24,6 +24,12 @@ tasks:
         ingresses
         pods
 
+  delete-failed-pods:
+    desc: Delete all pods with an Evicted/Failed/Succeeded status
+    cmds:
+      - for: ["Evicted", "Failed", "Succeeded"]
+        cmd: kubectl delete pods --field-selector status.phase={{.ITEM}} -A --ignore-not-found=true
+
   kubeconform:
     desc: Validate Kubernetes manifests with kubeconform
     cmd: bash {{.KUBECONFORM_SCRIPT}} {{.KUBERNETES_DIR}}
