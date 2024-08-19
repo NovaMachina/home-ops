@@ -37,7 +37,7 @@ spec:
             image:
               repository: busybox
               tag: latest
-            command: ["sh","-c","chmod 777 /dev/USB)" ]
+            command: ["sh","-c","chmod 777 /dev/USB0" ]
         containers:
           app:
             image:
