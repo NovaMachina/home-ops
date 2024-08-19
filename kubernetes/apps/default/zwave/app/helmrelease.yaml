@@ -38,6 +38,9 @@ spec:
               repository: busybox
               tag: latest
             command: ["sh","-c","chmod 777 /dev/USB0" ]
+            securityContext:
+              runAsUser: 0
+              privileged: true
         containers:
           app:
             image:
