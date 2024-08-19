@@ -32,6 +32,12 @@ spec:
       zwave:
         annotations:
           reloader.stakater.com/auto: "true"
+        initContainers:
+          init-usb:
+            image:
+              repository: busybox
+              tag: latest
+            command: ["sh","-c","chmod 777 /dev/USB)" ]
         containers:
           app:
             image:
