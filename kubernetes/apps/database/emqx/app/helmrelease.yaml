@@ -29,3 +29,10 @@ spec:
     fullnameOverride: emqx-operator
     image:
       repository: ghcr.io/emqx/emqx-operator
+    resources:
+      requests:
+        cpu: 5m
+        memory: 64Mi
+      limits:
+        cpu: 10m
+        memory: 128Mi
