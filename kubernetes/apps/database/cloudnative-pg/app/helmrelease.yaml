@@ -32,10 +32,10 @@ spec:
       podMonitorEnabled: false
       grafanaDashboard:
         create: true
-    # resources:
-    #   requests:
-    #     cpu: 5m
-    #     memory: 46Mi
-    #   limits:
-    #     cpu: 10m
-    #     memory: 64Mi
+    resources:
+      requests:
+        cpu: 5m
+        memory: 45Mi
+      limits:
+        cpu: 30m
+        memory: 64Mi
