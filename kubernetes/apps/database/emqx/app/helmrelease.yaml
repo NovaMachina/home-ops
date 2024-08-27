@@ -31,8 +31,8 @@ spec:
       repository: ghcr.io/emqx/emqx-operator
     resources:
       requests:
-        cpu: 5m
+        cpu: 10m
         memory: 64Mi
       limits:
-        cpu: 10m
+        cpu: 20m
         memory: 128Mi
