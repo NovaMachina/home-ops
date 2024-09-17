@@ -50,10 +50,10 @@ spec:
               capabilities: { drop: ["ALL"] }
             resources:
               requests:
-                cpu: 30m
+                cpu: 100m
                 memory: 475Mi
               limits:
-                cpu: 100m
+                cpu: 200m
                 memory: 1Gi
           code-server:
             image:
