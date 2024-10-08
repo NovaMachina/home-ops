@@ -1,0 +1,46 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: immich
+spec:
+  ports:
+  - name: http
+    port: 10323
+    targetPort: 10323
+---
+apiVersion: discovery.k8s.io/v1
+kind: EndpointSlice
+metadata:
+  name: immich-endpoint
+  labels:
+    kubernetes.io/service-name: immich
+addressType: IPv4
+ports:
+  - name: ''
+    appProtocol: http
+    protocol: TCP
+    port: 10323
+endpoints:
+  - addresses:
+      - "10.0.0.14"
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: immich
+  annotations:
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+    external-dns.alpha.kubernetes.io/target: "external.jacob-williams.me"
+spec:
+  ingressClassName: "external"
+  rules:
+  - host: immich.jacob-williams.me
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: immich
+            port:
+              number: 10323
