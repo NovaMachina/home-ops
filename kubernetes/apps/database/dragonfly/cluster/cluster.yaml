@@ -12,9 +12,10 @@ spec:
         resourceFieldRef:
           resource: limits.memory
           divisor: 1Mi
-  envFrom:
-    - secretRef:
-        name: dragonfly-secret
+    - name: REDIS_PASSWORD
+      valueFrom:
+        secretRef:
+          name: dragonfly-secret
   args:
     - --maxmemory=$(MAX_MEMORY)Mi
     - --proactor_threads=2
