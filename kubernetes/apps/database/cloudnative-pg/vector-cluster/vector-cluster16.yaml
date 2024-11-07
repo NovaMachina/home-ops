@@ -6,7 +6,7 @@ metadata:
   name: postgres16-vector
 spec:
   instances: 3
-  imageName: ghcr.io/cloudnative-pg/postgresql:16.4-4
+  imageName: ghcr.io/tensorchord/cloudnative-pgvecto.rs:16.2-v0.2.1
   primaryUpdateStrategy: unsupervised
   storage:
     size: 10Gi
@@ -28,6 +28,11 @@ spec:
     limits:
       cpu: 350m
       memory: 1Gi
+  bootstrap:
+   initdb:
+     postInitSQL:
+       - ALTER SYSTEM SET search_path TO "$user", public, vectors;
+       - CREATE EXTENSION IF NOT EXISTS "vectors";
   monitoring:
     enablePodMonitor: true
   backup:
@@ -38,11 +43,11 @@ spec:
       wal:
         compression: bzip2
         maxParallel: 8
-      destinationPath: s3://cloudnative-pg/
+      destinationPath: s3://cloudnative-pg-vector/
       endpointURL: http://10.0.0.14:10106/
       # Note: serverName version needs to be inclemented
       # when recovering from an existing cnpg cluster
-      serverName: &currentCluster postgres16-v1
+      serverName: &currentCluster postgres16-vector-v1
       s3Credentials:
         accessKeyId:
           name: cloudnative-pg-secret
