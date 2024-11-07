@@ -24,3 +24,5 @@ resources:
   - ./cloudnative-pg.yaml
   - ./node-feature-discovery.yaml
   - ./emqx.yaml
+  - ./immich.yaml
+
