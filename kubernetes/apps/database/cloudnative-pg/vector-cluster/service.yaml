@@ -5,7 +5,7 @@ metadata:
   name: postgres-vector-lb
   annotations:
     external-dns.alpha.kubernetes.io/hostname: postgres-vector.jacob-williams.me
-    io.cilium/lb-ipam-ips: 10.0.40.51
+    io.cilium/lb-ipam-ips: 10.0.40.52
 spec:
   type: LoadBalancer
   ports:
