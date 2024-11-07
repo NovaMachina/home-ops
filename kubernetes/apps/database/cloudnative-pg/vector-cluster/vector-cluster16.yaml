@@ -3,13 +3,13 @@
 apiVersion: postgresql.cnpg.io/v1
 kind: Cluster
 metadata:
-  name: postgres16
+  name: postgres16-vector
 spec:
   instances: 3
   imageName: ghcr.io/cloudnative-pg/postgresql:16.4-4
   primaryUpdateStrategy: unsupervised
   storage:
-    size: 20Gi
+    size: 10Gi
     storageClass: openebs-hostpath
   superuserSecret:
     name: cloudnative-pg-secret
