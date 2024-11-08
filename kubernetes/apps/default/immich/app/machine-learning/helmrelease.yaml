@@ -85,7 +85,7 @@ spec:
       library:
         type: nfs
         server: ${SECRET_NFS_SERVER}
-        path: /mnt/user/photos
+        path: /mnt/pool0/Media/photos
         globalMounts:
           - path: /usr/src/app/upload
       cache:
