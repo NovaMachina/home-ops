@@ -7,5 +7,5 @@ resources:
   - ./namespace.yaml
   # Flux-Kustomizations
   - ./home-assistant/ks.yaml
-  # - ./immich/ks.yaml
+  - ./immich/ks.yaml
   - ./zwave/ks.yaml
