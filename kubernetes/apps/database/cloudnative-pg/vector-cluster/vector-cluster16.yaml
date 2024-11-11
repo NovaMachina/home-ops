@@ -28,7 +28,6 @@ spec:
       cpu: 14m
       memory: 300Mi
     limits:
-      cpu: 350m
       memory: 1Gi
   bootstrap:
    initdb:
