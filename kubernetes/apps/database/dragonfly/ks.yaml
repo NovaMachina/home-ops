@@ -8,6 +8,8 @@ spec:
   targetNamespace: database
   path: ./kubernetes/apps/database/dragonfly/app
   prune: true
+  dependsOn:
+    - name: external-secrets-stores
   sourceRef:
     kind: GitRepository
     name: home-kubernetes
