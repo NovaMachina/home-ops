@@ -31,7 +31,7 @@ metadata:
   annotations:
     nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
 spec:
-  ingressClassName: "internal"
+  ingressClassName: "external"
   rules:
   - host: heatermeter.jacob-williams.me
     http:
