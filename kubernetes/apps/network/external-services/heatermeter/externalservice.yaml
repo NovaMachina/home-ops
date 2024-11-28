@@ -1,25 +1,25 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: immich
+  name: truenas
 spec:
   ports:
   - name: http
-    port: 10323
-    targetPort: 10323
+    port: 444
+    targetPort: 444
 ---
 apiVersion: discovery.k8s.io/v1
 kind: EndpointSlice
 metadata:
-  name: immich-endpoint
+  name: truenas-endpoint
   labels:
-    kubernetes.io/service-name: immich
+    kubernetes.io/service-name: truenas
 addressType: IPv4
 ports:
   - name: ''
     appProtocol: http
     protocol: TCP
-    port: 10323
+    port: 444
 endpoints:
   - addresses:
       - "10.0.0.14"
@@ -27,20 +27,19 @@ endpoints:
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: immich
+  name: truenas
   annotations:
-    nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
-    external-dns.alpha.kubernetes.io/target: "external.jacob-williams.me"
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
 spec:
-  ingressClassName: "external"
+  ingressClassName: "internal"
   rules:
-  - host: immich.jacob-williams.me
+  - host: truenas.jacob-williams.me
     http:
       paths:
       - pathType: Prefix
         path: "/"
         backend:
           service:
-            name: immich
+            name: truenas
             port:
-              number: 10323
+              number: 444
