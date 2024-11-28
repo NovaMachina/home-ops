@@ -1,45 +1,45 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: truenas
+  name: heatermeter
 spec:
   ports:
   - name: http
-    port: 444
-    targetPort: 444
+    port: 80
+    targetPort: 80
 ---
 apiVersion: discovery.k8s.io/v1
 kind: EndpointSlice
 metadata:
-  name: truenas-endpoint
+  name: heatermeter-endpoint
   labels:
-    kubernetes.io/service-name: truenas
+    kubernetes.io/service-name: heatermeter
 addressType: IPv4
 ports:
   - name: ''
     appProtocol: http
     protocol: TCP
-    port: 444
+    port: 80
 endpoints:
   - addresses:
-      - "10.0.0.14"
+      - "10.0.0.59"
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: truenas
+  name: heatermeter
   annotations:
     nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
 spec:
   ingressClassName: "internal"
   rules:
-  - host: truenas.jacob-williams.me
+  - host: heatermeter.jacob-williams.me
     http:
       paths:
       - pathType: Prefix
         path: "/"
         backend:
           service:
-            name: truenas
+            name: heatermeter
             port:
-              number: 444
+              number: 80
