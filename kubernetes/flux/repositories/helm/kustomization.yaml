@@ -25,4 +25,4 @@ resources:
   - ./node-feature-discovery.yaml
   - ./emqx.yaml
   - ./immich.yaml
-
+  - ./mongodb.yaml
