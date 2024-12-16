@@ -6,3 +6,4 @@ resources:
   - ./cluster.yaml
   - ./volumebackup.yaml
   - ./externalsecret.yaml
+  - ./rbac.yaml
