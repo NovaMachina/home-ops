@@ -28,6 +28,8 @@ spec:
   values:
     crds:
       create: true
+    operator:
+      watchNamespace: "*"
     monitoring:
       podMonitorEnabled: false
       grafanaDashboard:
