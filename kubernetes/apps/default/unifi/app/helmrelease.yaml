@@ -104,6 +104,7 @@ spec:
         type: LoadBalancer
         annotations:
           io.cilium/lb-ipam-ips: 10.0.40.53
+          external-dns.alpha.kubernetes.io/hostname: unifi.jacob-williams.me
         externalTrafficPolicy: Cluster
         ports:
           http:
