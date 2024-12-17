@@ -32,9 +32,6 @@ spec:
             image:
               repository: ghcr.io/onedr0p/postgres-init
               tag: 16
-            envFrom: &envFrom
-              - secretRef:
-                  name: wikijs-secret
         containers:
           app:
             image:
@@ -45,21 +42,21 @@ spec:
                 value: postgres
               - name: DB_HOST
                 secretKeyRef:
-                  name: wikijs
+                  name: wikijs-secret
                   key: INIT_POSTGRES_HOST
               - name: DB_PORT
                 value: 5432
               - name: DB_USER
                 secretKeyRef:
-                  name: wikijs
+                  name: wikijs-secret
                   key: INIT_POSTGRES_USER
               - name: DB_PASS
                 secretKeyRef:
-                  name: wikijs
+                  name: wikijs-secret
                   key: INIT_POSTGRES_PASS
               - name: DB_NAME
                 secretKeyRef:
-                  name: wikijs
+                  name: wikijs-secret
                   key: INIT_POSTGRES_DBNAME
               - name: HA_ACTIVE
                 value: true
