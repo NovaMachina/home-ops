@@ -102,6 +102,8 @@ spec:
       app:
         controller: unifi-controller
         type: LoadBalancer
+        annotations:
+          io.cilium/lb-ipam-ips: 10.0.40.51
         externalTrafficPolicy: Cluster
         ports:
           http:
