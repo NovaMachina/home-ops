@@ -10,3 +10,4 @@ resources:
   - ./immich/ks.yaml
   - ./zwave/ks.yaml
   - ./unifi/ks.yaml
+  - ./wikijs/ks.yaml
