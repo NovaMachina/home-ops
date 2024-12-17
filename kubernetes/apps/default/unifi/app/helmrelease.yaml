@@ -99,14 +99,6 @@ spec:
                 memory: 789Mi
 
     service:
-      web:
-        controller: unifi-controller
-        type: NodePort
-        externalTrafficPolicy: Cluster
-        ports:
-          http:
-            port: 8443
-            protocol: HTTPS
       app:
         controller: unifi-controller
         type: LoadBalancer
@@ -114,6 +106,9 @@ spec:
           io.cilium/lb-ipam-ips: 10.0.40.53
         externalTrafficPolicy: Cluster
         ports:
+          http:
+            port: 8443
+            protocol: HTTPS
           controller:
             enabled: true
             port: 8080
@@ -135,5 +130,5 @@ spec:
               - path: /
                 pathType: Prefix
                 service:
-                  identifier: web
+                  identifier: app
                   port: http
