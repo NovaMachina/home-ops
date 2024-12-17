@@ -37,7 +37,7 @@ spec:
                 value: America/Chicago
             securityContext:
               privileged: true
-              readOnlyRootFilesystem: true
+              readOnlyRootFilesystem: false
               capabilities: { drop: ["ALL"] }
             resources:
               requests:
