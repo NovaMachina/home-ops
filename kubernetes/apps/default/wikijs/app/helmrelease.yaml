@@ -94,3 +94,8 @@ spec:
                 service:
                   identifier: app
                   port: http
+    persistence:
+      cache:
+        type: emptyDir
+        globalMounts:
+          - path: /wiki/data/cache
