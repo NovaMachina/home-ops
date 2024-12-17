@@ -3,17 +3,16 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app wikijs
+  name: &app dokuwiki
   namespace: flux-system
 spec:
   targetNamespace: default
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  path: ./kubernetes/apps/default/wikijs/app
+  path: ./kubernetes/apps/default/dokuwiki/app
   prune: true
   dependsOn:
-    - name: cloudnative-pg-vector-cluster
     - name: external-secrets-stores
   sourceRef:
     kind: GitRepository
