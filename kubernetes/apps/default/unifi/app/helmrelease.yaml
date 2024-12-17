@@ -99,17 +99,22 @@ spec:
                 memory: 789Mi
 
     service:
-      app:
+      web:
         controller: unifi-controller
-        type: LoadBalancer
-        annotations:
-          io.cilium/lb-ipam-ips: 10.0.40.53
-          external-dns.alpha.kubernetes.io/hostname: unifi.jacob-williams.me
+        type: NodePort
         externalTrafficPolicy: Cluster
         ports:
           http:
             port: 8443
             protocol: HTTPS
+      app:
+        controller: unifi-controller
+        type: LoadBalancer
+        annotations:
+          io.cilium/lb-ipam-ips: 10.0.40.53
+          external-dns.alpha.kubernetes.io/hostname: unifi-svc.jacob-williams.me
+        externalTrafficPolicy: Cluster
+        ports:
           controller:
             enabled: true
             port: 8080
@@ -131,5 +136,5 @@ spec:
               - path: /
                 pathType: Prefix
                 service:
-                  identifier: app
+                  identifier: web
                   port: http
