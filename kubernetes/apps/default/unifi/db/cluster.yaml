@@ -5,6 +5,13 @@ metadata:
 spec:
   members: 3
   type: ReplicaSet
+  resources:
+    requests:
+      cpu: 500m
+      memory: 400Mi
+    limits:
+      cpu: 1
+      memory: 1Gi
   version: "7.0.15"
   security:
     authentication:
