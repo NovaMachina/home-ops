@@ -11,3 +11,4 @@ resources:
   - ./zwave/ks.yaml
   - ./unifi/ks.yaml
   - ./dokuwiki/ks.yaml
+  - ./actual/ks.yaml
