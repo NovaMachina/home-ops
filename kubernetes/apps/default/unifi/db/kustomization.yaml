@@ -7,3 +7,4 @@ resources:
   - ./externalsecret.yaml
   - ./rbac.yaml
   - ./cronjob.yaml
+  - ../../../../templates/volsync

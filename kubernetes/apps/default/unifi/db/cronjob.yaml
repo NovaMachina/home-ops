@@ -1,15 +1,4 @@
 ---
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
- name: mongodump
-spec:
- accessModes:
- - ReadWriteOnce
- resources:
-   requests:
-     storage: 1Gi
----
 apiVersion: batch/v1
 kind: CronJob
 metadata:
@@ -43,4 +32,4 @@ spec:
                     key: username
               volumeMounts:
               - mountPath: "/usr/share/mongodump/"
-                name: mongodump
+                name: unifi-db-backup
