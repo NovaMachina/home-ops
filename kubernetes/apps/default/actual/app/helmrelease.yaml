@@ -29,7 +29,7 @@ spec:
       namespace: volsync-system
   values:
     controllers:
-      home-assistant:
+      actual:
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
