@@ -18,7 +18,7 @@ spec:
             - name: mongodb
               image: mongo
               command : ["/bin/sh", "-c"]
-              args: ["mongodump --uri \"mongodb://unifi-db-0.unifi-db-svc:27017,unifi-db-1.unifi-db-svc:27017,unifi-db-2.unifi-db-svc:27017/?replicaSet=unifi-db\" -u $(MONGODB_USERNAME) -p $(MONGODB_PASSWORD) --authenticationDatabase admin -o /usr/share/mongodump/$(date +\"%d%m%H\")"]
+              args: ["mongodump --uri \"mongodb://unifi-db-0.unifi-db-svc:27017,unifi-db-1.unifi-db-svc:27017,unifi-db-2.unifi-db-svc:27017/?replicaSet=unifi-db\" -u $(MONGODB_USERNAME) -p $(MONGODB_PASSWORD) --authenticationDatabase unifi -o /usr/share/mongodump/$(date +\"%d%m%H\")"]
               env:
               - name: MONGODB_PASSWORD
                 valueFrom:
