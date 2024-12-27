@@ -48,13 +48,15 @@ spec:
               labelSelector:
                 matchLabels:
                   app: unifi-db-svc
-      resources:
-        requests:
-          cpu: 500m
-          memory: 400Mi
-        limits:
-          cpu: 1
-          memory: 1Gi
+          containers:
+            - name: mongod
+              resources:
+                requests:
+                  cpu: 500m
+                  memory: 400Mi
+                limits:
+                  cpu: 1
+                  memory: 1Gi
       volumeClaimTemplates:
         - metadata:
             name: data-volume
