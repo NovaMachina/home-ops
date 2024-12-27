@@ -10,9 +10,9 @@ spec:
       template:
         spec:
           volumes:
-          - name: mongodump
+          - name: unifi-db-backup
             persistentVolumeClaim:
-              claimName: mongodump
+              claimName: unifi-db-backup
           restartPolicy: Never
           containers:
             - name: mongodb
