@@ -38,7 +38,7 @@ spec:
         enabled: true
         urlPrefix: /
         ssl: false
-        # prometheusEndpoint: http://vmselect-victoria-metrics.monitoring.svc.cluster.local:8481/select/0/prometheus
+        prometheusEndpoint: http://prometheus-operated.observability.svc.cluster.local:9090
       mgr:
         modules:
           - name: pg_autoscaler
