@@ -64,10 +64,6 @@ spec:
             name: data-volume
           spec:
             accessModes: ["ReadWriteOnce"]
-            dataSourceRef:
-              kind: ReplicationDestination
-              apiGroup: volsync.backube
-              name: data-volume-dst
             resources:
               requests:
                 storage: 5Gi
@@ -76,10 +72,6 @@ spec:
             name: logs-volume
           spec:
             accessModes: ["ReadWriteOnce"]
-            dataSourceRef:
-              kind: ReplicationDestination
-              apiGroup: volsync.backube
-              name: logs-volume-dst
             resources:
               requests:
                 storage: 1Gi
