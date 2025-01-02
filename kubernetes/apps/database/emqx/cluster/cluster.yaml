@@ -5,14 +5,14 @@ kind: EMQX
 metadata:
   name: emqx
 spec:
-  image: public.ecr.aws/emqx/emqx:5.8.3
+  image: public.ecr.aws/emqx/emqx:5.8.4
   config:
     data: |
       authentication {
         backend = "built_in_database"
         mechanism = "password_based"
         password_hash_algorithm {
-            name = "bcrypt",
+            name = "bcrypt"
         }
         user_id_type = "username"
         bootstrap_file = "/opt/init-user.json"
