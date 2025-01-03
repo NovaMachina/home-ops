@@ -10,7 +10,7 @@ spec:
   chart:
     spec:
       chart: rook-ceph
-      version: v1.15.7
+      version: v1.16.1
       sourceRef:
         kind: HelmRepository
         name: rook-ceph
@@ -21,6 +21,9 @@ spec:
     csi:
       cephFSKernelMountOptions: ms_mode=prefer-crc
       enableLiveness: true
+      snapshotter:
+        repository: registry.k8s.io/sig-storage/csi-snapshotter
+        tag: v8.2.0
       serviceMonitor:
         enabled: true
     monitoring:
