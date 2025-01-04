@@ -30,7 +30,6 @@ spec:
     controllers:
       unifi-controller:
         enabled: true
-        type: statefulset
         annotations:
           reloader.stakater.com/auto: "true"
 
