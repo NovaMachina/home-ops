@@ -147,6 +147,6 @@ spec:
                   port: portal
     persistence:
       config:
-        existingClaim: home-assistant
+        existingClaim: unifi
         globalMounts:
           - path: /usr/lib/unifi/data
