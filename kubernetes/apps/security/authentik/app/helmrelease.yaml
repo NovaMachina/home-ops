@@ -58,13 +58,7 @@ spec:
           nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
           nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
         hosts:
-          - host: authentik.jacob-williams.me
-            paths:
-              - path: /
-                pathType: Prefix
-                service:
-                  identifier: app
-                  port: http
+          - authentik.jacob-williams.me
       metrics:
         prometheus:
           serviceMonitor:
