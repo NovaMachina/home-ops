@@ -27,3 +27,4 @@ resources:
   - ./emqx.yaml
   - ./immich.yaml
   - ./mongodb.yaml
+  - ./kyverno.yaml
