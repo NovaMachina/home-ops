@@ -30,3 +30,10 @@ spec:
     connect:
       annotations:
         secret.reloader.stakater.com/reload: "op-credentials"
+      ingress:
+        enabled: true
+        annotations:
+          external-dns.alpha.kubernetes.io/target: "internal.${SECRET_DOMAIN}"
+        ingressClassName: internal
+        hosts:
+        - host: "op.${SECRET_DOMAIN}"
