@@ -4,7 +4,7 @@ kind: Service
 metadata:
   name: postgres-vector-lb
   annotations:
-    external-dns.alpha.kubernetes.io/hostname: postgres-vector.jacob-williams.me
+    external-dns.alpha.kubernetes.io/hostname: "postgres-vector.${SECRET_DOMAIN}"
     io.cilium/lb-ipam-ips: 10.0.40.52
 spec:
   type: LoadBalancer

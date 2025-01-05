@@ -82,10 +82,10 @@ spec:
     ingress:
       app:
         annotations:
-          external-dns.alpha.kubernetes.io/target: external.jacob-williams.me
+          external-dns.alpha.kubernetes.io/target: "external.${SECRET_DOMAIN}"
         className: external
         hosts:
-          - host: immich.jacob-williams.me
+          - host: "immich.${SECRET_DOMAIN}"
             paths:
               - path: /
                 pathType: Prefix

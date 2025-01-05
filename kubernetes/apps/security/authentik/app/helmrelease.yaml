@@ -54,12 +54,12 @@ spec:
         enabled: true
         ingressClassName: external
         annotations:
-          external-dns.alpha.kubernetes.io/target: external.jacob-williams.me
+          external-dns.alpha.kubernetes.io/target: "external.${SECRET_DOMAIN}"
           nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
           nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
           nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
         hosts:
-          - &host auth.jacob-williams.me
+          - &host "auth.${SECRET_DOMAIN}"
         paths:
           - /
         tls: [hosts: [*host]]

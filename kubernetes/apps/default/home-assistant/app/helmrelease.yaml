@@ -89,10 +89,10 @@ spec:
     ingress:
       app:
         annotations:
-          external-dns.alpha.kubernetes.io/target: external.jacob-williams.me
+          external-dns.alpha.kubernetes.io/target: "external.${SECRET_DOMAIN}"
         className: external
         hosts:
-          - host: hass.jacob-williams.me
+          - host: "hass.${SECRET_DOMAIN}"
             paths:
               - path: /
                 service:
@@ -100,10 +100,10 @@ spec:
                   port: http
       code-server:
         annotations:
-          external-dns.alpha.kubernetes.io/target: internal.jacob-williams.me
+          external-dns.alpha.kubernetes.io/target: "internal.${SECRET_DOMAIN}"
         className: internal
         hosts:
-          - host: hass-code.jacob-williams.me
+          - host: "hass-code.${SECRET_DOMAIN}"
             paths:
               - path: /
                 service:

@@ -112,7 +112,7 @@ spec:
         type: LoadBalancer
         annotations:
           io.cilium/lb-ipam-ips: 10.0.40.53
-          external-dns.alpha.kubernetes.io/hostname: unifi-svc.jacob-williams.me
+          external-dns.alpha.kubernetes.io/hostname: "unifi-svc.${SECRET_DOMAIN}"
         externalTrafficPolicy: Cluster
         ports:
           controller:
@@ -127,18 +127,18 @@ spec:
       internal:
         annotations:
           nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
-          external-dns.alpha.kubernetes.io/target: external.jacob-williams.me
+          external-dns.alpha.kubernetes.io/target: "external.${SECRET_DOMAIN}"
         className: internal
         enabled: true
         hosts:
-          - host: "unifi.jacob-williams.me"
+          - host: "unifi.${SECRET_DOMAIN}"
             paths:
               - path: /
                 pathType: Prefix
                 service:
                   identifier: web
                   port: http
-          - host: "portal.jacob-williams.me"
+          - host: "portal.${SECRET_DOMAIN}"
             paths:
               - path: /
                 pathType: Prefix

@@ -83,10 +83,10 @@ spec:
     ingress:
       app:
         annotations:
-          external-dns.alpha.kubernetes.io/target: internal.jacob-williams.me
+          external-dns.alpha.kubernetes.io/target: "internal.${SECRET_DOMAIN}"
         className: internal
         hosts:
-          - host: "{{ .Release.Name }}.jacob-williams.me"
+          - host: "zwave.${SECRET_DOMAIN}"
             paths:
               - path: /
                 service:

@@ -33,7 +33,7 @@ metadata:
 spec:
   ingressClassName: "internal"
   rules:
-  - host: truenas.jacob-williams.me
+  - host: "truenas.${SECRET_DOMAIN}"
     http:
       paths:
       - pathType: Prefix

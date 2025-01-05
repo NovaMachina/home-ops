@@ -57,10 +57,10 @@ spec:
     ingress:
       app:
         annotations:
-          external-dns.alpha.kubernetes.io/target: internal.jacob-williams.me
+          external-dns.alpha.kubernetes.io/target: "internal.${SECRET_DOMAIN}"
         className: internal
         hosts:
-          - host: "wiki.jacob-williams.me"
+          - host: "wiki.${SECRET_DOMAIN}"
             paths:
               - path: /
                 service:
