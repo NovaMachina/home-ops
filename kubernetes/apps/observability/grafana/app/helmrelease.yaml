@@ -32,17 +32,24 @@ spec:
       GF_EXPLORE_ENABLED: true
       GF_PLUGINS_ALLOW_LOADING_UNSIGNED_PLUGINS: natel-discrete-panel,pr0ps-trackmap-panel,panodata-map-panel
       GF_SECURITY_ANGULAR_SUPPORT_ENABLED: true
+      GF_SECURITY_COOKIE_SAMESITE: grafana
       GF_SERVER_ROOT_URL: "https://grafana.${SECRET_DOMAIN}"
     grafana.ini:
       analytics:
         check_for_updates: false
         check_for_plugin_updates: false
         reporting_enabled: false
-      auth.anonymous:
-        enabled: true
+      auth.generic_oauth.group_mapping:
         org_id: 1
-        org_name: Main Org.
-        org_role: Viewer
+        role_attribute_path: |
+          contains(groups[*], 'admin') && 'Admin' || contains(groups[*], 'grafanaViewer') && 'Viewer'
+      auth.basic:
+        enabled: false
+      auth.anonymous:
+        enabled: false
+        # org_id: 1
+        # org_name: Main Org.
+        # org_role: Viewer
       news:
         news_feed_enabled: false
     datasources:
