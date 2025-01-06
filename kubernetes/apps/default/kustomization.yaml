@@ -8,6 +8,7 @@ resources:
   # Flux-Kustomizations
   - ./home-assistant/ks.yaml
   - ./immich/ks.yaml
+  - ./immich-test/ks.yaml
   - ./zwave/ks.yaml
   - ./unifi/ks.yaml
   - ./dokuwiki/ks.yaml
