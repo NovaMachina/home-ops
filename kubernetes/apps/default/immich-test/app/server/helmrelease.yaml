@@ -36,6 +36,7 @@ spec:
             env:
               TZ: America/Chicago
               IMMICH_WORKERS_INCLUDE: api
+              IMMICH_CONFIG_FILE: /config/secrets.yaml
             envFrom:
               - configMapRef:
                   name: immich-configmap
@@ -99,3 +100,7 @@ spec:
         path: /mnt/pool0/Media/photos
         globalMounts:
           - path: /usr/src/app/upload
+      config:
+        enabled: true
+        type: secret
+        name: immich-config-secrets
