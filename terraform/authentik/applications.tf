@@ -11,19 +11,19 @@ locals {
   }
 
   household_apps = {
-    # "actual-budget" = module.actual-budget.application_id
+    "actual-budget" = module.actual-budget.application_id
   }
 }
 
-# module "actual-budget" {
-#   source                  = "./modules/forward-auth-application"
-#   name                    = "actual-budget"
-#   domain                  = "budget.${var.external_domain}"
-#   group                   = "Home"
-#   authorization_flow_uuid = local.implicit_authorization_flow
-#   invalidation_flow_id    = local.default_invalidation_flow
-#   meta_icon               = "${local.icon_base}/actual-budget.png"
-# }
+module "actual-budget" {
+  source                  = "./modules/forward-auth-application"
+  name                    = "actual-budget"
+  domain                  = "actual.${var.external_domain}"
+  group                   = "Home"
+  authorization_flow_uuid = local.implicit_authorization_flow
+  invalidation_flow_id    = local.default_invalidation_flow
+  meta_icon               = "${local.icon_base}/actual-budget.png"
+}
 
 module "grafana" {
   source                 = "./modules/oidc-application"
@@ -48,7 +48,7 @@ module "immich" {
   client_id              = "immich-test"
   domain                 = "immich-test.${var.internal_domain}"
   group                  = "Books"
-  authorization_flow_id  = local.implicit_authorization_flow
+  authorization_flow_id  = local.explicit_authorization_flow
   authentication_flow_id = local.default_authentication_flow
   invalidation_flow_id   = local.default_invalidation_flow
   redirect_uris          = ["https://immich-test.${var.internal_domain}/auth/login"]
