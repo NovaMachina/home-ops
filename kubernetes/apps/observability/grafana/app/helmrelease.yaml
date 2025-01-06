@@ -44,17 +44,17 @@ spec:
         check_for_updates: false
         check_for_plugin_updates: false
         reporting_enabled: false
-      auth.generic_oauth.group_mapping:
-        org_id: 1
-        role_attribute_path: |
-          contains(groups[*], 'admin') && 'Admin' || contains(groups[*], 'grafanaViewer') && 'Viewer'
-      auth.basic:
-        enabled: false
+      # auth.generic_oauth.group_mapping:
+      #   org_id: 1
+      #   role_attribute_path: |
+      #     contains(groups[*], 'admin') && 'Admin' || contains(groups[*], 'grafanaViewer') && 'Viewer'
+      # auth.basic:
+      #   enabled: false
       auth.anonymous:
-        enabled: false
-        # org_id: 1
-        # org_name: Main Org.
-        # org_role: Viewer
+        enabled: true
+        org_id: 1
+        org_name: Main Org.
+        org_role: Viewer
       news:
         news_feed_enabled: false
     datasources:
