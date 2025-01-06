@@ -38,7 +38,7 @@ spec:
       GF_SECURITY_COOKIE_SAMESITE: grafana
       GF_SERVER_ROOT_URL: "https://grafana.${SECRET_DOMAIN}"
     envFromSecrets:
-      - grafana-admin-secret
+      - name: grafana-admin-secret
     grafana.ini:
       analytics:
         check_for_updates: false
