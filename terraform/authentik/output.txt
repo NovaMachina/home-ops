@@ -1,0 +1,534 @@
+[0m[1mdata.sops_file.secrets: Reading...[0m[0m
+[0m[1mdata.local_file.kubeconfig: Reading...[0m[0m
+[0m[1mdata.local_file.kubeconfig: Read complete after 0s [id=cd6465cd752c4fd2befd82efb3f676ed99945a7d][0m
+[0m[1mdata.sops_file.secrets: Read complete after 0s [id=-][0m
+[0m[1mdata.authentik_property_mapping_provider_scope.oauth2: Reading...[0m[0m
+[0m[1mdata.authentik_flow.default-invalidation-flow: Reading...[0m[0m
+[0m[1mdata.authentik_flow.default-authentication-flow: Reading...[0m[0m
+[0m[1mdata.authentik_property_mapping_provider_scope.oauth2_offline: Reading...[0m[0m
+[0m[1mdata.authentik_flow.default-provider-authorization-explicit-consent: Reading...[0m[0m
+[0m[1mdata.authentik_property_mapping_provider_scope.oauth2: Read complete after 1s[0m
+[0m[1mdata.authentik_property_mapping_provider_scope.oauth2_offline: Read complete after 1s[0m
+[0m[1mdata.authentik_flow.default-authentication-flow: Read complete after 1s [id=fbacf7db-ce3c-4579-a0ee-0f5bf4533668][0m
+[0m[1mdata.authentik_flow.default-invalidation-flow: Read complete after 1s [id=1fe9efa4-a727-4bdf-831e-5d6206853a44][0m
+[0m[1mdata.authentik_flow.default-provider-authorization-explicit-consent: Read complete after 1s [id=50269722-ebf4-4315-829f-2dd598205ee9][0m
+
+Terraform used the selected providers to generate the following execution
+plan. Resource actions are indicated with the following symbols:
+  [32m+[0m create[0m
+
+Terraform will perform the following actions:
+
+[1m  # authentik_flow.provider-authorization-implicit-consent[0m will be created
+[0m  [32m+[0m[0m resource "authentik_flow" "provider-authorization-implicit-consent" {
+      [32m+[0m[0m authentication     = "none"
+      [32m+[0m[0m compatibility_mode = true
+      [32m+[0m[0m denied_action      = "message_continue"
+      [32m+[0m[0m designation        = "authorization"
+      [32m+[0m[0m id                 = (known after apply)
+      [32m+[0m[0m layout             = "stacked"
+      [32m+[0m[0m name               = "Authorize Application"
+      [32m+[0m[0m policy_engine_mode = "any"
+      [32m+[0m[0m slug               = "provider-authorization-implicit-consent"
+      [32m+[0m[0m title              = "Redirecting to %(app)s"
+      [32m+[0m[0m uuid               = (known after apply)
+    }
+
+[1m  # authentik_flow.recovery[0m will be created
+[0m  [32m+[0m[0m resource "authentik_flow" "recovery" {
+      [32m+[0m[0m authentication     = "none"
+      [32m+[0m[0m compatibility_mode = true
+      [32m+[0m[0m denied_action      = "message_continue"
+      [32m+[0m[0m designation        = "recovery"
+      [32m+[0m[0m id                 = (known after apply)
+      [32m+[0m[0m layout             = "stacked"
+      [32m+[0m[0m name               = "recovery-flow"
+      [32m+[0m[0m policy_engine_mode = "any"
+      [32m+[0m[0m slug               = "password-recovery"
+      [32m+[0m[0m title              = "Password recovery"
+      [32m+[0m[0m uuid               = (known after apply)
+    }
+
+[1m  # authentik_flow.user-settings[0m will be created
+[0m  [32m+[0m[0m resource "authentik_flow" "user-settings" {
+      [32m+[0m[0m authentication     = "none"
+      [32m+[0m[0m compatibility_mode = true
+      [32m+[0m[0m denied_action      = "message_continue"
+      [32m+[0m[0m designation        = "stage_configuration"
+      [32m+[0m[0m id                 = (known after apply)
+      [32m+[0m[0m layout             = "stacked"
+      [32m+[0m[0m name               = "User settings"
+      [32m+[0m[0m policy_engine_mode = "any"
+      [32m+[0m[0m slug               = "user-settings-flow"
+      [32m+[0m[0m title              = "Update your info"
+      [32m+[0m[0m uuid               = (known after apply)
+    }
+
+[1m  # authentik_flow_stage_binding.recovery-flow-binding-00[0m will be created
+[0m  [32m+[0m[0m resource "authentik_flow_stage_binding" "recovery-flow-binding-00" {
+      [32m+[0m[0m evaluate_on_plan        = true
+      [32m+[0m[0m id                      = (known after apply)
+      [32m+[0m[0m invalid_response_action = "retry"
+      [32m+[0m[0m order                   = 0
+      [32m+[0m[0m policy_engine_mode      = "any"
+      [32m+[0m[0m re_evaluate_policies    = false
+      [32m+[0m[0m stage                   = (known after apply)
+      [32m+[0m[0m target                  = (known after apply)
+    }
+
+[1m  # authentik_flow_stage_binding.recovery-flow-binding-20[0m will be created
+[0m  [32m+[0m[0m resource "authentik_flow_stage_binding" "recovery-flow-binding-20" {
+      [32m+[0m[0m evaluate_on_plan        = true
+      [32m+[0m[0m id                      = (known after apply)
+      [32m+[0m[0m invalid_response_action = "retry"
+      [32m+[0m[0m order                   = 20
+      [32m+[0m[0m policy_engine_mode      = "any"
+      [32m+[0m[0m re_evaluate_policies    = false
+      [32m+[0m[0m stage                   = (known after apply)
+      [32m+[0m[0m target                  = (known after apply)
+    }
+
+[1m  # authentik_flow_stage_binding.recovery-flow-binding-30[0m will be created
+[0m  [32m+[0m[0m resource "authentik_flow_stage_binding" "recovery-flow-binding-30" {
+      [32m+[0m[0m evaluate_on_plan        = true
+      [32m+[0m[0m id                      = (known after apply)
+      [32m+[0m[0m invalid_response_action = "retry"
+      [32m+[0m[0m order                   = 30
+      [32m+[0m[0m policy_engine_mode      = "any"
+      [32m+[0m[0m re_evaluate_policies    = false
+      [32m+[0m[0m stage                   = (known after apply)
+      [32m+[0m[0m target                  = (known after apply)
+    }
+
+[1m  # authentik_flow_stage_binding.user-settings-flow-binding-100[0m will be created
+[0m  [32m+[0m[0m resource "authentik_flow_stage_binding" "user-settings-flow-binding-100" {
+      [32m+[0m[0m evaluate_on_plan        = true
+      [32m+[0m[0m id                      = (known after apply)
+      [32m+[0m[0m invalid_response_action = "retry"
+      [32m+[0m[0m order                   = 100
+      [32m+[0m[0m policy_engine_mode      = "any"
+      [32m+[0m[0m re_evaluate_policies    = false
+      [32m+[0m[0m stage                   = (known after apply)
+      [32m+[0m[0m target                  = (known after apply)
+    }
+
+[1m  # authentik_flow_stage_binding.user-settings-flow-binding-20[0m will be created
+[0m  [32m+[0m[0m resource "authentik_flow_stage_binding" "user-settings-flow-binding-20" {
+      [32m+[0m[0m evaluate_on_plan        = true
+      [32m+[0m[0m id                      = (known after apply)
+      [32m+[0m[0m invalid_response_action = "retry"
+      [32m+[0m[0m order                   = 20
+      [32m+[0m[0m policy_engine_mode      = "any"
+      [32m+[0m[0m re_evaluate_policies    = false
+      [32m+[0m[0m stage                   = (known after apply)
+      [32m+[0m[0m target                  = (known after apply)
+    }
+
+[1m  # authentik_group.admins[0m will be created
+[0m  [32m+[0m[0m resource "authentik_group" "admins" {
+      [32m+[0m[0m attributes   = jsonencode({})
+      [32m+[0m[0m id           = (known after apply)
+      [32m+[0m[0m is_superuser = true
+      [32m+[0m[0m name         = "Admins"
+      [32m+[0m[0m users        = (known after apply)
+    }
+
+[1m  # authentik_group.books[0m will be created
+[0m  [32m+[0m[0m resource "authentik_group" "books" {
+      [32m+[0m[0m attributes   = jsonencode({})
+      [32m+[0m[0m id           = (known after apply)
+      [32m+[0m[0m is_superuser = false
+      [32m+[0m[0m name         = "Books"
+      [32m+[0m[0m users        = (known after apply)
+    }
+
+[1m  # authentik_group.home[0m will be created
+[0m  [32m+[0m[0m resource "authentik_group" "home" {
+      [32m+[0m[0m attributes   = jsonencode({})
+      [32m+[0m[0m id           = (known after apply)
+      [32m+[0m[0m is_superuser = false
+      [32m+[0m[0m name         = "Home"
+      [32m+[0m[0m users        = (known after apply)
+    }
+
+[1m  # authentik_group.users[0m will be created
+[0m  [32m+[0m[0m resource "authentik_group" "users" {
+      [32m+[0m[0m attributes   = jsonencode({})
+      [32m+[0m[0m id           = (known after apply)
+      [32m+[0m[0m is_superuser = false
+      [32m+[0m[0m name         = "users"
+      [32m+[0m[0m users        = (known after apply)
+    }
+
+[1m  # authentik_policy_binding.admins["grafana"][0m will be created
+[0m  [32m+[0m[0m resource "authentik_policy_binding" "admins" {
+      [32m+[0m[0m enabled        = true
+      [32m+[0m[0m failure_result = false
+      [32m+[0m[0m group          = (known after apply)
+      [32m+[0m[0m id             = (known after apply)
+      [32m+[0m[0m negate         = false
+      [32m+[0m[0m order          = 0
+      [32m+[0m[0m target         = (known after apply)
+      [32m+[0m[0m timeout        = 30
+    }
+
+[1m  # authentik_policy_expression.user-settings-authorization[0m will be created
+[0m  [32m+[0m[0m resource "authentik_policy_expression" "user-settings-authorization" {
+      [32m+[0m[0m execution_logging = false
+      [32m+[0m[0m expression        = <<-EOT
+            from authentik.lib.config import CONFIG
+            from authentik.core.models import (
+                USER_ATTRIBUTE_CHANGE_EMAIL,
+                USER_ATTRIBUTE_CHANGE_NAME,
+                USER_ATTRIBUTE_CHANGE_USERNAME
+            )
+            prompt_data = request.context.get('prompt_data')
+            
+            if not request.user.group_attributes(request.http_request).get(
+                USER_ATTRIBUTE_CHANGE_EMAIL, CONFIG.y_bool('default_user_change_email', True)
+            ):
+                if prompt_data.get('email') != request.user.email:
+                    ak_message('Not allowed to change email address.')
+                    return False
+            
+            if not request.user.group_attributes(request.http_request).get(
+                USER_ATTRIBUTE_CHANGE_NAME, CONFIG.y_bool('default_user_change_name', True)
+            ):
+                if prompt_data.get('name') != request.user.name:
+                    ak_message('Not allowed to change name.')
+                    return False
+            
+            if not request.user.group_attributes(request.http_request).get(
+                USER_ATTRIBUTE_CHANGE_USERNAME, CONFIG.y_bool('default_user_change_username', True)
+            ):
+                if prompt_data.get('username') != request.user.username:
+                    ak_message('Not allowed to change username.')
+                    return False
+            
+            return True
+        EOT
+      [32m+[0m[0m id                = (known after apply)
+      [32m+[0m[0m name              = "user-settings-authorization"
+    }
+
+[1m  # authentik_policy_password.password-complexity[0m will be created
+[0m  [32m+[0m[0m resource "authentik_policy_password" "password-complexity" {
+      [32m+[0m[0m check_have_i_been_pwned = true
+      [32m+[0m[0m check_static_rules      = true
+      [32m+[0m[0m check_zxcvbn            = false
+      [32m+[0m[0m error_message           = "Password must be at least 10 characters long and not be a commonly used password."
+      [32m+[0m[0m execution_logging       = false
+      [32m+[0m[0m hibp_allowed_count      = 1
+      [32m+[0m[0m id                      = (known after apply)
+      [32m+[0m[0m length_min              = 10
+      [32m+[0m[0m name                    = "password-complexity"
+      [32m+[0m[0m password_field          = "password"
+      [32m+[0m[0m symbol_charset          = "!\\\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~"
+      [32m+[0m[0m zxcvbn_score_threshold  = 2
+    }
+
+[1m  # authentik_service_connection_kubernetes.remote-cluster[0m will be created
+[0m  [32m+[0m[0m resource "authentik_service_connection_kubernetes" "remote-cluster" {
+      [32m+[0m[0m id         = (known after apply)
+      [32m+[0m[0m kubeconfig = (sensitive value)
+      [32m+[0m[0m local      = false
+      [32m+[0m[0m name       = "remote"
+      [32m+[0m[0m verify_ssl = false
+    }
+
+[1m  # authentik_stage_email.recovery-email[0m will be created
+[0m  [32m+[0m[0m resource "authentik_stage_email" "recovery-email" {
+      [32m+[0m[0m activate_user_on_success = true
+      [32m+[0m[0m from_address             = "system@authentik.local"
+      [32m+[0m[0m host                     = "localhost"
+      [32m+[0m[0m id                       = (known after apply)
+      [32m+[0m[0m name                     = "recovery-email"
+      [32m+[0m[0m port                     = 25
+      [32m+[0m[0m subject                  = "Password recovery"
+      [32m+[0m[0m template                 = "email/password_reset.html"
+      [32m+[0m[0m timeout                  = 30
+      [32m+[0m[0m token_expiry             = 30
+      [32m+[0m[0m use_global_settings      = true
+    }
+
+[1m  # authentik_stage_identification.recovery-identification[0m will be created
+[0m  [32m+[0m[0m resource "authentik_stage_identification" "recovery-identification" {
+      [32m+[0m[0m case_insensitive_matching = false
+      [32m+[0m[0m id                        = (known after apply)
+      [32m+[0m[0m name                      = "recovery-identification"
+      [32m+[0m[0m pretend_user_exists       = true
+      [32m+[0m[0m show_matched_user         = false
+      [32m+[0m[0m show_source_labels        = false
+      [32m+[0m[0m user_fields               = [
+          [32m+[0m[0m "username",
+          [32m+[0m[0m "email",
+        ]
+    }
+
+[1m  # authentik_stage_prompt.password-change-prompt[0m will be created
+[0m  [32m+[0m[0m resource "authentik_stage_prompt" "password-change-prompt" {
+      [32m+[0m[0m fields              = (known after apply)
+      [32m+[0m[0m id                  = (known after apply)
+      [32m+[0m[0m name                = "password-change-prompt"
+      [32m+[0m[0m validation_policies = (known after apply)
+    }
+
+[1m  # authentik_stage_prompt.user-settings[0m will be created
+[0m  [32m+[0m[0m resource "authentik_stage_prompt" "user-settings" {
+      [32m+[0m[0m fields              = (known after apply)
+      [32m+[0m[0m id                  = (known after apply)
+      [32m+[0m[0m name                = "user-settings"
+      [32m+[0m[0m validation_policies = (known after apply)
+    }
+
+[1m  # authentik_stage_prompt_field.email[0m will be created
+[0m  [32m+[0m[0m resource "authentik_stage_prompt_field" "email" {
+      [32m+[0m[0m field_key                = "email"
+      [32m+[0m[0m id                       = (known after apply)
+      [32m+[0m[0m initial_value            = <<-EOT
+            try:
+                return user.email
+            except:
+                return ''
+        EOT
+      [32m+[0m[0m initial_value_expression = true
+      [32m+[0m[0m label                    = "Email"
+      [32m+[0m[0m name                     = "email"
+      [32m+[0m[0m order                    = 202
+      [32m+[0m[0m placeholder_expression   = false
+      [32m+[0m[0m required                 = true
+      [32m+[0m[0m type                     = "email"
+    }
+
+[1m  # authentik_stage_prompt_field.locale[0m will be created
+[0m  [32m+[0m[0m resource "authentik_stage_prompt_field" "locale" {
+      [32m+[0m[0m field_key                = "attributes.settings.locale"
+      [32m+[0m[0m id                       = (known after apply)
+      [32m+[0m[0m initial_value            = <<-EOT
+            try:
+                return user.attributes.get('settings', {}).get('locale', '')
+            except:
+                return ''
+        EOT
+      [32m+[0m[0m initial_value_expression = true
+      [32m+[0m[0m label                    = "Locale"
+      [32m+[0m[0m name                     = "locale"
+      [32m+[0m[0m order                    = 203
+      [32m+[0m[0m placeholder_expression   = false
+      [32m+[0m[0m required                 = true
+      [32m+[0m[0m type                     = "ak-locale"
+    }
+
+[1m  # authentik_stage_prompt_field.name[0m will be created
+[0m  [32m+[0m[0m resource "authentik_stage_prompt_field" "name" {
+      [32m+[0m[0m field_key                = "name"
+      [32m+[0m[0m id                       = (known after apply)
+      [32m+[0m[0m initial_value            = <<-EOT
+            try:
+                return user.name
+            except:
+                return ''
+        EOT
+      [32m+[0m[0m initial_value_expression = true
+      [32m+[0m[0m label                    = "Name"
+      [32m+[0m[0m name                     = "name"
+      [32m+[0m[0m order                    = 201
+      [32m+[0m[0m placeholder_expression   = false
+      [32m+[0m[0m required                 = true
+      [32m+[0m[0m type                     = "text"
+    }
+
+[1m  # authentik_stage_prompt_field.password[0m will be created
+[0m  [32m+[0m[0m resource "authentik_stage_prompt_field" "password" {
+      [32m+[0m[0m field_key                = "password"
+      [32m+[0m[0m id                       = (known after apply)
+      [32m+[0m[0m initial_value            = "Password"
+      [32m+[0m[0m initial_value_expression = false
+      [32m+[0m[0m label                    = "Password"
+      [32m+[0m[0m name                     = "password"
+      [32m+[0m[0m order                    = 300
+      [32m+[0m[0m placeholder_expression   = false
+      [32m+[0m[0m required                 = true
+      [32m+[0m[0m type                     = "password"
+    }
+
+[1m  # authentik_stage_prompt_field.password-repeat[0m will be created
+[0m  [32m+[0m[0m resource "authentik_stage_prompt_field" "password-repeat" {
+      [32m+[0m[0m field_key                = "password-repeat"
+      [32m+[0m[0m id                       = (known after apply)
+      [32m+[0m[0m initial_value            = "Password (repeat)"
+      [32m+[0m[0m initial_value_expression = false
+      [32m+[0m[0m label                    = "Password (repeat)"
+      [32m+[0m[0m name                     = "password-repeat"
+      [32m+[0m[0m order                    = 301
+      [32m+[0m[0m placeholder_expression   = false
+      [32m+[0m[0m required                 = true
+      [32m+[0m[0m type                     = "password"
+    }
+
+[1m  # authentik_stage_prompt_field.username[0m will be created
+[0m  [32m+[0m[0m resource "authentik_stage_prompt_field" "username" {
+      [32m+[0m[0m field_key                = "username"
+      [32m+[0m[0m id                       = (known after apply)
+      [32m+[0m[0m initial_value            = <<-EOT
+            try:
+                return user.username
+            except:
+                return ''
+        EOT
+      [32m+[0m[0m initial_value_expression = true
+      [32m+[0m[0m label                    = "Username"
+      [32m+[0m[0m name                     = "username"
+      [32m+[0m[0m order                    = 200
+      [32m+[0m[0m placeholder_expression   = false
+      [32m+[0m[0m required                 = true
+      [32m+[0m[0m type                     = "text"
+    }
+
+[1m  # authentik_stage_user_write.password-change-write[0m will be created
+[0m  [32m+[0m[0m resource "authentik_stage_user_write" "password-change-write" {
+      [32m+[0m[0m create_users_as_inactive = true
+      [32m+[0m[0m id                       = (known after apply)
+      [32m+[0m[0m name                     = "password-change-write"
+      [32m+[0m[0m user_creation_mode       = "create_when_required"
+      [32m+[0m[0m user_type                = "external"
+    }
+
+[1m  # authentik_stage_user_write.user-settings-write[0m will be created
+[0m  [32m+[0m[0m resource "authentik_stage_user_write" "user-settings-write" {
+      [32m+[0m[0m create_users_as_inactive = false
+      [32m+[0m[0m id                       = (known after apply)
+      [32m+[0m[0m name                     = "user-settings-write"
+      [32m+[0m[0m user_creation_mode       = "create_when_required"
+      [32m+[0m[0m user_type                = "external"
+    }
+
+[1m  # module.grafana.authentik_application.main[0m will be created
+[0m  [32m+[0m[0m resource "authentik_application" "main" {
+      [32m+[0m[0m group              = "Books"
+      [32m+[0m[0m id                 = (known after apply)
+      [32m+[0m[0m meta_icon          = "https://raw.githubusercontent.com/ramblurr/home-ops/main/icons/grafana.png"
+      [32m+[0m[0m meta_launch_url    = "https://grafana.jacob-williams.me"
+      [32m+[0m[0m name               = "Grafana"
+      [32m+[0m[0m open_in_new_tab    = false
+      [32m+[0m[0m policy_engine_mode = "any"
+      [32m+[0m[0m protocol_provider  = (known after apply)
+      [32m+[0m[0m slug               = "grafana"
+      [32m+[0m[0m uuid               = (known after apply)
+    }
+
+[1m  # module.grafana.authentik_provider_oauth2.main[0m will be created
+[0m  [32m+[0m[0m resource "authentik_provider_oauth2" "main" {
+      [32m+[0m[0m access_code_validity       = "minutes=1"
+      [32m+[0m[0m access_token_validity      = "hours=4"
+      [32m+[0m[0m authentication_flow        = "fbacf7db-ce3c-4579-a0ee-0f5bf4533668"
+      [32m+[0m[0m authorization_flow         = (known after apply)
+      [32m+[0m[0m client_id                  = "grafana"
+      [32m+[0m[0m client_secret              = (sensitive value)
+      [32m+[0m[0m client_type                = "confidential"
+      [32m+[0m[0m id                         = (known after apply)
+      [32m+[0m[0m include_claims_in_id_token = true
+      [32m+[0m[0m invalidation_flow          = "1fe9efa4-a727-4bdf-831e-5d6206853a44"
+      [32m+[0m[0m issuer_mode                = "per_provider"
+      [32m+[0m[0m name                       = "grafana"
+      [32m+[0m[0m redirect_uris              = [
+          [32m+[0m[0m "https://grafana.jacob-williams.me/login/generic_oauth",
+        ]
+      [32m+[0m[0m refresh_token_validity     = "days=30"
+      [32m+[0m[0m sub_mode                   = "hashed_user_id"
+    }
+
+[1m  # module.grafana.onepassword_item.item[0][0m will be created
+[0m  [32m+[0m[0m resource "onepassword_item" "item" {
+      [32m+[0m[0m category = "login"
+      [32m+[0m[0m id       = (known after apply)
+      [32m+[0m[0m password = (sensitive value)
+      [32m+[0m[0m tags     = []
+      [32m+[0m[0m title    = "authentik-oidc-grafana"
+      [32m+[0m[0m uuid     = (known after apply)
+      [32m+[0m[0m vault    = (sensitive value)
+
+      [32m+[0m[0m section {
+          [32m+[0m[0m id    = (known after apply)
+          [32m+[0m[0m label = "authentik"
+
+          [32m+[0m[0m field {
+              [32m+[0m[0m id    = (known after apply)
+              [32m+[0m[0m label = "CLIENT_SECRET"
+              [32m+[0m[0m type  = "CONCEALED"
+              [32m+[0m[0m value = (sensitive value)
+            }
+          [32m+[0m[0m field {
+              [32m+[0m[0m id    = (known after apply)
+              [32m+[0m[0m label = "CLIENT_ID"
+              [32m+[0m[0m type  = "CONCEALED"
+              [32m+[0m[0m value = (sensitive value)
+            }
+          [32m+[0m[0m field {
+              [32m+[0m[0m id    = (known after apply)
+              [32m+[0m[0m label = "config_url"
+              [32m+[0m[0m type  = "STRING"
+              [32m+[0m[0m value = (sensitive value)
+            }
+          [32m+[0m[0m field {
+              [32m+[0m[0m id    = (known after apply)
+              [32m+[0m[0m label = "issuer_url"
+              [32m+[0m[0m type  = "STRING"
+              [32m+[0m[0m value = (sensitive value)
+            }
+          [32m+[0m[0m field {
+              [32m+[0m[0m id    = (known after apply)
+              [32m+[0m[0m label = "authorize_url"
+              [32m+[0m[0m type  = "STRING"
+              [32m+[0m[0m value = (sensitive value)
+            }
+          [32m+[0m[0m field {
+              [32m+[0m[0m id    = (known after apply)
+              [32m+[0m[0m label = "token_url"
+              [32m+[0m[0m type  = "STRING"
+              [32m+[0m[0m value = (sensitive value)
+            }
+          [32m+[0m[0m field {
+              [32m+[0m[0m id    = (known after apply)
+              [32m+[0m[0m label = "userinfo_url"
+              [32m+[0m[0m type  = "STRING"
+              [32m+[0m[0m value = (sensitive value)
+            }
+          [32m+[0m[0m field {
+              [32m+[0m[0m id    = (known after apply)
+              [32m+[0m[0m label = "logout_url"
+              [32m+[0m[0m type  = "STRING"
+              [32m+[0m[0m value = (sensitive value)
+            }
+          [32m+[0m[0m field {
+              [32m+[0m[0m id    = (known after apply)
+              [32m+[0m[0m label = "jwks_url"
+              [32m+[0m[0m type  = "STRING"
+              [32m+[0m[0m value = (sensitive value)
+            }
+        }
+    }
+
+[1m  # module.grafana.random_password.client_secret[0m will be created
+[0m  [32m+[0m[0m resource "random_password" "client_secret" {
+      [32m+[0m[0m bcrypt_hash = (sensitive value)
+      [32m+[0m[0m id          = (known after apply)
+      [32m+[0m[0m length      = 52
+      [32m+[0m[0m lower       = true
+      [32m+[0m[0m min_lower   = 0
+      [32m+[0m[0m min_numeric = 0
+      [32m+[0m[0m min_special = 0
+      [32m+[0m[0m min_upper   = 0
+      [32m+[0m[0m number      = true
+      [32m+[0m[0m numeric     = true
+      [32m+[0m[0m result      = (sensitive value)
+      [32m+[0m[0m special     = true
+      [32m+[0m[0m upper       = true
+    }
+
+[1mPlan:[0m 32 to add, 0 to change, 0 to destroy.
+[0m[90m
+─────────────────────────────────────────────────────────────────────────────[0m
+
+Note: You didn't use the -out option to save this plan, so Terraform can't
+guarantee to take exactly these actions if you run "terraform apply" now.

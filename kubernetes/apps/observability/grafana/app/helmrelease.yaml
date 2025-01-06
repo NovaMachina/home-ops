@@ -47,7 +47,7 @@ spec:
       auth.generic_oauth.group_mapping:
         org_id: 1
         role_attribute_path: |
-          contains(groups[*], 'admin') && 'Admin' || contains(groups[*], 'grafanaViewer') && 'Viewer'
+          contains(groups, 'Grafana Admin') && 'Admin' || contains(groups[*], 'grafanaViewer') && 'Viewer'
       auth.basic:
         enabled: false
       auth.anonymous:

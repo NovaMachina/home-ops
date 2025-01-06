@@ -31,10 +31,10 @@ module "grafana" {
   client_id              = "grafana"
   domain                 = "grafana.${var.internal_domain}"
   group                  = "Books"
-  authorization_flow_id  = local.explicit_authorization_flow
+  authorization_flow_id  = local.implicit_authorization_flow
   authentication_flow_id = local.default_authentication_flow
   invalidation_flow_id   = local.default_invalidation_flow
-  redirect_uris          = ["https://grafana.${var.internal_domain}/login/generic_oauth" ]
+  redirect_uris          = ["https://grafana.${var.internal_domain}/login/generic_oauth"]
   property_mappings      = data.authentik_property_mapping_provider_scope.oauth2.ids
   access_token_validity  = "hours=4"
   authentik_domain       = var.authentik_domain
