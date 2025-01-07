@@ -103,14 +103,19 @@ resource "random_password" "client_secret" {
 }
 
 resource "authentik_provider_oauth2" "main" {
-  name                  = var.name
-  client_id             = var.client_id
-  client_type           = var.client_type
-  client_secret         = local.client_secret
-  authorization_flow    = var.authorization_flow_id
-  authentication_flow   = var.authentication_flow_id
-  invalidation_flow     = var.invalidation_flow_id
-  redirect_uris         = var.redirect_uris
+  name                = var.name
+  client_id           = var.client_id
+  client_type         = var.client_type
+  client_secret       = local.client_secret
+  authorization_flow  = var.authorization_flow_id
+  authentication_flow = var.authentication_flow_id
+  invalidation_flow   = var.invalidation_flow_id
+  allowed_redirect_uris = [
+    for uri in var.redirect_uris: {
+      matching_mode = "strict",
+      url = uri
+    }
+  ]
   access_token_validity = var.access_token_validity
   property_mappings     = var.property_mappings
   lifecycle {

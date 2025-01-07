@@ -58,3 +58,13 @@ module "immich" {
   vault                  = local.onepassword_vault_id
   meta_icon              = "${local.icon_base}/immich.png"
 }
+
+module "home-assistant" {
+  source                  = "./modules/forward-auth-application"
+  name                    = "home-assistant"
+  domain                  = "hass.${var.internal_domain}"
+  group                   = "Books"
+  authorization_flow_uuid = local.implicit_authorization_flow
+  invalidation_flow_id    = local.default_invalidation_flow
+  meta_icon               = "${local.icon_base}/immich.png"
+}

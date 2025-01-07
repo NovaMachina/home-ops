@@ -1,17 +1,21 @@
-[0m[1mdata.sops_file.secrets: Reading...[0m[0m
 [0m[1mdata.local_file.kubeconfig: Reading...[0m[0m
-[0m[1mdata.local_file.kubeconfig: Read complete after 0s [id=cd6465cd752c4fd2befd82efb3f676ed99945a7d][0m
+[0m[1mdata.sops_file.secrets: Reading...[0m[0m
+[0m[1mdata.local_file.kubeconfig: Read complete after 0s [id=7c115d909bbb6eeb1dcde1a3efe2a1788a9a3236][0m
 [0m[1mdata.sops_file.secrets: Read complete after 0s [id=-][0m
-[0m[1mdata.authentik_property_mapping_provider_scope.oauth2: Reading...[0m[0m
 [0m[1mdata.authentik_flow.default-invalidation-flow: Reading...[0m[0m
-[0m[1mdata.authentik_flow.default-authentication-flow: Reading...[0m[0m
-[0m[1mdata.authentik_property_mapping_provider_scope.oauth2_offline: Reading...[0m[0m
 [0m[1mdata.authentik_flow.default-provider-authorization-explicit-consent: Reading...[0m[0m
-[0m[1mdata.authentik_property_mapping_provider_scope.oauth2: Read complete after 1s[0m
-[0m[1mdata.authentik_property_mapping_provider_scope.oauth2_offline: Read complete after 1s[0m
-[0m[1mdata.authentik_flow.default-authentication-flow: Read complete after 1s [id=fbacf7db-ce3c-4579-a0ee-0f5bf4533668][0m
-[0m[1mdata.authentik_flow.default-invalidation-flow: Read complete after 1s [id=1fe9efa4-a727-4bdf-831e-5d6206853a44][0m
-[0m[1mdata.authentik_flow.default-provider-authorization-explicit-consent: Read complete after 1s [id=50269722-ebf4-4315-829f-2dd598205ee9][0m
+[0m[1mdata.authentik_property_mapping_provider_scope.profile: Reading...[0m[0m
+[0m[1mdata.authentik_flow.default-authentication-flow: Reading...[0m[0m
+[0m[1mdata.authentik_property_mapping_provider_scope.openid: Reading...[0m[0m
+[0m[1mdata.authentik_property_mapping_provider_scope.oauth2: Reading...[0m[0m
+[0m[1mdata.authentik_property_mapping_provider_scope.email: Reading...[0m[0m
+[0m[1mdata.authentik_property_mapping_provider_scope.openid: Read complete after 0s[0m
+[0m[1mdata.authentik_property_mapping_provider_scope.profile: Read complete after 0s[0m
+[0m[1mdata.authentik_property_mapping_provider_scope.oauth2: Read complete after 0s[0m
+[0m[1mdata.authentik_property_mapping_provider_scope.email: Read complete after 0s[0m
+[0m[1mdata.authentik_flow.default-provider-authorization-explicit-consent: Read complete after 0s [id=50269722-ebf4-4315-829f-2dd598205ee9][0m
+[0m[1mdata.authentik_flow.default-invalidation-flow: Read complete after 0s [id=1fe9efa4-a727-4bdf-831e-5d6206853a44][0m
+[0m[1mdata.authentik_flow.default-authentication-flow: Read complete after 0s [id=fbacf7db-ce3c-4579-a0ee-0f5bf4533668][0m
 
 Terraform used the selected providers to generate the following execution
 plan. Resource actions are indicated with the following symbols:
@@ -162,6 +166,18 @@ Terraform will perform the following actions:
 
 [1m  # authentik_policy_binding.admins["grafana"][0m will be created
 [0m  [32m+[0m[0m resource "authentik_policy_binding" "admins" {
+      [32m+[0m[0m enabled        = true
+      [32m+[0m[0m failure_result = false
+      [32m+[0m[0m group          = (known after apply)
+      [32m+[0m[0m id             = (known after apply)
+      [32m+[0m[0m negate         = false
+      [32m+[0m[0m order          = 0
+      [32m+[0m[0m target         = (known after apply)
+      [32m+[0m[0m timeout        = 30
+    }
+
+[1m  # authentik_policy_binding.home["actual-budget"][0m will be created
+[0m  [32m+[0m[0m resource "authentik_policy_binding" "home" {
       [32m+[0m[0m enabled        = true
       [32m+[0m[0m failure_result = false
       [32m+[0m[0m group          = (known after apply)
@@ -403,11 +419,40 @@ Terraform will perform the following actions:
       [32m+[0m[0m user_type                = "external"
     }
 
+[1m  # module.actual-budget.authentik_application.main[0m will be created
+[0m  [32m+[0m[0m resource "authentik_application" "main" {
+      [32m+[0m[0m group              = "Home"
+      [32m+[0m[0m id                 = (known after apply)
+      [32m+[0m[0m meta_icon          = "https://raw.githubusercontent.com/NovaMachina/home-ops/main/icons/actual.png"
+      [32m+[0m[0m name               = "Actual-Budget"
+      [32m+[0m[0m open_in_new_tab    = true
+      [32m+[0m[0m policy_engine_mode = "all"
+      [32m+[0m[0m protocol_provider  = (known after apply)
+      [32m+[0m[0m slug               = "actual-budget"
+      [32m+[0m[0m uuid               = (known after apply)
+    }
+
+[1m  # module.actual-budget.authentik_provider_proxy.main[0m will be created
+[0m  [32m+[0m[0m resource "authentik_provider_proxy" "main" {
+      [32m+[0m[0m access_token_validity        = "weeks=8"
+      [32m+[0m[0m authorization_flow           = (known after apply)
+      [32m+[0m[0m basic_auth_enabled           = false
+      [32m+[0m[0m client_id                    = (known after apply)
+      [32m+[0m[0m external_host                = "https://actual.jacob-williams.me"
+      [32m+[0m[0m id                           = (known after apply)
+      [32m+[0m[0m intercept_header_auth        = true
+      [32m+[0m[0m internal_host_ssl_validation = true
+      [32m+[0m[0m invalidation_flow            = "1fe9efa4-a727-4bdf-831e-5d6206853a44"
+      [32m+[0m[0m mode                         = "forward_single"
+      [32m+[0m[0m name                         = "actual-budget"
+      [32m+[0m[0m refresh_token_validity       = "days=30"
+    }
+
 [1m  # module.grafana.authentik_application.main[0m will be created
 [0m  [32m+[0m[0m resource "authentik_application" "main" {
       [32m+[0m[0m group              = "Books"
       [32m+[0m[0m id                 = (known after apply)
-      [32m+[0m[0m meta_icon          = "https://raw.githubusercontent.com/ramblurr/home-ops/main/icons/grafana.png"
+      [32m+[0m[0m meta_icon          = "https://raw.githubusercontent.com/NovaMachina/home-ops/main/icons/grafana.png"
       [32m+[0m[0m meta_launch_url    = "https://grafana.jacob-williams.me"
       [32m+[0m[0m name               = "Grafana"
       [32m+[0m[0m open_in_new_tab    = false
@@ -421,6 +466,12 @@ Terraform will perform the following actions:
 [0m  [32m+[0m[0m resource "authentik_provider_oauth2" "main" {
       [32m+[0m[0m access_code_validity       = "minutes=1"
       [32m+[0m[0m access_token_validity      = "hours=4"
+      [32m+[0m[0m allowed_redirect_uris      = [
+          [32m+[0m[0m {
+              [32m+[0m[0m "matching_mode" = "strict"
+              [32m+[0m[0m "url"           = "https://grafana.jacob-williams.me/login/generic_oauth"
+            },
+        ]
       [32m+[0m[0m authentication_flow        = "fbacf7db-ce3c-4579-a0ee-0f5bf4533668"
       [32m+[0m[0m authorization_flow         = (known after apply)
       [32m+[0m[0m client_id                  = "grafana"
@@ -431,9 +482,6 @@ Terraform will perform the following actions:
       [32m+[0m[0m invalidation_flow          = "1fe9efa4-a727-4bdf-831e-5d6206853a44"
       [32m+[0m[0m issuer_mode                = "per_provider"
       [32m+[0m[0m name                       = "grafana"
-      [32m+[0m[0m redirect_uris              = [
-          [32m+[0m[0m "https://grafana.jacob-williams.me/login/generic_oauth",
-        ]
       [32m+[0m[0m refresh_token_validity     = "days=30"
       [32m+[0m[0m sub_mode                   = "hashed_user_id"
     }
@@ -526,7 +574,162 @@ Terraform will perform the following actions:
       [32m+[0m[0m upper       = true
     }
 
-[1mPlan:[0m 32 to add, 0 to change, 0 to destroy.
+[1m  # module.home-assistant.authentik_application.main[0m will be created
+[0m  [32m+[0m[0m resource "authentik_application" "main" {
+      [32m+[0m[0m group              = "Books"
+      [32m+[0m[0m id                 = (known after apply)
+      [32m+[0m[0m meta_icon          = "https://raw.githubusercontent.com/NovaMachina/home-ops/main/icons/immich.png"
+      [32m+[0m[0m name               = "Home-Assistant"
+      [32m+[0m[0m open_in_new_tab    = true
+      [32m+[0m[0m policy_engine_mode = "all"
+      [32m+[0m[0m protocol_provider  = (known after apply)
+      [32m+[0m[0m slug               = "home-assistant"
+      [32m+[0m[0m uuid               = (known after apply)
+    }
+
+[1m  # module.home-assistant.authentik_provider_proxy.main[0m will be created
+[0m  [32m+[0m[0m resource "authentik_provider_proxy" "main" {
+      [32m+[0m[0m access_token_validity        = "weeks=8"
+      [32m+[0m[0m authorization_flow           = (known after apply)
+      [32m+[0m[0m basic_auth_enabled           = false
+      [32m+[0m[0m client_id                    = (known after apply)
+      [32m+[0m[0m external_host                = "https://hass.jacob-williams.me"
+      [32m+[0m[0m id                           = (known after apply)
+      [32m+[0m[0m intercept_header_auth        = true
+      [32m+[0m[0m internal_host_ssl_validation = true
+      [32m+[0m[0m invalidation_flow            = "1fe9efa4-a727-4bdf-831e-5d6206853a44"
+      [32m+[0m[0m mode                         = "forward_single"
+      [32m+[0m[0m name                         = "home-assistant"
+      [32m+[0m[0m refresh_token_validity       = "days=30"
+    }
+
+[1m  # module.immich.authentik_application.main[0m will be created
+[0m  [32m+[0m[0m resource "authentik_application" "main" {
+      [32m+[0m[0m group              = "Books"
+      [32m+[0m[0m id                 = (known after apply)
+      [32m+[0m[0m meta_icon          = "https://raw.githubusercontent.com/NovaMachina/home-ops/main/icons/immich.png"
+      [32m+[0m[0m meta_launch_url    = "https://immich-test.jacob-williams.me"
+      [32m+[0m[0m name               = "Immich-Test"
+      [32m+[0m[0m open_in_new_tab    = false
+      [32m+[0m[0m policy_engine_mode = "any"
+      [32m+[0m[0m protocol_provider  = (known after apply)
+      [32m+[0m[0m slug               = "immich-test"
+      [32m+[0m[0m uuid               = (known after apply)
+    }
+
+[1m  # module.immich.authentik_provider_oauth2.main[0m will be created
+[0m  [32m+[0m[0m resource "authentik_provider_oauth2" "main" {
+      [32m+[0m[0m access_code_validity       = "minutes=1"
+      [32m+[0m[0m access_token_validity      = "hours=4"
+      [32m+[0m[0m allowed_redirect_uris      = [
+          [32m+[0m[0m {
+              [32m+[0m[0m "matching_mode" = "strict"
+              [32m+[0m[0m "url"           = "https://immich-test.jacob-williams.me/auth/login"
+            },
+        ]
+      [32m+[0m[0m authentication_flow        = "fbacf7db-ce3c-4579-a0ee-0f5bf4533668"
+      [32m+[0m[0m authorization_flow         = "50269722-ebf4-4315-829f-2dd598205ee9"
+      [32m+[0m[0m client_id                  = "immich-test"
+      [32m+[0m[0m client_secret              = (sensitive value)
+      [32m+[0m[0m client_type                = "confidential"
+      [32m+[0m[0m id                         = (known after apply)
+      [32m+[0m[0m include_claims_in_id_token = true
+      [32m+[0m[0m invalidation_flow          = "1fe9efa4-a727-4bdf-831e-5d6206853a44"
+      [32m+[0m[0m issuer_mode                = "per_provider"
+      [32m+[0m[0m name                       = "immich-test"
+      [32m+[0m[0m refresh_token_validity     = "days=30"
+      [32m+[0m[0m sub_mode                   = "hashed_user_id"
+    }
+
+[1m  # module.immich.onepassword_item.item[0][0m will be created
+[0m  [32m+[0m[0m resource "onepassword_item" "item" {
+      [32m+[0m[0m category = "login"
+      [32m+[0m[0m id       = (known after apply)
+      [32m+[0m[0m password = (sensitive value)
+      [32m+[0m[0m tags     = []
+      [32m+[0m[0m title    = "authentik-oidc-immich-test"
+      [32m+[0m[0m uuid     = (known after apply)
+      [32m+[0m[0m vault    = (sensitive value)
+
+      [32m+[0m[0m section {
+          [32m+[0m[0m id    = (known after apply)
+          [32m+[0m[0m label = "authentik"
+
+          [32m+[0m[0m field {
+              [32m+[0m[0m id    = (known after apply)
+              [32m+[0m[0m label = "CLIENT_SECRET"
+              [32m+[0m[0m type  = "CONCEALED"
+              [32m+[0m[0m value = (sensitive value)
+            }
+          [32m+[0m[0m field {
+              [32m+[0m[0m id    = (known after apply)
+              [32m+[0m[0m label = "CLIENT_ID"
+              [32m+[0m[0m type  = "CONCEALED"
+              [32m+[0m[0m value = (sensitive value)
+            }
+          [32m+[0m[0m field {
+              [32m+[0m[0m id    = (known after apply)
+              [32m+[0m[0m label = "config_url"
+              [32m+[0m[0m type  = "STRING"
+              [32m+[0m[0m value = (sensitive value)
+            }
+          [32m+[0m[0m field {
+              [32m+[0m[0m id    = (known after apply)
+              [32m+[0m[0m label = "issuer_url"
+              [32m+[0m[0m type  = "STRING"
+              [32m+[0m[0m value = (sensitive value)
+            }
+          [32m+[0m[0m field {
+              [32m+[0m[0m id    = (known after apply)
+              [32m+[0m[0m label = "authorize_url"
+              [32m+[0m[0m type  = "STRING"
+              [32m+[0m[0m value = (sensitive value)
+            }
+          [32m+[0m[0m field {
+              [32m+[0m[0m id    = (known after apply)
+              [32m+[0m[0m label = "token_url"
+              [32m+[0m[0m type  = "STRING"
+              [32m+[0m[0m value = (sensitive value)
+            }
+          [32m+[0m[0m field {
+              [32m+[0m[0m id    = (known after apply)
+              [32m+[0m[0m label = "userinfo_url"
+              [32m+[0m[0m type  = "STRING"
+              [32m+[0m[0m value = (sensitive value)
+            }
+          [32m+[0m[0m field {
+              [32m+[0m[0m id    = (known after apply)
+              [32m+[0m[0m label = "logout_url"
+              [32m+[0m[0m type  = "STRING"
+              [32m+[0m[0m value = (sensitive value)
+            }
+          [32m+[0m[0m field {
+              [32m+[0m[0m id    = (known after apply)
+              [32m+[0m[0m label = "jwks_url"
+              [32m+[0m[0m type  = "STRING"
+              [32m+[0m[0m value = (sensitive value)
+            }
+        }
+    }
+
+[1m  # module.immich.random_password.client_secret[0m will be created
+[0m  [32m+[0m[0m resource "random_password" "client_secret" {
+      [32m+[0m[0m bcrypt_hash = (sensitive value)
+      [32m+[0m[0m id          = (known after apply)
+      [32m+[0m[0m length      = 52
+      [32m+[0m[0m lower       = true
+      [32m+[0m[0m min_lower   = 0
+      [32m+[0m[0m min_numeric = 0
+      [32m+[0m[0m min_special = 0
+      [32m+[0m[0m min_upper   = 0
+      [32m+[0m[0m number      = true
+      [32m+[0m[0m numeric     = true
+      [32m+[0m[0m result      = (sensitive value)
+      [32m+[0m[0m special     = true
+      [32m+[0m[0m upper       = true
+    }
+
+[1mPlan:[0m 41 to add, 0 to change, 0 to destroy.
 [0m[90m
 ─────────────────────────────────────────────────────────────────────────────[0m
 
