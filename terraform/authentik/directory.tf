@@ -1,3 +1,9 @@
+# Step 1: Retrieve secrets from 1Password
+module "onepassword_application" {
+  source   = "github.com/joryirving/terraform-1password-item"
+  vault    = "homelab"
+  item     = "actual"
+}
 
 data "authentik_group" "admins" {
   name = "authentik Admins"
@@ -39,22 +45,24 @@ resource "authentik_group" "users" {
   is_superuser = false
 }
 
-resource "authentik_policy_binding" "admins" {
-  for_each = local.admin_apps
-  target   = each.value
-  group    = data.authentik_group.admins.id
-  order    = 0
-}
-
-resource "authentik_policy_binding" "home" {
-  for_each = local.household_apps
-  target   = each.value
-  group    = authentik_group.home.id
-  order    = 0
+resource "authentik_group" "finance" {
+  name = "finance"
+  is_superuser = false
+  attributes = jsonencode({
+    "additionalHeaders": {
+        "x-actual-password": module.onepassword_application.fields["password"]
+    }
+  })
 }
 
 resource "authentik_policy_binding" "grafana_admin" {
   target = module.grafana.application_id
   group = authentik_group.grafana_admin.id
+  order = 0
+}
+
+resource "authentik_policy_binding" "actual" {
+  target = module.actual-budget.application_id
+  group = authentik_group.finance.id
   order = 0
 }
