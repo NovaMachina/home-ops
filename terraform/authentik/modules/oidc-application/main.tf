@@ -143,61 +143,61 @@ resource "authentik_application" "main" {
   open_in_new_tab    = true
 }
 
-# resource "onepassword_item" "item" {
-#   count    = var.client_type == "confidential" ? 1 : 0
-#   vault    = var.vault
-#   title    = "authentik-oidc-${var.name}"
-#   category = "login"
-#   tags     = sort(var.tags)
-#   section {
-#     label = "authentik"
-#     field {
-#       label = "CLIENT_SECRET"
-#       value = local.client_secret
-#       type  = "CONCEALED"
-#     }
-#     field {
-#       label = "CLIENT_ID"
-#       value = var.client_id
-#       type  = "CONCEALED"
-#     }
-#     field {
-#       label = "config_url"
-#       value = "${local.oidc_url_prefix}/${var.name}/.well-known/openid-configuration"
-#       type  = "STRING"
-#     }
-#     field {
-#       label = "issuer_url"
-#       value = "${local.oidc_url_prefix}/${var.name}/"
-#       type  = "STRING"
-#     }
-#     field {
-#       label = "authorize_url"
-#       value = "${local.oidc_url_prefix}/authorize/"
-#       type  = "STRING"
-#     }
-#     field {
-#       label = "token_url"
-#       value = "${local.oidc_url_prefix}/token/"
-#       type  = "STRING"
-#     }
-#     field {
-#       label = "userinfo_url"
-#       value = "${local.oidc_url_prefix}/userinfo/"
-#       type  = "STRING"
-#     }
-#     field {
-#       label = "logout_url"
-#       value = "${local.oidc_url_prefix}/${var.name}/end-session/"
-#       type  = "STRING"
-#     }
-#     field {
-#       label = "jwks_url"
-#       value = "${local.oidc_url_prefix}/${var.name}/jwks/"
-#       type  = "STRING"
-#     }
-#   }
-# }
+resource "onepassword_item" "item" {
+  count    = var.client_type == "confidential" ? 1 : 0
+  vault    = var.vault
+  title    = "authentik-oidc-${var.name}"
+  category = "login"
+  tags     = sort(var.tags)
+  section {
+    label = "authentik"
+    field {
+      label = "CLIENT_SECRET"
+      value = local.client_secret
+      type  = "CONCEALED"
+    }
+    field {
+      label = "CLIENT_ID"
+      value = var.client_id
+      type  = "CONCEALED"
+    }
+    field {
+      label = "config_url"
+      value = "${local.oidc_url_prefix}/${var.name}/.well-known/openid-configuration"
+      type  = "STRING"
+    }
+    field {
+      label = "issuer_url"
+      value = "${local.oidc_url_prefix}/${var.name}/"
+      type  = "STRING"
+    }
+    field {
+      label = "authorize_url"
+      value = "${local.oidc_url_prefix}/authorize/"
+      type  = "STRING"
+    }
+    field {
+      label = "token_url"
+      value = "${local.oidc_url_prefix}/token/"
+      type  = "STRING"
+    }
+    field {
+      label = "userinfo_url"
+      value = "${local.oidc_url_prefix}/userinfo/"
+      type  = "STRING"
+    }
+    field {
+      label = "logout_url"
+      value = "${local.oidc_url_prefix}/${var.name}/end-session/"
+      type  = "STRING"
+    }
+    field {
+      label = "jwks_url"
+      value = "${local.oidc_url_prefix}/${var.name}/jwks/"
+      type  = "STRING"
+    }
+  }
+}
 
 output "application_id" {
   value = authentik_application.main.uuid
