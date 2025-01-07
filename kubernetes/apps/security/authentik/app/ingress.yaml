@@ -5,7 +5,7 @@ metadata:
 spec:
   ingressClassName: external
   rules:
-    - host: jacob-williams.me
+    - host: outpost.jacob-williams.me
       http:
         paths:
           - path: /outpost.goauthentik.io
