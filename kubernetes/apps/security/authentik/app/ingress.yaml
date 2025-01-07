@@ -3,6 +3,7 @@ kind: Ingress
 metadata:
   name: authentik-outpost
 spec:
+  ingressClass: internal
   rules:
     - host: jacob-williams.me
       http:
