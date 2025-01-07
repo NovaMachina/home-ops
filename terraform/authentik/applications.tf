@@ -22,7 +22,7 @@ module "actual-budget" {
   group                   = "Home"
   authorization_flow_uuid = local.implicit_authorization_flow
   invalidation_flow_id    = local.default_invalidation_flow
-  meta_icon               = "${local.icon_base}/actual-budget.png"
+  meta_icon               = "${local.icon_base}/actual.png"
 }
 
 module "grafana" {
