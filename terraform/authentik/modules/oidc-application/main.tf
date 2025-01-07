@@ -37,6 +37,9 @@ variable "access_token_validity" {
 variable "authorization_flow_id" {
   type = string
 }
+variable "invalidation_flow_id" {
+  type = string
+}
 
 variable "meta_icon" {
   type    = string
@@ -76,9 +79,6 @@ variable "client_type" {
 variable "authentication_flow_id" {
   type = string
 }
-variable "invalidation_flow_id" {
-  type = string
-}
 variable "redirect_uris" {
   type = list(string)
 }
@@ -86,6 +86,10 @@ variable "redirect_uris" {
 variable "property_mappings" {
   type    = list(string)
   default = null
+}
+
+variable "signing_key" {
+  type = string
 }
 
 locals {
@@ -111,13 +115,15 @@ resource "authentik_provider_oauth2" "main" {
   authentication_flow = var.authentication_flow_id
   invalidation_flow   = var.invalidation_flow_id
   allowed_redirect_uris = [
-    for uri in var.redirect_uris: {
+    for redirect in var.redirect_uris :
+    {
       matching_mode = "strict",
-      url = uri
+      url           = redirect,
     }
   ]
   access_token_validity = var.access_token_validity
   property_mappings     = var.property_mappings
+  signing_key           = var.signing_key
   lifecycle {
     ignore_changes = [
       signing_key
@@ -134,6 +140,7 @@ resource "authentik_application" "main" {
   meta_icon          = var.meta_icon
   meta_description   = var.meta_description
   protocol_provider  = authentik_provider_oauth2.main.id
+  open_in_new_tab    = true
 }
 
 resource "onepassword_item" "item" {

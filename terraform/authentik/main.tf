@@ -5,12 +5,6 @@ provider "onepassword" {
   # token specified via env var
 }
 
-resource "authentik_service_connection_kubernetes" "remote-cluster" {
-  name       = "remote"
-  verify_ssl = false
-  kubeconfig = jsonencode(yamldecode(data.local_file.kubeconfig.content))
-}
-
 data "sops_file" "secrets" {
   source_file = "../secrets.sops.yaml"
 }

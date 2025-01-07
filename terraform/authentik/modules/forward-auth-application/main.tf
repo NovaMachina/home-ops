@@ -19,7 +19,7 @@ variable "access_token_validity" {
 variable "authorization_flow_uuid" {
   type = string
 }
-variable "invalidation_flow_id" {
+variable "invalidation_flow_uuid" {
   type = string
 }
 
@@ -74,7 +74,7 @@ resource "authentik_provider_proxy" "main" {
   basic_auth_username_attribute = var.basic_auth_username_attribute
   mode                          = var.mode
   authorization_flow            = var.authorization_flow_uuid
-  invalidation_flow             = var.invalidation_flow_id
+  invalidation_flow             = var.invalidation_flow_uuid
   access_token_validity         = var.access_token_validity
   property_mappings             = var.property_mappings
   skip_path_regex               = var.skip_path_regex

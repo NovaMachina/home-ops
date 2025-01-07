@@ -1,10 +1,11 @@
 resource "authentik_policy_password" "password-complexity" {
-  name                    = "password-complexity"
-  check_have_i_been_pwned = true
-  length_min              = 10
-  error_message           = "Password must be at least 10 characters long and not be a commonly used password."
+  name             = "password-complexity"
+  length_min       = 8
+  amount_digits    = 1
+  amount_lowercase = 1
+  amount_uppercase = 1
+  error_message    = "Minimum password length: 10. At least 1 of each required: uppercase, lowercase, digit"
 }
-
 
 resource "authentik_policy_expression" "user-settings-authorization" {
   name       = "user-settings-authorization"

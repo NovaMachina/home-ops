@@ -1,15 +1,20 @@
-resource "authentik_group" "users" {
-  name         = "users"
+
+data "authentik_group" "admins" {
+  name = "authentik Admins"
+}
+
+resource "authentik_group" "downloads" {
+  name         = "Downloads"
   is_superuser = false
 }
 
-resource "authentik_group" "admins" {
-  name         = "Admins"
-  is_superuser = true
+resource "authentik_group" "grafana_admin" {
+  name         = "Grafana Admin"
+  is_superuser = false
 }
 
-resource "authentik_group" "books" {
-  name         = "Books"
+resource "authentik_group" "headscale" {
+  name         = "Headscale"
   is_superuser = false
 }
 
@@ -18,10 +23,26 @@ resource "authentik_group" "home" {
   is_superuser = false
 }
 
+resource "authentik_group" "infrastructure" {
+  name         = "Infrastructure"
+  is_superuser = false
+}
+
+resource "authentik_group" "monitoring" {
+  name         = "Monitoring"
+  is_superuser = false
+  parent       = resource.authentik_group.grafana_admin.id
+}
+
+resource "authentik_group" "users" {
+  name         = "users"
+  is_superuser = false
+}
+
 resource "authentik_policy_binding" "admins" {
   for_each = local.admin_apps
   target   = each.value
-  group    = authentik_group.admins.id
+  group    = data.authentik_group.admins.id
   order    = 0
 }
 
@@ -30,4 +51,10 @@ resource "authentik_policy_binding" "home" {
   target   = each.value
   group    = authentik_group.home.id
   order    = 0
+}
+
+resource "authentik_policy_binding" "grafana_admin" {
+  target = module.grafana.application_id
+  group = authentik_group.grafana_admin.id
+  order = 0
 }
