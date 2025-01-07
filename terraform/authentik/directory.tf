@@ -66,3 +66,9 @@ resource "authentik_policy_binding" "actual" {
   group = authentik_group.finance.id
   order = 0
 }
+
+resource "authentik_policy_binding" "home-assistant" {
+  target = module.home-assistant.application_id
+  group = authentik_group.home.id
+  order = 0
+}

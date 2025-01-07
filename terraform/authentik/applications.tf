@@ -66,5 +66,5 @@ module "home-assistant" {
   group                   = "Books"
   authorization_flow_uuid = local.implicit_authorization_flow
   invalidation_flow_uuid  = local.default_invalidation_flow
-  meta_icon               = "${local.icon_base}/immich.png"
+  meta_icon               = "${local.icon_base}/home-assistant.png"
 }
