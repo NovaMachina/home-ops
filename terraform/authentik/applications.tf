@@ -43,14 +43,14 @@ module "grafana" {
 
 module "immich" {
   source                 = "./modules/oidc-application"
-  name                   = "immich-test"
-  client_id              = "immich-test"
-  domain                 = "immich-test.${var.internal_domain}"
+  name                   = "immich"
+  client_id              = "immich"
+  domain                 = "immich.${var.internal_domain}"
   group                  = "Books"
   authorization_flow_id  = local.implicit_authorization_flow
   authentication_flow_id = local.default_authentication_flow
   invalidation_flow_id   = local.default_invalidation_flow
-  redirect_uris          = ["https://immich-test.${var.internal_domain}/auth/login"]
+  redirect_uris          = ["https://immich.${var.internal_domain}/auth/login"]
   property_mappings      = data.authentik_property_mapping_provider_scope.oauth2.ids
   access_token_validity  = "hours=4"
   authentik_domain       = var.authentik_domain
