@@ -104,7 +104,7 @@ spec:
                   port: http
               - path: /outpost.goauthentik.io
                 service:
-                  identifier: ak-outpost-authentik-embedded-outpost
+                  identifier: ak-outpost-svc-bridge
                   port: 9000
       code-server:
         annotations:
