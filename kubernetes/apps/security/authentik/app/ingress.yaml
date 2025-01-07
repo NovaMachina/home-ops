@@ -14,6 +14,6 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: ak-outpost-authentik-embedded-outpost
+                name: ak-outpost-svc-bridge
                 port:
                   number: 9000
