@@ -102,6 +102,10 @@ spec:
                 service:
                   identifier: app
                   port: http
+              - path: /outpost.goauthentik.io
+                service:
+                  identifier: ak-outpost-authentik-embedded-outpost
+                  port: 9000
       code-server:
         annotations:
           external-dns.alpha.kubernetes.io/target: "internal.${SECRET_DOMAIN}"
