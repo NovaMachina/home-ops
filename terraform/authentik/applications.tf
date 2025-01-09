@@ -68,3 +68,21 @@ module "home-assistant" {
   invalidation_flow_uuid  = local.default_invalidation_flow
   meta_icon               = "${local.icon_base}/home-assistant.png"
 }
+
+module "paperless" {
+  source                 = "./modules/oidc-application"
+  name                   = "paperless"
+  client_id              = "paperless"
+  domain                 = "paperless.${var.internal_domain}"
+  group                  = "Books"
+  authorization_flow_id  = local.implicit_authorization_flow
+  authentication_flow_id = local.default_authentication_flow
+  invalidation_flow_id   = local.default_invalidation_flow
+  redirect_uris          = ["https://paperless.${var.internal_domain}/accounts/oidc/authentik/login/callback/"]
+  property_mappings      = data.authentik_property_mapping_provider_scope.oauth2.ids
+  access_token_validity  = "hours=4"
+  authentik_domain       = var.authentik_domain
+  vault                  = local.onepassword_vault_id
+  meta_icon              = "${local.icon_base}/grafana.png"
+  signing_key            = data.authentik_certificate_key_pair.generated.id
+}
