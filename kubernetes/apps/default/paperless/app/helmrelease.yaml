@@ -132,7 +132,7 @@ spec:
                   port: http
     persistence:
       data:
-        existingClaim: paperless-data
+        existingClaim: paperless
         advancedMounts:
           paperless:
             app:
