@@ -52,13 +52,6 @@ spec:
                   name: paperless-secret
               - secretRef:
                   name: paperless-db-secret
-            securityContext:
-              allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: false
-              capabilities: { drop: ["ALL"] }
-              runAsUser: 568
-              runAsGroup: 568
-              fsGroup: 568
             probes:
               liveness:
                 enabled: true
