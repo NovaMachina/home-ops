@@ -49,15 +49,29 @@ spec:
               - configMapRef:
                   name: paperless-configmap
               - secretRef:
+                  name: paperless-secret
+              - secretRef:
                   name: paperless-db-secret
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
               capabilities: { drop: ["ALL"] }
+            probes:
+              liveness:
+                enabled: true
+              readiness:
+                enabled: true
+              startup:
+                enabled: true
+                spec:
+                  failureThreshold: 30
+                  periodSeconds: 5
             resources:
               requests:
-                cpu: 100m
-                memory: 256Mi
+                cpu: 25m
+                memory: 2Gi
+              limits:
+                memory: 6Gi
           gotenberg:
             image:
               repository: docker.io/gotenberg/gotenberg
@@ -116,20 +130,18 @@ spec:
                 service:
                   identifier: app
                   port: http
-    # persistence:
-    #   config:
-    #     existingClaim: home-assistant
-    #     globalMounts:
-    #       - path: /config
-    #   logs:
-    #     type: emptyDir
-    #     globalMounts:
-    #       - path: /config/logs
-    #   tts:
-    #     type: emptyDir
-    #     globalMounts:
-    #       - path: /config/tts
-    #   tmp:
-    #     type: emptyDir
-    #     globalMounts:
-    #       - path: /tmp
+    persistence:
+      data:
+        existingClaim: paperless-data
+        advancedMounts:
+          paperless:
+            app:
+              - path: /data/local
+      nas:
+        type: nfs
+        server: ${SECRET_NFS_SERVER}
+        path: /mnt/pool0/Media/paperless
+        advancedMounts:
+          paperless:
+            app:
+              - path: /data/nas
