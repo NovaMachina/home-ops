@@ -72,7 +72,7 @@ spec:
             image:
               repository: docker.io/gotenberg/gotenberg
               tag: 8.15.3@sha256:cec2b75259ea1828bc473521b83c1d4e4a6c45209c56bd6bb0f98f79c071e70d
-            args: [
+            command: [
               "gotenburg",
               "--chromium-disable-javascript=true",
               "--chromium-allow-list=file:///tmp/.*"
