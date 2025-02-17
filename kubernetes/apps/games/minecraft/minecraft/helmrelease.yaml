@@ -98,6 +98,7 @@ spec:
         apiKey:
           key: CF_API_KEY
           existingSecret: minecraft-secret
+          secretKey: CF_API_KEY
         includeMods:
           - ambientsounds
           - better-stats
