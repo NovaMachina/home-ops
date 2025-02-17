@@ -29,7 +29,7 @@ spec:
       allowSnippetAnnotations: true
       service:
         annotations:
-          external-dns.alpha.kubernetes.io/hostname: "external.${SECRET_DOMAIN}"
+          external-dns.alpha.kubernetes.io/hostname: external.${SECRET_DOMAIN}, ipv4.${SECRET_DOMAIN}
           io.cilium/lb-ipam-ips: "10.0.40.40"
         externalTrafficPolicy: Cluster
       ingressClassResource:
