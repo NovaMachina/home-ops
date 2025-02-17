@@ -6,11 +6,4 @@ resources:
   # Pre Flux-Kustomizations
   - ./namespace.yaml
   # Flux-Kustomizations
-  - ./home-assistant/ks.yaml
-  - ./immich/ks.yaml
-  - ./zwave/ks.yaml
-  - ./unifi/ks.yaml
-  - ./dokuwiki/ks.yaml
-  - ./actual/ks.yaml
-  - ./paperless/ks.yaml
-  # - ./minecraft/ks.yaml
+  - ./minecraft/ks.yaml
