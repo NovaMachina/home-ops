@@ -70,6 +70,8 @@ spec:
                 sodium
                 supermartijn642s-config-lib
                 tcdcommons
+            ports:
+              - containerPort: 25565
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
