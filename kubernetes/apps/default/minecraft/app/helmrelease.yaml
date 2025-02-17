@@ -58,6 +58,7 @@ spec:
                 cloth-config
                 continuity
                 durability-tooltip
+                fabric-api
                 falling-leaves-fabric
                 forge-config-api-port-fabric
                 geophilic
