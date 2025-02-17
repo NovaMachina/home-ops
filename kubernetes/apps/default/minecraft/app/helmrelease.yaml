@@ -90,7 +90,7 @@ spec:
         controller: minecraft
         ports:
           http:
-            port: 8123
+            port: 25565
     ingress:
       app:
         annotations:
