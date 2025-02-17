@@ -68,6 +68,26 @@ spec:
     extraEnv:
       TZ: America/Chicago
       ENABLE_AUTOPAUSE: TRUE # Doesn't work in Kubes
+      CURSEFORGE_FILES:
+          - ambientsounds
+          - better-stats
+          - camera-utils
+          - cave-dust
+          - cloth-config
+          - continuity
+          - durability-tooltip
+          - fabric-api
+          - falling-leaves-fabric
+          - forge-config-api-port-fabric
+          - geophilic
+          - irisshaders
+          - mouse-tweaks
+          - noisium
+          - pick-up-notifier
+          - puzzles-lib
+          - sodium
+          - supermartijn642s-config-lib
+          - tcdcommons
     persistence:
       dataDir:
         enabled: true
@@ -99,26 +119,6 @@ spec:
           key: CF_API_KEY
           existingSecret: minecraft-secret
           secretKey: CF_API_KEY
-      modUrls:
-        - https://www.curseforge.com/minecraft/mc-modsambientsounds
-        - https://www.curseforge.com/minecraft/mc-modsbetter-stats
-        - https://www.curseforge.com/minecraft/mc-modscamera-utils
-        - https://www.curseforge.com/minecraft/mc-modscave-dust
-        - https://www.curseforge.com/minecraft/mc-modscloth-config
-        - https://www.curseforge.com/minecraft/mc-modscontinuity
-        - https://www.curseforge.com/minecraft/mc-modsdurability-tooltip
-        - https://www.curseforge.com/minecraft/mc-modsfabric-api
-        - https://www.curseforge.com/minecraft/mc-modsfalling-leaves-fabric
-        - https://www.curseforge.com/minecraft/mc-modsforge-config-api-port-fabric
-        - https://www.curseforge.com/minecraft/mc-modsgeophilic
-        - https://www.curseforge.com/minecraft/mc-modsirisshaders
-        - https://www.curseforge.com/minecraft/mc-modsmouse-tweaks
-        - https://www.curseforge.com/minecraft/mc-modsnoisium
-        - https://www.curseforge.com/minecraft/mc-modspick-up-notifier
-        - https://www.curseforge.com/minecraft/mc-modspuzzles-lib
-        - https://www.curseforge.com/minecraft/mc-modssodium
-        - https://www.curseforge.com/minecraft/mc-modssupermartijn642s-config-lib
-        - https://www.curseforge.com/minecraft/mc-modstcdcommons
       rcon:
         enabled: false
       extraPorts:
