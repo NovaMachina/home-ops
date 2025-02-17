@@ -12,7 +12,7 @@ spec:
       version: 4.23.7
       sourceRef:
         kind: HelmRepository
-        name: itzg-charts
+        name: itzg
         namespace: flux-system
   install:
     remediation:
