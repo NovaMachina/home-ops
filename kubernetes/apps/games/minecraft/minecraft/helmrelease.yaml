@@ -68,26 +68,6 @@ spec:
     extraEnv:
       TZ: America/Chicago
       ENABLE_AUTOPAUSE: TRUE # Doesn't work in Kubes
-      CURSEFORGE_FILES:
-          - ambientsounds
-          - better-stats
-          - camera-utils
-          - cave-dust
-          - cloth-config
-          - continuity
-          - durability-tooltip
-          - fabric-api
-          - falling-leaves-fabric
-          - forge-config-api-port-fabric
-          - geophilic
-          - irisshaders
-          - mouse-tweaks
-          - noisium
-          - pick-up-notifier
-          - puzzles-lib
-          - sodium
-          - supermartijn642s-config-lib
-          - tcdcommons
     persistence:
       dataDir:
         enabled: true
@@ -119,6 +99,26 @@ spec:
           key: CF_API_KEY
           existingSecret: minecraft-secret
           secretKey: CF_API_KEY
+        includeMods:
+          - https://www.curseforge.com/minecraft/mc-mods/ambientsounds
+          - https://www.curseforge.com/minecraft/mc-mods/better-stats
+          - https://www.curseforge.com/minecraft/mc-mods/camera-utils
+          - https://www.curseforge.com/minecraft/mc-mods/cave-dust
+          - https://www.curseforge.com/minecraft/mc-mods/cloth-config
+          - https://www.curseforge.com/minecraft/mc-mods/continuity
+          - https://www.curseforge.com/minecraft/mc-mods/durability-tooltip
+          - https://www.curseforge.com/minecraft/mc-mods/fabric-api
+          - https://www.curseforge.com/minecraft/mc-mods/falling-leaves-fabric
+          - https://www.curseforge.com/minecraft/mc-mods/forge-config-api-port-fabric
+          - https://www.curseforge.com/minecraft/mc-mods/geophilic
+          - https://www.curseforge.com/minecraft/mc-mods/irisshaders
+          - https://www.curseforge.com/minecraft/mc-mods/mouse-tweaks
+          - https://www.curseforge.com/minecraft/mc-mods/noisium
+          - https://www.curseforge.com/minecraft/mc-mods/pick-up-notifier
+          - https://www.curseforge.com/minecraft/mc-mods/puzzles-lib
+          - https://www.curseforge.com/minecraft/mc-mods/sodium
+          - https://www.curseforge.com/minecraft/mc-mods/supermartijn642s-config-lib
+          - https://www.curseforge.com/minecraft/mc-mods/tcdcommons
       rcon:
         enabled: false
       extraPorts:
@@ -135,6 +135,6 @@ spec:
           enabled: true
           annotations:
             external-dns.alpha.kubernetes.io/target: mc.${SECRET_DOMAIN}
-            # external-dns.alpha.kubernetes.io/cloudflare-proxied: "false"
+            external-dns.alpha.kubernetes.io/cloudflare-proxied: "false"
           hosts:
            - name: *host
