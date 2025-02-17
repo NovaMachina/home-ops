@@ -13,4 +13,4 @@ resources:
   - ./dokuwiki/ks.yaml
   - ./actual/ks.yaml
   - ./paperless/ks.yaml
-  - ./minecraft/ks.yaml
+  # - ./minecraft/ks.yaml
