@@ -71,7 +71,7 @@ spec:
                 https://www.curseforge.com/minecraft/mc-mods/tcdcommons
             securityContext:
               allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: true
+              readOnlyRootFilesystem: false
               capabilities: { drop: ["ALL"] }
             resources:
               requests:
