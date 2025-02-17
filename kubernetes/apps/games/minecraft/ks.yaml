@@ -5,6 +5,7 @@ kind: Kustomization
 metadata:
   name: &app mc-router
 spec:
+  targetNamespace: games
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
