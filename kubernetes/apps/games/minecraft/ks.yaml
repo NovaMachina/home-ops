@@ -11,7 +11,7 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   interval: 30m
-  path: ./kubernetes/apps/games/mc-router
+  path: ./kubernetes/apps/games/minecraft/mc-router
   prune: true
   sourceRef:
     kind: GitRepository
@@ -30,7 +30,7 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  path: ./kubernetes/apps/games/minecraft
+  path: ./kubernetes/apps/games/minecraft/minecraft
   prune: true
   sourceRef:
     kind: GitRepository
