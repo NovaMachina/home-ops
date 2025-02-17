@@ -68,26 +68,26 @@ spec:
     extraEnv:
       TZ: America/Chicago
       ENABLE_AUTOPAUSE: TRUE # Doesn't work in Kubes
-      CURSEFORGE_FILES:
-        - ambientsounds
-        - better-stats
-        - camera-utils
-        - cave-dust
-        - cloth-config
-        - continuity
-        - durability-tooltip
-        - fabric-api
-        - falling-leaves-fabric
-        - forge-config-api-port-fabric
-        - geophilic
-        - irisshaders
-        - mouse-tweaks
-        - noisium
-        - pick-up-notifier
-        - puzzles-lib
-        - sodium
-        - supermartijn642s-config-lib
-        - tcdcommons
+      CURSEFORGE_FILES: |
+        ambientsounds
+        better-stats
+        camera-utils
+        cave-dust
+        cloth-config
+        continuity
+        durability-tooltip
+        fabric-api
+        falling-leaves-fabric
+        forge-config-api-port-fabric
+        geophilic
+        irisshaders
+        mouse-tweaks
+        noisium
+        pick-up-notifier
+        puzzles-lib
+        sodium
+        supermartijn642s-config-lib
+        tcdcommons
     persistence:
       dataDir:
         enabled: true
