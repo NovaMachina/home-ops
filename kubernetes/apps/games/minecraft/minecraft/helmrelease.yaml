@@ -106,7 +106,7 @@ spec:
       gameMode: survival
       pvp: true
       onlineMode: true
-      whitelist: "FlexPheonix,jwilliams21"
+      whitelist: "FlexPheonix,jwilliam21"
       # ops: "Vrozaksen"
       # motd: "Just Vanilla Survival"
       # worldSaveName: survival
