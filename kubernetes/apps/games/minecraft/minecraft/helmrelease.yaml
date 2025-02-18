@@ -75,6 +75,7 @@ spec:
         cave-dust
         cloth-config
         continuity
+        creativecore
         durability-tooltip
         fabric-api
         falling-leaves-fabric
@@ -106,7 +107,7 @@ spec:
       gameMode: survival
       pvp: true
       onlineMode: true
-      whitelist: "FlexPheonix,jwilliam21"
+      whitelist: "FlexPheonix,jwilliam21,l0l00k"
       # ops: "Vrozaksen"
       # motd: "Just Vanilla Survival"
       # worldSaveName: survival
