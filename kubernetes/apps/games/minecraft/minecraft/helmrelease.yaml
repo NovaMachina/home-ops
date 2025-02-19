@@ -67,7 +67,7 @@ spec:
       periodSeconds: 10
     extraEnv:
       TZ: America/Chicago
-      ENABLE_AUTOPAUSE: TRUE # Doesn't work in Kubes
+      ENABLE_AUTOPAUSE: FALSE # Doesn't work in Kubes
       CURSEFORGE_FILES: |
         ambientsounds
         better-stats
@@ -121,7 +121,7 @@ spec:
           existingSecret: minecraft-secret
           secretKey: CF_API_KEY
       rcon:
-        enabled: false
+        enabled: true
       extraPorts:
       - name: metrics
         containerPort: 9225
