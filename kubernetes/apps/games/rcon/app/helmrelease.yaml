@@ -34,6 +34,7 @@ spec:
     rconWeb:
       passwordExistingSecret: rcon-secret
       passwordKey: RWA_PASSWORD
+      rconHost: minecraft-minecraft-rcon.games.svc.cluster.local
     ingress:
       ingressClassName: internal
       enabled: true
