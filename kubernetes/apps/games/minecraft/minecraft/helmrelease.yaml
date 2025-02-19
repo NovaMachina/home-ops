@@ -89,7 +89,7 @@ spec:
         sodium
         supermartijn642s-config-lib
         tcdcommons
-        minecord-for-discord
+        mc2discord
     persistence:
       dataDir:
         enabled: true
