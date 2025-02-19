@@ -7,4 +7,4 @@ resources:
   - ./namespace.yaml
   # Flux-Kustomizations
   - ./minecraft/ks.yaml
-  - /rcon/ks.yaml
+  - ./rcon/ks.yaml
