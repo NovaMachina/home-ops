@@ -122,6 +122,8 @@ spec:
           secretKey: CF_API_KEY
       rcon:
         enabled: true
+        existingSecret: minecraft-secret
+        secretKey: RCON_PASSWORD
       extraPorts:
       - name: metrics
         containerPort: 9225
