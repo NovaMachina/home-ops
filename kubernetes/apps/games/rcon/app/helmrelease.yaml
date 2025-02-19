@@ -33,7 +33,7 @@ spec:
         memory: 1Gi
     rconWeb:
       passwordExistingSecret: rcon-secret
-      passwordKey: RCON_PASSWORD
+      passwordKey: RWA_PASSWORD
     ingress:
       ingressClassName: internal
       enabled: true
