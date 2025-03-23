@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: hetermeter
+  name: heatermeter
 spec:
   ports:
   - name: http
@@ -11,9 +11,9 @@ spec:
 apiVersion: discovery.k8s.io/v1
 kind: EndpointSlice
 metadata:
-  name: hetermeter-endpoint
+  name: heatermeter-endpoint
   labels:
-    kubernetes.io/service-name: hetermeter
+    kubernetes.io/service-name: heatermeter
 addressType: IPv4
 ports:
   - name: ''
@@ -27,19 +27,19 @@ endpoints:
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: hetermeter
+  name: heatermeter
   annotations:
     nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
 spec:
-  ingressClassName: "internal"
+  ingressClassName: "external"
   rules:
-  - host: "hetermeter.${SECRET_DOMAIN}"
+  - host: "heatermeter.${SECRET_DOMAIN}"
     http:
       paths:
       - pathType: Prefix
         path: "/"
         backend:
           service:
-            name: hetermeter
+            name: heatermeter
             port:
               number: 80
