@@ -1,0 +1,45 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: hetermeter
+spec:
+  ports:
+  - name: http
+    port: 443
+    targetPort: 80
+---
+apiVersion: discovery.k8s.io/v1
+kind: EndpointSlice
+metadata:
+  name: hetermeter-endpoint
+  labels:
+    kubernetes.io/service-name: hetermeter
+addressType: IPv4
+ports:
+  - name: ''
+    appProtocol: https
+    protocol: TCP
+    port: 80
+endpoints:
+  - addresses:
+      - "10.0.0.59"
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: hetermeter
+  annotations:
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+spec:
+  ingressClassName: "internal"
+  rules:
+  - host: "hetermeter.${SECRET_DOMAIN}"
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: hetermeter
+            port:
+              number: 80
