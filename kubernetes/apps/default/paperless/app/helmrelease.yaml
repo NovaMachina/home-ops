@@ -44,7 +44,7 @@ spec:
           app:
             image:
               repository: ghcr.io/paperless-ngx/paperless-ngx
-              tag: 2.14.6@sha256:471a276d09a13b6933f4435fa7e57d9236eb255246d9cdd8e81da0d5a873a18a
+              tag: 2.15.3@sha256:39b337e73c978238f0b529baf42f1b59b65d17eed35cd61bc1ccbbf779b5d58b
             envFrom:
               - configMapRef:
                   name: paperless-configmap
