@@ -1,0 +1,46 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: heatermeter
+spec:
+  ports:
+  - name: http
+    port: 80
+    targetPort: 80
+---
+apiVersion: discovery.k8s.io/v1
+kind: EndpointSlice
+metadata:
+  name: heatermeter-endpoint
+  labels:
+    kubernetes.io/service-name: heatermeter
+addressType: IPv4
+ports:
+  - name: ''
+    appProtocol: https
+    protocol: TCP
+    port: 80
+endpoints:
+  - addresses:
+      - "10.0.0.59"
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: heatermeter
+  annotations:
+    external-dns.alpha.kubernetes.io/target: "external.${SECRET_DOMAIN}"
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+spec:
+  ingressClassName: "external"
+  rules:
+  - host: "heatermeter.${SECRET_DOMAIN}"
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: heatermeter
+            port:
+              number: 80

@@ -1,0 +1,152 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/common-3.1.0/charts/library/common/values.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app unifi-controller
+spec:
+  interval: 15m
+  chart:
+    spec:
+      chart: app-template
+      version: 3.6.1
+      interval: 30m
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    remediation:
+      retries: 3
+
+  values:
+    global:
+      fullnameOverride: *app
+
+    controllers:
+      unifi-controller:
+        enabled: true
+        annotations:
+          reloader.stakater.com/auto: "true"
+
+        replicas: 1
+
+        # statefulset:
+        #   volumeClaimTemplates:
+        #     - name: config
+        #       accessMode: ReadWriteOnce
+        #       size: 2Gi
+        #       storageClass: ceph-block
+        #       globalMounts:
+        #         - path: /usr/lib/unifi/data
+
+        pod:
+          securityContext:
+            runAsUser: &context 999
+            runAsGroup: *context
+            fsGroup: *context
+            fsGroupChangePolicy: "OnRootMismatch"
+
+        containers:
+          app:
+            image:
+              repository: ghcr.io/goofball222/unifi
+              tag: 9.0.108-ubuntu
+              pullPolicy: IfNotPresent
+            env:
+              - name: RUNAS_UID0
+                value: "false"
+              - name: PUID
+                value: "999"
+              - name: PGID
+                value: "999"
+              - name: JVM_MAX_HEAP_SIZE
+                value: "1024M"
+              - name: DB_MONGO_LOCAL
+                value: "false"
+              - name: MONGO_PASS
+                valueFrom:
+                  secretKeyRef:
+                    name: unifi-db-unifi-unifi
+                    key: password
+              - name: MONGO_USER
+                value: unifi
+              - name: UNIFI_DB_NAME
+                value: unifi
+              - name: TZ
+                value: America/Chicago
+              - name: PGID
+                value: "65534"
+              - name: PUID
+                value: "65534"
+              - name: RUN_CHOWN
+                value: "false"
+              - name: DB_MONGO_URI
+                value: "mongodb://$(MONGO_USER):$(MONGO_PASS)@unifi-db-0.unifi-db-svc:27017,unifi-db-1.unifi-db-svc:27017,unifi-db-2.unifi-db-svc:27017/unifi?replicaSet=unifi-db&ssl=false"
+              - name: STATDB_MONGO_URI
+                value: "mongodb://$(MONGO_USER):$(MONGO_PASS)@unifi-db-0.unifi-db-svc:27017,unifi-db-1.unifi-db-svc:27017,unifi-db-2.unifi-db-svc:27017/unifi_stat?replicaSet=unifi-db&ssl=false"
+
+            resources:
+              requests:
+                cpu: 12m
+                memory: 764Mi
+              limits:
+                memory: 789Mi
+
+    service:
+      web:
+        controller: unifi-controller
+        type: NodePort
+        externalTrafficPolicy: Cluster
+        ports:
+          http:
+            port: 8443
+          portal:
+            port: 8843
+      app:
+        controller: unifi-controller
+        type: LoadBalancer
+        annotations:
+          io.cilium/lb-ipam-ips: 10.0.40.53
+          external-dns.alpha.kubernetes.io/hostname: "unifi-svc.${SECRET_DOMAIN}"
+        externalTrafficPolicy: Cluster
+        ports:
+          controller:
+            enabled: true
+            port: 8080
+            protocol: TCP
+          stun:
+            port: 3478
+            protocol: UDP
+
+    ingress:
+      internal:
+        annotations:
+          nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
+          external-dns.alpha.kubernetes.io/target: "external.${SECRET_DOMAIN}"
+        className: internal
+        enabled: true
+        hosts:
+          - host: "unifi.${SECRET_DOMAIN}"
+            paths:
+              - path: /
+                pathType: Prefix
+                service:
+                  identifier: web
+                  port: http
+          - host: "portal.${SECRET_DOMAIN}"
+            paths:
+              - path: /
+                pathType: Prefix
+                service:
+                  identifier: web
+                  port: portal
+    persistence:
+      config:
+        existingClaim: unifi
+        globalMounts:
+          - path: /usr/lib/unifi/data

@@ -1,0 +1,35 @@
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: mongodump
+spec:
+  schedule: '@daily'
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          volumes:
+          - name: unifi-db-backup
+            persistentVolumeClaim:
+              claimName: unifi-db-backup
+          restartPolicy: Never
+          containers:
+            - name: mongodb
+              image: mongo
+              command : ["/bin/sh", "-c"]
+              args: ["find /usr/share/mongodump -maxdepth 1 -mtime +7 -type f -d && mongodump --uri \"mongodb://unifi-db-0.unifi-db-svc:27017,unifi-db-1.unifi-db-svc:27017,unifi-db-2.unifi-db-svc:27017/?replicaSet=unifi-db\" -u $(MONGODB_USERNAME) -p $(MONGODB_PASSWORD) --authenticationDatabase unifi -o /usr/share/mongodump/$(date +\"%d%m%H\")"]
+              env:
+              - name: MONGODB_PASSWORD
+                valueFrom:
+                  secretKeyRef:
+                    name: unifi-db-unifi-unifi
+                    key: password
+              - name: MONGODB_USERNAME
+                valueFrom:
+                  secretKeyRef:
+                    name: unifi-db-unifi-unifi
+                    key: username
+              volumeMounts:
+              - mountPath: "/usr/share/mongodump/"
+                name: unifi-db-backup

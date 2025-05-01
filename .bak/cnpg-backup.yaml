@@ -1,0 +1,7 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: Backup
+metadata:
+  name: postgres-vector-manual
+spec:
+  cluster:
+    name: postgres16-vector
