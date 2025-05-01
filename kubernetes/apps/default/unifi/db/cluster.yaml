@@ -3,7 +3,7 @@ kind: MongoDBCommunity
 metadata:
   name: unifi-db
 spec:
-  members: 3
+  members: 0
   type: ReplicaSet
   version: "7.0.15"
   security:
