@@ -1,0 +1,195 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/budimanjojo/talhelper/master/pkg/config/schemas/talconfig.json
+---
+clusterName: kubernetes
+
+talosVersion: "${talosVersion}"
+kubernetesVersion: "${kubernetesVersion}"
+
+endpoint: https://10.0.40.10:6443
+additionalApiServerCertSans: &sans
+  - "127.0.0.1"
+  - "10.0.40.10"
+additionalMachineCertSans: *sans
+
+clusterPodNets: ["10.69.0.0/16"]
+clusterSvcNets: ["10.96.0.0/16"]
+
+# Disable built-in CNI to use Cilium
+cniConfig:
+  name: none
+
+nodes:
+  - hostname: "talos-controller-01"
+    ipAddress: "10.0.40.100"
+    installDisk: "/dev/sda"
+    machineSpec:
+      secureboot: false
+    talosImageURL: factory.talos.dev/installer/ce4c980550dd2ab1b17bbf2b08801c7eb59418eafe8f279833297925d67c7515
+    controlPlane: true
+    networkInterfaces:
+      - deviceSelector:
+          hardwareAddr: "bc:24:11:62:16:2f"
+        dhcp: false
+        addresses:
+          - "10.0.40.100/24"
+        routes:
+          - network: "0.0.0.0/0"
+            gateway: "10.0.40.1"
+        mtu: 1500
+        vip:
+          ip: "10.0.40.10"
+  - hostname: "talos-controller-02"
+    ipAddress: "10.0.40.101"
+    installDisk: "/dev/sda"
+    machineSpec:
+      secureboot: false
+    talosImageURL: factory.talos.dev/installer/ce4c980550dd2ab1b17bbf2b08801c7eb59418eafe8f279833297925d67c7515
+    controlPlane: true
+    networkInterfaces:
+      - deviceSelector:
+          hardwareAddr: "bc:24:11:45:12:3a"
+        dhcp: false
+        addresses:
+          - "10.0.40.101/24"
+        routes:
+          - network: "0.0.0.0/0"
+            gateway: "10.0.40.1"
+        mtu: 1500
+        vip:
+          ip: "10.0.40.10"
+  - hostname: "talos-controller-03"
+    ipAddress: "10.0.40.102"
+    installDisk: "/dev/sda"
+    machineSpec:
+      secureboot: false
+    talosImageURL: factory.talos.dev/installer/ce4c980550dd2ab1b17bbf2b08801c7eb59418eafe8f279833297925d67c7515
+    controlPlane: true
+    networkInterfaces:
+      - deviceSelector:
+          hardwareAddr: "bc:24:11:03:13:11"
+        dhcp: false
+        addresses:
+          - "10.0.40.102/24"
+        routes:
+          - network: "0.0.0.0/0"
+            gateway: "10.0.40.1"
+        mtu: 1500
+        vip:
+          ip: "10.0.40.10"
+  - hostname: "talos-worker-01"
+    ipAddress: "10.0.40.103"
+    installDisk: "/dev/sda"
+    machineSpec:
+      secureboot: false
+    talosImageURL: factory.talos.dev/installer/ce4c980550dd2ab1b17bbf2b08801c7eb59418eafe8f279833297925d67c7515
+    controlPlane: false
+    networkInterfaces:
+      - deviceSelector:
+          hardwareAddr: "bc:24:11:1a:aa:95"
+        dhcp: false
+        addresses:
+          - "10.0.40.103/24"
+        routes:
+          - network: "0.0.0.0/0"
+            gateway: "10.0.40.1"
+        mtu: 1500
+  - hostname: "talos-worker-02"
+    ipAddress: "10.0.40.104"
+    installDisk: "/dev/sda"
+    machineSpec:
+      secureboot: false
+    talosImageURL: factory.talos.dev/installer/ce4c980550dd2ab1b17bbf2b08801c7eb59418eafe8f279833297925d67c7515
+    controlPlane: false
+    networkInterfaces:
+      - deviceSelector:
+          hardwareAddr: "bc:24:11:db:1b:82"
+        dhcp: false
+        addresses:
+          - "10.0.40.104/24"
+        routes:
+          - network: "0.0.0.0/0"
+            gateway: "10.0.40.1"
+        mtu: 1500
+  - hostname: "talos-worker-03"
+    ipAddress: "10.0.40.105"
+    installDisk: "/dev/sda"
+    machineSpec:
+      secureboot: false
+    talosImageURL: factory.talos.dev/installer/ce4c980550dd2ab1b17bbf2b08801c7eb59418eafe8f279833297925d67c7515
+    controlPlane: false
+    networkInterfaces:
+      - deviceSelector:
+          hardwareAddr: "bc:24:11:db:e5:53"
+        dhcp: false
+        addresses:
+          - "10.0.40.105/24"
+        routes:
+          - network: "0.0.0.0/0"
+            gateway: "10.0.40.1"
+        mtu: 1500
+  - hostname: "talos-storage-01"
+    ipAddress: "10.0.40.106"
+    installDisk: "/dev/sda"
+    machineSpec:
+      secureboot: false
+    talosImageURL: factory.talos.dev/installer/ce4c980550dd2ab1b17bbf2b08801c7eb59418eafe8f279833297925d67c7515
+    controlPlane: false
+    networkInterfaces:
+      - deviceSelector:
+          hardwareAddr: "bc:24:11:22:12:f2"
+        dhcp: false
+        addresses:
+          - "10.0.40.106/24"
+        routes:
+          - network: "0.0.0.0/0"
+            gateway: "10.0.40.1"
+        mtu: 1500
+  - hostname: "talos-storage-02"
+    ipAddress: "10.0.40.107"
+    installDisk: "/dev/sda"
+    machineSpec:
+      secureboot: false
+    talosImageURL: factory.talos.dev/installer/ce4c980550dd2ab1b17bbf2b08801c7eb59418eafe8f279833297925d67c7515
+    controlPlane: false
+    networkInterfaces:
+      - deviceSelector:
+          hardwareAddr: "bc:24:11:20:ce:04"
+        dhcp: false
+        addresses:
+          - "10.0.40.107/24"
+        routes:
+          - network: "0.0.0.0/0"
+            gateway: "10.0.40.1"
+        mtu: 1500
+  - hostname: "talos-storage-03"
+    ipAddress: "10.0.40.108"
+    installDisk: "/dev/sda"
+    machineSpec:
+      secureboot: false
+    talosImageURL: factory.talos.dev/installer/ce4c980550dd2ab1b17bbf2b08801c7eb59418eafe8f279833297925d67c7515
+    controlPlane: false
+    networkInterfaces:
+      - deviceSelector:
+          hardwareAddr: "bc:24:11:0f:c0:37"
+        dhcp: false
+        addresses:
+          - "10.0.40.108/24"
+        routes:
+          - network: "0.0.0.0/0"
+            gateway: "10.0.40.1"
+        mtu: 1500
+
+# Global patches
+patches:
+  - "@./patches/global/machine-files.yaml"
+  - "@./patches/global/machine-kubelet.yaml"
+  - "@./patches/global/machine-network.yaml"
+  - "@./patches/global/machine-sysctls.yaml"
+  - "@./patches/global/machine-time.yaml"
+
+# Controller patches
+controlPlane:
+  patches:
+    - "@./patches/controller/admission-controller-patch.yaml"
+    - "@./patches/controller/cluster.yaml"
+
