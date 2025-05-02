@@ -35,6 +35,10 @@ spec:
   timeout: 5m
   path: "./kubernetes/apps/rook-ceph/rook-ceph/cluster"
   prune: false # Never delete this
+  postBuild:
+    substituteFrom:
+      - name: cluster-secrets
+        kind: Secret
   sourceRef:
     kind: GitRepository
     name: flux-system
