@@ -6,7 +6,7 @@ namespace: monitoring
 resources:
   - ./alertmanager/ks.yaml
   - ./grafana/ks.yaml
-  # - ./kube-state-metrics/ks.yaml
+  - ./kube-state-metrics/ks.yaml
   - ./kube-prometheus-stack/ks.yaml
   # - ./loki/ks.yaml
   # - ./node-exporter/ks.yaml
