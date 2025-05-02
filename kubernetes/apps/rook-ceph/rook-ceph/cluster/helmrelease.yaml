@@ -22,7 +22,7 @@ spec:
       dashboard:
         ingressClassName: "internal"
         host:
-          name: "rook-main.${SECRET_DOMAIN}"
+          name: rook-main.${SECRET_DOMAIN}
           path: "/"
     toolbox:
       enabled: false
