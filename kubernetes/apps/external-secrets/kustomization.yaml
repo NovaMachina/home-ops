@@ -8,4 +8,4 @@ resources:
   - ./onepassword-connect/ks.yaml
 components:
   - ../../components/common
-  - ../../components/common/alerts
+  # - ../../components/common/alerts

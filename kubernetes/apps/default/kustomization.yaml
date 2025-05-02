@@ -5,6 +5,6 @@ kind: Kustomization
 namespace: default
 components:
   - ../../components/common
-  - ../../components/common/repos/app-template
+  - ../../components/common/app-template
 resources:
   - ./echo/ks.yaml
