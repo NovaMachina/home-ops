@@ -4,5 +4,5 @@ apiVersion: kustomize.config.k8s.io/v1alpha1
 kind: Component
 resources:
   - ./namespace.yaml
-  - ./custer-secrets.sops.yaml
+  - ./cluster-secrets.sops.yaml
   - ./sops-age.sops.yaml
