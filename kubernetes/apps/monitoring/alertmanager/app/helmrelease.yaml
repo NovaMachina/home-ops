@@ -72,15 +72,15 @@ spec:
         globalMounts:
           - path: /etc/secrets
 
-    route:
+    ingress:
       app:
-        hostnames:
-          - alertmanager.jacob-williams.me
-        parentRefs:
-          - name: internal
-            namespace: kube-system
-            sectionName: https
-        rules:
-          - backendRefs:
-              - name: alertmanager
-                port: *port
+        annotations:
+          external-dns.alpha.kubernetes.io/target: "internal.${SECRET_DOMAIN}"
+        className: internal
+        hosts:
+          - host: "alertmanager.${SECRET_DOMAIN}"
+            paths:
+              - path: /
+                service:
+                  identifier: app
+                  port: http

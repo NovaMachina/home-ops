@@ -103,6 +103,13 @@ spec:
     ### Prometheus instance values
     ###
     prometheus:
+      ingress:
+        enabled: true
+        annotations:
+          external-dns.alpha.kubernetes.io/target: "internal.${SECRET_DOMAIN}"
+        ingressClassName: internal
+        hosts: ["prometheus.${SECRET_DOMAIN}"]
+        pathType: Prefix
       prometheusSpec:
         alertingEndpoints:
           - namespace: monitoring
@@ -137,13 +144,3 @@ spec:
                 requests:
                   storage: 55Gi
         walCompression: true
-
-      route:
-        main:
-          enabled: true
-          hostnames:
-            - prometheus.jacob-williams.me
-          parentRefs:
-            - name: internal
-              namespace: kube-system
-              sectionName: https
