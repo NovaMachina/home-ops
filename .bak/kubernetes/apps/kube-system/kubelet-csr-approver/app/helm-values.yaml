@@ -1,3 +1,0 @@
----
-providerRegex: ^(talos-controller-01|talos-controller-02|talos-controller-03|talos-worker-01|talos-worker-02|talos-worker-03|talos-storage-01|talos-storage-02|talos-storage-03)$
-bypassDnsResolution: true
