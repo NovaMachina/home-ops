@@ -6,4 +6,4 @@ namespace: database
 components:
   - ../../components/common
 resources:
-  - ./echo/ks.yaml
+  - ./cloudnative-pg/ks.yaml
