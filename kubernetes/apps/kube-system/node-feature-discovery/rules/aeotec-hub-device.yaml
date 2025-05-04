@@ -7,9 +7,9 @@ metadata:
 spec:
   rules:
     - # NESDR Nano 2 Plus
-      name: nesdr.rtlamr
+      name: aeotec.zwave
       labels:
-        aeotec.feature.node.kubernetes.io/hub: "true"
+        aeotec.feature.node.kubernetes.io/zwave: "true"
       matchFeatures:
         - feature: usb.device
           matchExpressions:

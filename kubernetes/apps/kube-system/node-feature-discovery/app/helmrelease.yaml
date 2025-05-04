@@ -24,5 +24,12 @@ spec:
       config:
         core:
           sources: ["pci", "system", "usb"]
+      tolerations:
+        - key: "node-role.kubernetes.io/master"
+          operator: "Exists"
+        - effect: "NoExecute"
+          operator: "Exists"
+        - effect: "NoSchedule"
+          operator: "Exists"
     prometheus:
       enable: true
