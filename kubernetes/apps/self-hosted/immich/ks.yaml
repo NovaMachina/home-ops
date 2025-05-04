@@ -16,7 +16,7 @@ spec:
       namespace: database
     - name: onepassword-store
       namespace: external-secrets
-  path: ./kubernetes/apps/default/immich/app
+  path: ./kubernetes/apps/self-hosted/immich/app
   prune: true
   sourceRef:
     kind: GitRepository
