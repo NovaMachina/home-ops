@@ -7,5 +7,3 @@ resources:
   - ./machine-learning
   - ./microservices
   - ./server
-components:
-  - ../../components/repos/app-template
