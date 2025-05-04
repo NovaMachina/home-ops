@@ -25,7 +25,7 @@ spec:
           name: "rook.${SECRET_DOMAIN}"
           path: "/"
     toolbox:
-      enabled: false
+      enabled: true
     cephClusterSpec:
       cephConfig:
         global:
