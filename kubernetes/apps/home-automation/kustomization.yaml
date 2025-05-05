@@ -6,5 +6,5 @@ namespace: home-automation
 components:
   - ../../components/common
   - ../../components/repos/app-template
-resources: []
-  # - ./zwave/ks.yaml
+resources:
+  - ./zwave/ks.yaml
