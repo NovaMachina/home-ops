@@ -18,6 +18,9 @@ spec:
       enableCephfsDriver: true
       enableCephfsSnapshotter: false
       enableLiveness: true
+      snapshotter:
+        repository: registry.k8s.io/sig-storage/csi-snapshotter
+        tag: v8.2.0
       serviceMonitor:
         enabled: true
     enableDiscoveryDaemon: true
