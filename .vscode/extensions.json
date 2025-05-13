@@ -3,6 +3,11 @@
     "blueglassblock.better-json5",
     "irongeek.vscode-env",
     "redhat.vscode-yaml",
-    "signageos.signageos-vscode-sops"
+    "signageos.signageos-vscode-sops",
+    "ms-kubernetes-tools.vscode-kubernetes-tools",
+    "ms-vscode-remote.remote-containers",
+    "tamasfe.even-better-toml",
+    "redhat.vscode-yaml",
+    "samuelcolvin.jinjahtml",
   ]
 }

@@ -91,6 +91,7 @@ spec:
       library:
         type: nfs
         server: ${SECRET_NFS_SERVER}
-        path: /mnt/pool0/Media/photos
+        path: /mnt/pool0/Media
         globalMounts:
           - path: /usr/src/app/upload
+            subPath: photos

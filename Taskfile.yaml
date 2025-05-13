@@ -12,15 +12,19 @@ vars:
   TALOS_DIR: '{{.ROOT_DIR}}/talos'
   PRIVATE_DIR: '{{.ROOT_DIR}}/.private'
   TALOSCONFIG: '{{.ROOT_DIR}}/talos/clusterconfig/talosconfig'
+  MINIJINJA_CONFIG_FILE: "{{.ROOT_DIR}}/.minijinja.toml"
 
 env:
   KUBECONFIG: '{{.ROOT_DIR}}/kubeconfig'
   SOPS_AGE_KEY_FILE: '{{.ROOT_DIR}}/age.key'
   TALOSCONFIG: '{{.TALOSCONFIG}}'
+  MINIJINJA_CONFIG_FILE: "{{.MINIJINJA_CONFIG_FILE}}"
 
 includes:
   bootstrap: .taskfiles/bootstrap
+  kubernetes: .taskfiles/kubernetes
   talos: .taskfiles/talos
+  volsync: .taskfiles/volsync
 
 tasks:
 
