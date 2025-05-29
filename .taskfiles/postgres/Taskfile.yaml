@@ -1,0 +1,18 @@
+---
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+version: "3"
+
+vars:
+  POSTGRES_TASK_RESOURCES_DIR: "{{.ROOT_DIR}}/.taskfiles/postgres/resources"
+
+tasks:
+  backup:
+    desc: Perform manual backup of postgres db
+    preconditions:
+      - which kubectl minijinja-cli
+      - test -f "{{.POSTGRES_TASK_RESOURCES_DIR}}/backup.yaml.j2"
+    cmds:
+      - minijinja-cli {{.POSTGRES_TASK_RESOURCES_DIR}}/backup.yaml.j2 | kubectl apply --server-side --filename -
+      - until kubectl --namespace database get backup/postgres-manual &>/dev/null; do sleep 5; done
+      - kubectl --namespace database wait backup/postgres-manual --for=jsonpath='{.status.phase}'=completed --timeout=5m
+      - kubectl --namespace database delete backup/postgres-manual
