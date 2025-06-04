@@ -66,6 +66,10 @@ spec:
     persistence:
       config:
         existingClaim: autobrr
+        advancedMounts:
+          autobrr:
+            app:
+              - path: /config
       tmpfs:
         type: emptyDir
         advancedMounts:
