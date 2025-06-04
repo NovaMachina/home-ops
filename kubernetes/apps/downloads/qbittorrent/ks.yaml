@@ -25,6 +25,9 @@ spec:
     - name: volsync
       namespace: volsync-system
   postBuild:
+    substituteFrom:
+      - name: cluster-secrets
+        kind: Secret
     substitute:
       APP: *appname
       VOLSYNC_CAPACITY: 2Gi
