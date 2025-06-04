@@ -22,8 +22,6 @@ spec:
           securityContext:
             fsGroup: 2000
             fsGroupChangePolicy: "OnRootMismatch"
-            supplementalGroups:
-              - 65542 # gladius:external-services
 
         initContainers:
           coredns:
