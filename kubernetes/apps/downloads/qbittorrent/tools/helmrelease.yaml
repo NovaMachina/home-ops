@@ -117,13 +117,13 @@ spec:
               - --process-seeding
 
     persistence:
-      config-file:
-        type: secret
-        name: qbtools-secret
-        globalMounts:
-          - path: /config/config.yaml
-            subPath: config.yaml
-            readOnly: true
+      # config-file:
+      #   type: secret
+      #   name: qbtools-secret
+      #   globalMounts:
+      #     - path: /config/config.yaml
+      #       subPath: config.yaml
+      #       readOnly: true
       downloads:
         type: nfs
         server: ${SECRET_NFS_SERVER}
