@@ -88,9 +88,9 @@ spec:
       media:
         type: nfs
         server: ${SECRET_NFS_SERVER}
-        path: /mnt/pool0/Media/downloads
+        path: /mnt/pool0/Media
         globalMounts:
-          - path: /data/nas-media
+          - path: /data/nas-media/media/tv
             subPath: media/tv
 
     ingress:
