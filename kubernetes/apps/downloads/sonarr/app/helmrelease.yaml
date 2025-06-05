@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: autobrr
+  name: sonarr
 spec:
   interval: 30m
   chartRef:
@@ -14,9 +14,10 @@ spec:
       namespace: rook-ceph
   values:
     controllers:
-      autobrr:
+      sonarr:
         annotations:
-          secret.reloader.stakater.com/reload: autobrr-secret
+          reloader.stakater.com/auto: "true"
+
         pod:
           securityContext:
             runAsUser: 2000
@@ -24,39 +25,45 @@ spec:
             runAsNonRoot: true
             fsGroup: 2000
             fsGroupChangePolicy: "OnRootMismatch"
+
         containers:
           app:
             image:
-              repository: ghcr.io/autobrr/autobrr
-              tag: v1.62.0
+              repository: ghcr.io/home-operations/sonarr
+              tag: 4.0.14.2938
             env:
-              AUTOBRR__CHECK_FOR_UPDATES: "false"
-              AUTOBRR__HOST: 0.0.0.0
-              AUTOBRR__PORT: &port 7474
-              AUTOBRR__LOG_LEVEL: DEBUG
-            envFrom:
-              - secretRef:
-                  name: autobrr-secret
+              SONARR__APP__INSTANCENAME: Sonarr
+              SONARR__AUTH__APIKEY:
+                valueFrom:
+                  secretKeyRef:
+                    name: sonarr-secret
+                    key: api_key
+              SONARR__AUTH__METHOD: External
+              SONARR__AUTH__REQUIRED: DisabledForLocalAddresses
+              SONARR__LOG__DBENABLED: "False"
+              SONARR__LOG__LEVEL: info
+              SONARR__SERVER__PORT: &port 8989
+              SONARR__UPDATE__BRANCH: develop
             probes:
-              liveness:
+              liveness: &probes
                 enabled: true
-              readiness:
-                enabled: true
-              startup:
-                enabled: true
+                custom: true
                 spec:
-                  failureThreshold: 30
-                  periodSeconds: 5
+                  httpGet:
+                    path: /ping
+                    port: *port
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness: *probes
             resources:
               requests:
-                cpu: 10m
-                memory: 128Mi
+                cpu: 20m
+                memory: 384Mi
               limits:
-                memory: 256Mi
+                memory: 2Gi
             securityContext:
-              runAsUser: 2000
-              runAsGroup: 2000
-              runAsNonRoot: true
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
               capabilities:
@@ -65,28 +72,25 @@ spec:
 
     service:
       app:
-        controller: autobrr
+        controller: sonarr
         ports:
           http:
             port: *port
 
     persistence:
       config:
-        enabled: true
-        existingClaim: autobrr
-        advancedMounts:
-          autobrr:
-            app:
-              - path: /config
+        existingClaim: sonarr
       tmpfs:
         type: emptyDir
-        advancedMounts:
-          autobrr:
-            app:
-              - path: /config/log
-                subPath: log
-              - path: /tmp
-                subPath: tmp
+        globalMounts:
+          - path: /tmp
+            subPath: tmp
+      media:
+        type: nfs
+        server: ${SECRET_NFS_SERVER}
+        path: /mnt/pool0/Media
+        globalMounts:
+          - path: /data/nas-media
 
     ingress:
       app:
@@ -94,7 +98,7 @@ spec:
           external-dns.alpha.kubernetes.io/target: "internal.${SECRET_DOMAIN}"
         className: internal
         hosts:
-          - host: "autobrr.${SECRET_DOMAIN}"
+          - host: "sonarr.${SECRET_DOMAIN}"
             paths:
               - path: /
                 pathType: Prefix
