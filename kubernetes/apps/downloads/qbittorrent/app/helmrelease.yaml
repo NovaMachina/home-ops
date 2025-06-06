@@ -41,6 +41,7 @@ spec:
               VPN_PORT_FORWARDING: 'on'
               VPN_INTERFACE: wg0
               UPDATER_PERIOD: 24h
+              WIREGUARD_ENDPOINT_PORT: 51820
             envFrom:
               - secretRef:
                   name: wireguard-secret
