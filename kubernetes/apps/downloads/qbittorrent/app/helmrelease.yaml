@@ -29,6 +29,7 @@ spec:
               repository: ghcr.io/qdm12/gluetun
               tag: v3.39.1
             env:
+              VPN_SERVICE_PROVIDER: custom
               DOT: 'off'
               DNS_ADDRESS: 10.96.0.10 # coredns is either pihole, dnsmasq, or cloudflare over tls, so it's fine to use
               HTTP_CONTROL_SERVER_AUTH_CONFIG_FILEPATH: &gluetunAuthPath /gluetun/auth.toml
@@ -39,7 +40,7 @@ spec:
               VPN_TYPE: wireguard
               VPN_PORT_FORWARDING: 'on'
               PORT_FORWARD_ONLY: 'on'
-              VPN_INTERFACE: tun0
+              VPN_INTERFACE: wg0
               SERVER_COUNTRIES: 'United States'
               UPDATER_PERIOD: 24h
             envFrom:
