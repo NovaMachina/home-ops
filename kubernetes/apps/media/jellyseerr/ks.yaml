@@ -13,7 +13,7 @@ spec:
     - name: rook-ceph-cluster
       namespace: rook-ceph
   interval: 1h
-  path: ./kubernetes/apps/default/jellyseerr/app
+  path: ./kubernetes/apps/media/jellyseerr/app
   postBuild:
     substituteFrom:
       - name: cluster-secrets
