@@ -31,7 +31,7 @@
         description: Torrent Automation
         widget:
             type: autobrr
-            url: http://autobrr.downloads.svc.cluster.local.:9696
+            url: http://autobrr.downloads.svc.cluster.local.:7474
             key: {{HOMEPAGE_VAR_AUTOBRR_TOKEN}}
 - Calendar:
     - Agenda:
