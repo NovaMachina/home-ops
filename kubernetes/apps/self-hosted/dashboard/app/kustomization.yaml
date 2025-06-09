@@ -10,12 +10,9 @@ configMapGenerator:
   - name: homepage-config
     files:
       # - config/bookmarks.yaml
-      - config/kubernetes.yaml
-      - config/services.yaml
+      - kubernetes.yaml=./config/kubernetes.yaml
+      - services.yaml=./config/services.yaml
       # - config/settings.yaml
       # - config/widgets.yaml
 generatorOptions:
-  annotations:
-    kustomize.toolkit.fluxcd.io/substitute: disabled
-configurations:
-  - kustomizeconfig.yaml
+  disableNameSuffixHash: true
