@@ -46,3 +46,13 @@
             - type: radarr # active widget type that is currently enabled on homepage - possible values: radarr, sonarr>
               service_group: Media # group name where widget exists
               service_name: Radarr # service name for that widget
+- Network:
+    - Cloudflare:
+        href: https://cloudflare.${SECRET_DOMAIN}
+        icon: cloudflare.png
+        description: Cloudflare
+        widget:
+            type: cloudflare
+            accountid: {{HOMEPAGE_VAR_CLOUDFLARE_ACCOUNT_ID}}
+            tunnelid: {{HOMEPAGE_VAR_CLOUDFLARE_TUNNEL_ID}}
+            key: {{HOMEPAGE_VAR_CLOUDFLARE_TOKEN}}
