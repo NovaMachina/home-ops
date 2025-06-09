@@ -48,11 +48,10 @@
               service_name: Radarr # service name for that widget
 - Network:
     - Cloudflare:
-        href: https://cloudflare.${SECRET_DOMAIN}
         icon: cloudflare.png
         description: Cloudflare
         widget:
-            type: cloudflare
+            type: cloudflared
             accountid: {{HOMEPAGE_VAR_CLOUDFLARE_ACCOUNT_ID}}
             tunnelid: {{HOMEPAGE_VAR_CLOUDFLARE_TUNNEL_ID}}
             key: {{HOMEPAGE_VAR_CLOUDFLARE_TOKEN}}
