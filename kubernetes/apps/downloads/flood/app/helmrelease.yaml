@@ -1,0 +1,74 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app flood
+spec:
+  interval: 30m
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+  maxHistory: 2
+  install:
+    createNamespace: true
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      strategy: rollback
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    defaultPodOptions:
+      securityContext:
+        runAsUser: 2000
+        runAsGroup: 2000
+        fsGroup: 2000
+        fsGroupChangePolicy: OnRootMismatch
+    controllers:
+      flood:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          app:
+            image:
+              repository: jesec/flood
+              tag: master@sha256:bd9c14e86520bdf0443039fa161b152bd2c09243d6fc8cd44b3352e12629836a
+            env:
+              FLOOD_OPTION_RUNDIR: /data
+              FLOOD_OPTION_AUTH: none
+              FLOOD_OPTION_QBURL: http://qbittorrent-app.downloads.svc.cluster.local.:8080
+            envFrom:
+              - secretRef:
+                  name: flood-secret
+            resources:
+              requests:
+                memory: 250Mi
+                cpu: 15m
+    service:
+      app:
+        controller: *app
+        ports:
+          http:
+            port: &port 3000
+    ingress:
+      app:
+        annotations:
+          external-dns.alpha.kubernetes.io/target: "internal.${SECRET_DOMAIN}"
+        className: internal
+        hosts:
+          - host: &host "flood.${SECRET_EXTERNAL_DOMAIN}"
+            paths:
+              - path: /
+                service:
+                  identifier: app
+                  port: *port
+    persistence:
+      config:
+        enabled: true
+        existingClaim: *app
+        globalMounts:
+          - path: /data
