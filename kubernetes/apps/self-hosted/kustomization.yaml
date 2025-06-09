@@ -8,3 +8,4 @@ components:
   - ../../components/repos/app-template
 resources:
   - ./immich/ks.yaml
+  - ./dashboard/ks.yaml
