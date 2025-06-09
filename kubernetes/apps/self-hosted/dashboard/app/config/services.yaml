@@ -25,6 +25,14 @@
             type: radarr
             url: http://radarr.downloads.svc.cluster.local.:7878
             key: {{HOMEPAGE_VAR_RADARR_TOKEN}}
+    - Autobrr:
+        href: https://autobrr.${SECRET_DOMAIN}
+        icon: autobrr.png
+        description: Torrent Automation
+        widget:
+            type: autobrr
+            url: http://autobrr.torrents.svc.cluster.local.:9696
+            key: {{HOMEPAGE_VAR_AUTOBRR_TOKEN}}
 - Calendar:
     - Agenda:
         widget:
