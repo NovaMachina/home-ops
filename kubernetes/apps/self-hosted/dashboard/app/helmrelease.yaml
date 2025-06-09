@@ -34,9 +34,9 @@ spec:
               tag: v0.10.9@sha256:b6d732817572f9af99ec168b10641b8f7820f30cfa5a5cc5c68f1e291804bec8
             env:
               TZ: America/Chicago
-            envFrom:
-              - secretRef:
-                  name: homepage-secret
+            # envFrom:
+            #   - secretRef:
+            #       name: homepage-secret
             probes:
               liveness:
                 enabled: true
