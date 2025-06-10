@@ -41,6 +41,7 @@ spec:
               FLOOD_OPTION_RUNDIR: /data
               FLOOD_OPTION_AUTH: none
               FLOOD_OPTION_QBURL: http://qbittorrent-app.downloads.svc.cluster.local:8080
+              FLOOD_OPTION_QBUSER: admin
             # envFrom:
             #   - secretRef:
             #       name: flood-secret
