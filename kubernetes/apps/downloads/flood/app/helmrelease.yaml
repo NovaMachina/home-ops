@@ -62,7 +62,7 @@ spec:
           external-dns.alpha.kubernetes.io/target: "internal.${SECRET_DOMAIN}"
         className: internal
         hosts:
-          - host: &host "flood.${SECRET_EXTERNAL_DOMAIN}"
+          - host: &host "flood.${SECRET_DOMAIN}"
             paths:
               - path: /
                 service:
