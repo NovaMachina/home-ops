@@ -1,0 +1,8 @@
+---
+devices:
+  - name: zwave
+    groups:
+      - count: 1000
+        usb:
+          - vendor: 10c4
+            product: ea60
