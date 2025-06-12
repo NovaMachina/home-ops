@@ -66,6 +66,10 @@ spec:
         supplementalGroups: [44]
     service:
       app:
+        annotations:
+          io.cilium/lb-ipam-ips: 10.0.40.50
+          external-dns.alpha.kubernetes.io/hostname: "jellyfin.${SECRET_DOMAIN}"
+        type: LoadBalancer
         controller: jellyfin
         ports:
           http:
@@ -74,7 +78,6 @@ spec:
       app:
         annotations:
           external-dns.alpha.kubernetes.io/target: "internal.${SECRET_DOMAIN}"
-          io.cilium/lb-ipam-ips: 10.0.40.50
         className: internal
         hosts:
           - host: "jellyfin.${SECRET_DOMAIN}"
