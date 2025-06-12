@@ -74,6 +74,7 @@ spec:
       app:
         annotations:
           external-dns.alpha.kubernetes.io/target: "internal.${SECRET_DOMAIN}"
+          io.cilium/lb-ipam-ips: 10.0.40.50
         className: internal
         hosts:
           - host: "jellyfin.${SECRET_DOMAIN}"
