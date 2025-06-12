@@ -17,6 +17,8 @@ spec:
       namespace: rook-ceph
     - name: volsync
       namespace: volsync-system
+    - name: generic-device-plugin
+      namespace: system
   sourceRef:
     kind: GitRepository
     name: flux-system
