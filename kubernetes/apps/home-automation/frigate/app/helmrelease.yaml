@@ -71,7 +71,6 @@ spec:
           - path: /config
       dshm:
         type: emptyDir
-        medium: Memory
-        sizeLimit: 1Gi
+        sizeLimit: 2Gi
         globalMounts:
           - path: /dev/shm
