@@ -8,6 +8,5 @@ devices:
   - name: coral
     groups:
       - count: 1000
-        pci:
-          - vendor: 10c4
-            device: ea60
+        paths:
+          - path: /dev/apex_0
