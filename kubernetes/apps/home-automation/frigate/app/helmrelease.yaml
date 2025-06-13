@@ -38,6 +38,7 @@ spec:
                 memory: 475Mi
               limits:
                 squat.ai/coral: 1
+                memory: 6000Mi
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
