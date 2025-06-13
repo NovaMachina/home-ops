@@ -30,7 +30,7 @@ spec:
             securityContext:
               allowPrivilegeEscalation: true
               privileged: true
-              readOnlyRootFilesystem: true
+              readOnlyRootFilesystem: false
               capabilities: { drop: ["ALL"] }
             resources:
               requests:
