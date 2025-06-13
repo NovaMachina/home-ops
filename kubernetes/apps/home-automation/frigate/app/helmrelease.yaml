@@ -69,3 +69,9 @@ spec:
         existingClaim: frigate
         globalMounts:
           - path: /config
+      dshm:
+        type: emptyDir
+        medium: Memory
+        sizeLimit: 1Gi
+        globalMounts:
+          - path: /dev/shm
