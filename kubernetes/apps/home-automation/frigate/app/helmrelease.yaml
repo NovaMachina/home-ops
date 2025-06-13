@@ -35,6 +35,8 @@ spec:
               requests:
                 cpu: 100m
                 memory: 475Mi
+              limits:
+                squat.ai/coral: 1
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
