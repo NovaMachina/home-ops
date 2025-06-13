@@ -28,7 +28,7 @@ spec:
               repository: ghcr.io/blakeblackshear/frigate
               tag: 0.15.1@sha256:c4e02d2c511847eebbda8e0e370b41c78e7b51247353de79340e06c3e95f11be
             securityContext:
-              allowPrivilegeEscalation: false
+              allowPrivilegeEscalation: true
               readOnlyRootFilesystem: true
               capabilities: { drop: ["ALL"] }
             resources:
@@ -43,6 +43,7 @@ spec:
         runAsUser: 2000
         runAsGroup: 2000
         fsGroup: 2000
+        privileged: true
         fsGroupChangePolicy: OnRootMismatch
         seccompProfile: { type: RuntimeDefault }
     service:
