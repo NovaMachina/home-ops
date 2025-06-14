@@ -67,6 +67,12 @@ spec:
 
     dashboards:
       default:
+        blackbox-exporter:
+          # renovate: depName="Blackbox Exporter (HTTP prober)"
+          gnetId: 13659
+          revision: 1
+          datasource: Prometheus
+
         cert-manager:
           # renovate: depName="Cert-manager-Kubernetes"
           gnetId: 20842
