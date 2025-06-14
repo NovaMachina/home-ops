@@ -79,6 +79,6 @@ spec:
       library:
         type: nfs
         server: ${SECRET_NFS_SERVER}
-        path: /mnt/pool1
+        path: /mnt/pool1/frigate
         globalMounts:
           - path: /media
