@@ -76,3 +76,9 @@ spec:
         sizeLimit: 2Gi
         globalMounts:
           - path: /dev/shm
+      library:
+        type: nfs
+        server: ${SECRET_NFS_SERVER}
+        path: /mnt/pool1
+        globalMounts:
+          - path: /media
