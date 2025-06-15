@@ -7,6 +7,7 @@ resources:
   - ./helmrelease.yaml
 components:
   - ../../../../components/volsync
+  - ../../../../components/keda/nas-nfs-scaler
 
 configMapGenerator:
   - name: qbittorrent-coredns
