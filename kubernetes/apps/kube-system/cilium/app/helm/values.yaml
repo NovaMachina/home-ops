@@ -20,6 +20,8 @@ envoy:
 gatewayAPI:
   enabled: true
   enableAlpn: true
+  gatewayClass:
+    create: auto
 dashboards:
   enabled: true
 hubble:
