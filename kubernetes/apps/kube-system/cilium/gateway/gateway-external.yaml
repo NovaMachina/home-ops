@@ -1,0 +1,36 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.bjw-s.dev/gateway.networking.k8s.io/gateway_v1.json
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: external
+  annotations:
+    external-dns.alpha.kubernetes.io/target: &hostname "ingress-ext.${SERVICE_DOMAIN}"
+spec:
+  gatewayClassName: cilium
+  addresses:
+    - type: IPAddress
+      value: 10.0.40.11
+  infrastructure:
+    annotations:
+      external-dns.alpha.kubernetes.io/hostname: *hostname
+  listeners:
+    - name: http
+      protocol: HTTP
+      port: 80
+      hostname: "*.${SERVICE_DOMAIN}"
+      allowedRoutes:
+        namespaces:
+          from: All
+    - name: https
+      protocol: HTTPS
+      port: 443
+      hostname: "*.${SERVICE_DOMAIN}"
+      allowedRoutes:
+        namespaces:
+          from: All
+      tls:
+        certificateRefs:
+          - kind: Secret
+            name: "${SECRET_DOMAIN/./-}-production-tls"
+            namespace: cert-manager
