@@ -267,12 +267,15 @@ spec:
         cpu: 50m
         memory: 128Mi
 
-    ingress:
-      enabled: true
-      annotations:
-        external-dns.alpha.kubernetes.io/target: "internal.${SECRET_DOMAIN}"
-      ingressClassName: internal
-      hosts: ["grafana.${SECRET_DOMAIN}"]
+    route:
+      main:
+        enabled: true
+        hostnames:
+          - "grafana.${SECRET_DOMAIN}"
+        parentRefs:
+          - name: internal
+            namespace: kube-system
+            sectionName: https
 
     serviceAccount:
       create: true
