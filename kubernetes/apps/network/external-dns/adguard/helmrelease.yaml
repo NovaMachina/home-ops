@@ -51,7 +51,7 @@ spec:
             path: /healthz
             port: http-webhook
           initialDelaySeconds: 10
-          timeoutSeconds: 5
+          timeoutSeconds: 300
           failureThreshold: 10
         readinessProbe:
           httpGet:
