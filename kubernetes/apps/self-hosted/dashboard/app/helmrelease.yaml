@@ -55,8 +55,7 @@ spec:
           http:
             port: &port 3000
     serviceAccount:
-      create: true
-      name: homepage
+      homepage: {}
     ingress:
       app:
         annotations:
