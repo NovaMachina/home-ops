@@ -32,5 +32,4 @@ spec:
       tls:
         certificateRefs:
           - kind: Secret
-            name: "${SECRET_DOMAIN/./-}-production-tls"
-            namespace: cert-manager
+            name: jacob-williams-me-tls
