@@ -104,14 +104,14 @@ spec:
     ###
     prometheus:
       route:
-    main:
-      enabled: true
-      hostnames:
-        - "prometheus.${SECRET_DOMAIN}"
-      parentRefs:
-        - name: internal
-          namespace: kube-system
-          sectionName: https
+        main:
+          enabled: true
+          hostnames:
+            - "prometheus.${SECRET_DOMAIN}"
+          parentRefs:
+            - name: internal
+              namespace: kube-system
+              sectionName: https
       prometheusSpec:
         alertingEndpoints:
           - namespace: monitoring
