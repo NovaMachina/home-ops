@@ -3,17 +3,17 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 namespace: downloads
-resources:
+resources: []
   # Flux-Kustomizations
-  - ./autobrr/ks.yaml
-  # - ./bazarr/ks.yaml
-  - ./cross-seed/ks.yaml
-  - ./flood/ks.yaml
-  - ./prowlarr/ks.yaml
-  - ./qbittorrent/ks.yaml
-  - ./radarr/ks.yaml
-  - ./recyclarr/ks.yaml
-  # - ./sabnzbd/ks.yaml
-  - ./sonarr/ks.yaml
+  # - ./autobrr/ks.yaml
+  # # - ./bazarr/ks.yaml
+  # - ./cross-seed/ks.yaml
+  # - ./flood/ks.yaml
+  # - ./prowlarr/ks.yaml
+  # - ./qbittorrent/ks.yaml
+  # - ./radarr/ks.yaml
+  # - ./recyclarr/ks.yaml
+  # # - ./sabnzbd/ks.yaml
+  # - ./sonarr/ks.yaml
 components:
   - ../../components/common
