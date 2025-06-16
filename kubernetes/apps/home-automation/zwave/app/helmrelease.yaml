@@ -74,18 +74,17 @@ spec:
             port: *port
           websocket:
             port: 3000
-    ingress:
-      app:
-        annotations:
-          external-dns.alpha.kubernetes.io/target: "internal.${SECRET_DOMAIN}"
-        className: internal
-        hosts:
-          - host: "zwave.${SECRET_DOMAIN}"
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: http
+
+    route:
+      main:
+        enabled: true
+        hostnames:
+          - "zwave.${SECRET_DOMAIN}"
+        parentRefs:
+          - name: internal
+            namespace: kube-system
+            sectionName: https
+
     persistence:
       config:
         existingClaim: zwave

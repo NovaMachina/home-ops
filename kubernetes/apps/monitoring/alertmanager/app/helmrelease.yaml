@@ -77,15 +77,12 @@ spec:
         globalMounts:
           - path: /etc/secrets
 
-    ingress:
-      app:
-        annotations:
-          external-dns.alpha.kubernetes.io/target: "internal.${SECRET_DOMAIN}"
-        className: internal
-        hosts:
-          - host: "alertmanager.${SECRET_DOMAIN}"
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: http
+    route:
+      main:
+        enabled: true
+        hostnames:
+          - "alertmanager.${SECRET_DOMAIN}"
+        parentRefs:
+          - name: internal
+            namespace: kube-system
+            sectionName: https

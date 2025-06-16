@@ -61,19 +61,17 @@ spec:
             port: &port 3000
     serviceAccount:
       homepage: {}
-    ingress:
-      app:
-        annotations:
-          external-dns.alpha.kubernetes.io/target: "internal.${SECRET_DOMAIN}"
-        className: internal
-        hosts:
-          - host: "homepage.${SECRET_DOMAIN}"
-            paths:
-              - path: /
-                pathType: Prefix
-                service:
-                  identifier: app
-                  port: *port
+
+    route:
+      main:
+        enabled: true
+        hostnames:
+          - "homepage.${SECRET_DOMAIN}"
+        parentRefs:
+          - name: internal
+            namespace: kube-system
+            sectionName: https
+
     persistence:
       config:
         type: configMap
