@@ -51,13 +51,15 @@ spec:
               value: info
             - name: ADGUARD_URL
               value: "http://10.0.0.1:3000"
-            - name: ADGUARD_USER
-              value: "admin"
+              valueFrom:
+              secretKeyRef:
+                name: &secret adguardhome-external-dns-secret
+                key: ADGUARD_USER
             - name: ADGUARD_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: adguard-home-admin-password
-                  key: ADGUARD_ADMIN_PASSWORD
+                  name: *secret
+                  key: ADGUARD_PASSWORD
             - name: SERVER_HOST
               value: "0.0.0.0"
             - name: HEALTHZ_HOST
