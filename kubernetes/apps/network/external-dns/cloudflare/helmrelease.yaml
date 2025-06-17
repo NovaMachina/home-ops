@@ -41,8 +41,7 @@ spec:
     podAnnotations:
       secret.reloader.stakater.com/reload: external-dns-secret
     policy: sync
-    provider:
-      name: cloudflare
+    provider: cloudflare
     serviceMonitor:
       enabled: true
     sources:
