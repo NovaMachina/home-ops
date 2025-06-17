@@ -81,13 +81,13 @@ spec:
     route:
       main:
         annotations:
-          external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_DOMAIN}"
+          external-dns.alpha.kubernetes.io/target: "internal.${SECRET_DOMAIN}"
           external-dns.alpha.kubernetes.io/cloudflare-proxied: "false"
         enabled: true
         hostnames:
           - "jellyfin.${SECRET_DOMAIN}"
         parentRefs:
-          - name: external
+          - name: internal
             namespace: kube-system
             sectionName: https
 
