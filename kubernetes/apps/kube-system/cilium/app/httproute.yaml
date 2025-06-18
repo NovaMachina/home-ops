@@ -14,5 +14,5 @@ spec:
   rules:
     - backendRefs:
         - name: hubble-ui
-          namespace: flux-system
+          namespace: kube-system
           port: 80
