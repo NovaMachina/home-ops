@@ -5,7 +5,7 @@ kind: Kustomization
 namespace: media
 resources:
   # Flux-Kustomizations
-  # - ./jellyfin/ks.yaml
+  - ./jellyfin/ks.yaml
   - ./jellyseerr/ks.yaml
 components:
   - ../../components/common
