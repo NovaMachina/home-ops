@@ -48,7 +48,7 @@ spec:
       - gateway-httproute
       - crd
     triggerLoopOnEvent: true
-    txtOwnerId: main
+    txtOwnerId: default
     txtPrefix: k8s.
 
   postRenderers:
