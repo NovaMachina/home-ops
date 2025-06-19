@@ -16,6 +16,6 @@ spec:
     - hostname: unifi.self-hosted.svc.cluster.local
       type: Hostname
     caCertificateRefs:
-    - name: jacob-williams-me-tls
+    - name: unifi-internal-tls
       kind: Secret
       group: ""

@@ -3,13 +3,15 @@
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: "jacob-williams-me"
+  name: "unifi-internal-tls"
 spec:
-  secretName: "jacob-williams-me-tls"
+  secretName: "unifi-internal-tls"
   issuerRef:
     name: letsencrypt-production
     kind: ClusterIssuer
   commonName: "jacob-williams.me"
   dnsNames:
-    - "jacob-williams.me"
-    - "*.jacob-williams.me"
+    - unifi
+    - unifi.self-hosted.svc
+    - unifi.self-hosted.svc.cluster.local
+    - 127.0.0.1
