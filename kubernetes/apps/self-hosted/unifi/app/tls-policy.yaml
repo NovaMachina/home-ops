@@ -1,0 +1,21 @@
+---
+apiVersion: gateway.networking.k8s.io/v1alpha3
+kind: BackendTLSPolicy
+metadata:
+  name: unifi-tls-policy
+  namespace: self-hosted
+spec:
+  targetRefs:
+  - name: unifi
+    kind: Service
+    group: ""
+    sectionName: https
+  validation:
+    hostname: unifi.self-hosted.svc.cluster.local
+    subjectAltNames:
+    - hostname: unifi.self-hosted.svc.cluster.local
+      type: Hostname
+    caCertificateRefs:
+    - name: jacob-williams-me-tls
+      kind: Secret
+      group: ""

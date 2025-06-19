@@ -5,6 +5,7 @@ kind: Kustomization
 resources:
   - ./certificate.yaml
   - ./helmrelease.yaml
+  - ./tls-policy.yaml
 components:
   - ../../../../components/volsync
   - ../../../../components/keda/nas-nfs-scaler

@@ -64,7 +64,6 @@ spec:
           https:
             port: 443
             protocol: HTTPS
-            appProtocol: kubernetes.io/h2c
           controller:
             port: 8080
             protocol: TCP
