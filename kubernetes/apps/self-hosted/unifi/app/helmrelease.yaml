@@ -91,6 +91,7 @@ spec:
     route:
       main:
         enabled: true
+        kind: TLSRoute
         hostnames:
           - "unifi.${SECRET_DOMAIN}"
         parentRefs:
