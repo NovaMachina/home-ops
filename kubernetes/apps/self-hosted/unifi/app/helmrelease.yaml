@@ -93,6 +93,7 @@ spec:
         enabled: true
         hostnames:
           - "unifi.${SECRET_DOMAIN}"
+        kind: TLSRoute
         parentRefs:
           - name: internal
             namespace: kube-system
@@ -129,9 +130,3 @@ spec:
         existingClaim: unifi
         globalMounts:
           - path: /unifi
-      cert:
-        type: secret
-        name: unifi-internal-tls
-        globalMounts:
-          - path: /unifi/cert
-            readOnly: true
