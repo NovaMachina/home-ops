@@ -131,7 +131,7 @@ spec:
           - path: /unifi
       cert:
         type: secret
-        name: jacob-williams-me-tls
+        name: kube-system/jacob-williams-me-tls
         globalMounts:
           - path: /unifi/cert
             readOnly: true
