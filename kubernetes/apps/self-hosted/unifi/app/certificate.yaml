@@ -9,7 +9,6 @@ spec:
   issuerRef:
     name: letsencrypt-production
     kind: ClusterIssuer
-  commonName: "jacob-williams.me"
   dnsNames:
     - unifi
     - unifi.self-hosted.svc
