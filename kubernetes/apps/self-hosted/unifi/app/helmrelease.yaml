@@ -40,6 +40,11 @@ spec:
             env:
               TZ: America/Chicago
               DB_MONGO_LOCAL: true
+              RUNAS_UID0: false
+              PUID: 999
+              PGID: 999
+              LOGSTDOUT: true
+              JVM_MAX_HEAP_SIZE: 1024M
             resources:
               requests:
                 cpu: 10m
