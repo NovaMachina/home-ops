@@ -39,6 +39,7 @@ spec:
               tag: 9.2-ubuntu@sha256:f0031b3e0d1e892cf494c3ffda663c8842602e4cc647ba59e481e9ab2eac3e9a
             env:
               TZ: America/Chicago
+              DB_MONGO_LOCAL: true
             resources:
               requests:
                 cpu: 10m
