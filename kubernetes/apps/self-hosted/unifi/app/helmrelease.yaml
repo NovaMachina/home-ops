@@ -35,39 +35,52 @@ spec:
         containers:
           app:
             image:
-              repository: ghcr.io/goofball222/unifi
-              tag: 9.2-ubuntu@sha256:f0031b3e0d1e892cf494c3ffda663c8842602e4cc647ba59e481e9ab2eac3e9a
+              repository: ghcr.io/jacobalberty/unifi-docker
+              tag: v9.2.87@sha256:150ab9668d3101d0c3762db920a7925082faafa0bead810fafd0713ac1a7b7c6
+              pullPolicy: IfNotPresent
             env:
-              TZ: America/Chicago
-              DB_MONGO_LOCAL: true
+              UNIFI_HTTPS_PORT: 443
               RUNAS_UID0: false
-              PUID: 999
-              PGID: 999
-              LOGSTDOUT: true
+              UNIFI_UID: 999
+              UNIFI_GID: 999
+              UNIFI_STDOUT: true
+              JVM_INIT_HEAP_SIZE:
               JVM_MAX_HEAP_SIZE: 1024M
             resources:
               requests:
-                cpu: 10m
-                memory: 200M
-              limits:
-                memory: 1024M
-        pod:
-          securityContext:
-            runAsUser: 999
-            runAsGroup: 999
-            fsGroup: 999
-            fsGroupChangePolicy: OnRootMismatch
+                memory: 2Gi
+                cpu: 50m
     service:
       app:
         controller: unifi
+        type: LoadBalancer
+        annotations:
+          external-dns.alpha.kubernetes.io/hostname: "unifi-controller.${SECRET_DOMAIN}"
+          io.cilium/lb-ipam-ips: 10.0.40.51
         ports:
-          http:
-            port: 8443
+          https:
+            port: 443
+            protocol: HTTPS
           controller:
             port: 8080
             protocol: TCP
+          portal-http:
+            port: 8880
+            protocol: HTTP
+          portal-https:
+            port: 8843
+            protocol: HTTPS
+          speedtest:
+            port: 6789
+            protocol: TCP
           stun:
             port: 3478
+            protocol: UDP
+          syslog:
+            port: 5514
+            protocol: UDP
+          discovery:
+            port: 10001
             protocol: UDP
     serviceAccount:
       unifi: {}
@@ -89,7 +102,7 @@ spec:
             backendRefs:
               - name: unifi
                 kind: Service
-                port: 8443
+                port: 443
       unifi:
         enabled: true
         hostnames:
@@ -112,8 +125,8 @@ spec:
       config:
         existingClaim: unifi
         globalMounts:
-          - path: /usr/lib/unifi/data
+          - path: /unifi/data
       logs:
         type: emptyDir
         globalMounts:
-          - path: /usr/lib/unifi/logs
+          - path: /unifi/logs
