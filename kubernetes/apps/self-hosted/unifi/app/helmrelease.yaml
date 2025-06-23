@@ -1,0 +1,132 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: unifi
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: app-template
+      version: 4.1.1
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s-labs
+        namespace: flux-system
+  maxHistory: 2
+  install:
+    createNamespace: true
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      strategy: rollback
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    controllers:
+      unifi:
+        replicas: 1
+        strategy: RollingUpdate
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          app:
+            image:
+              repository: ghcr.io/jacobalberty/unifi-docker
+              tag: v9.2.87@sha256:150ab9668d3101d0c3762db920a7925082faafa0bead810fafd0713ac1a7b7c6
+              pullPolicy: IfNotPresent
+            env:
+              CERTNAME: tls.crt
+              CERT_IS_CHAIN: true
+              CERT_PRIVATE_NAME: tls.key
+              UNIFI_HTTPS_PORT: 443
+              RUNAS_UID0: false
+              UNIFI_UID: 999
+              UNIFI_GID: 999
+              UNIFI_STDOUT: true
+              JVM_INIT_HEAP_SIZE:
+              JVM_MAX_HEAP_SIZE: 1024M
+            resources:
+              requests:
+                memory: 2Gi
+                cpu: 50m
+    service:
+      app:
+        controller: unifi
+        type: LoadBalancer
+        annotations:
+          external-dns.alpha.kubernetes.io/hostname: "unifi-controller.${SECRET_DOMAIN}"
+          io.cilium/lb-ipam-ips: 10.0.40.51
+        ports:
+          https:
+            port: 443
+            protocol: HTTPS
+          controller:
+            port: 8080
+            protocol: TCP
+          portal-http:
+            port: 8880
+            protocol: HTTP
+          portal-https:
+            port: 8843
+            protocol: HTTPS
+          speedtest:
+            port: 6789
+            protocol: TCP
+          stun:
+            port: 3478
+            protocol: UDP
+          syslog:
+            port: 5514
+            protocol: UDP
+          discovery:
+            port: 10001
+            protocol: UDP
+    serviceAccount:
+      unifi: {}
+
+    route:
+      main:
+        enabled: true
+        hostnames:
+          - "unifi.${SECRET_DOMAIN}"
+        kind: TLSRoute
+        parentRefs:
+          - name: internal
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - matches:
+            - path:
+                type: PathPrefix
+                value: /
+            backendRefs:
+              - name: unifi
+                kind: Service
+                port: 443
+      unifi:
+        enabled: true
+        hostnames:
+          - "unifi-svc.${SECRET_DOMAIN}"
+        parentRefs:
+          - name: internal
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - matches:
+            - path:
+                type: PathPrefix
+                value: /
+            backendRefs:
+              - name: unifi
+                kind: Service
+                port: 8080
+
+    persistence:
+      config:
+        existingClaim: unifi
+        globalMounts:
+          - path: /unifi

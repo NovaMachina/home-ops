@@ -5,7 +5,8 @@ kind: Kustomization
 namespace: self-hosted
 components:
   - ../../components/common
-  - ../../components/repos/app-template
 resources:
   - ./immich/ks.yaml
   - ./dashboard/ks.yaml
+  - ./unifi/ks.yaml
+  - ./paperless/ks.yaml

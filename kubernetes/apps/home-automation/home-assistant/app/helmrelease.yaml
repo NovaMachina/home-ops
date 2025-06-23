@@ -6,9 +6,14 @@ metadata:
   name: home-assistant
 spec:
   interval: 30m
-  chartRef:
-    kind: OCIRepository
-    name: app-template
+  chart:
+    spec:
+      chart: app-template
+      version: 4.1.1
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s-labs
+        namespace: flux-system
   install:
     remediation:
       retries: -1
@@ -48,21 +53,21 @@ spec:
               requests:
                 cpu: 100m
                 memory: 475Mi
-          code-server:
-            image:
-              repository: ghcr.io/coder/code-server
-              tag: 4.100.2@sha256:0c31654f1125c3a685a42ed1f2946573f5ebaaf016c5bc0640c72f9f571267e0
-            args: [
-              "--auth", "none",
-              "--user-data-dir", "/config/.vscode",
-              "--extensions-dir", "/config/.vscode",
-              "--port", "12321",
-              "/config"
-            ]
-            resources:
-              requests:
-                cpu: 100m
-                memory: 360Mi
+          # code-server:
+          #   image:
+          #     repository: ghcr.io/coder/code-server
+          #     tag: 4.100.2@sha256:0c31654f1125c3a685a42ed1f2946573f5ebaaf016c5bc0640c72f9f571267e0
+          #   args: [
+          #     "--auth", "none",
+          #     "--user-data-dir", "/config/.vscode",
+          #     "--extensions-dir", "/config/.vscode",
+          #     "--port", "12321",
+          #     "/config"
+          #   ]
+          #   resources:
+          #     requests:
+          #       cpu: 100m
+          #       memory: 360Mi
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
@@ -73,35 +78,26 @@ spec:
         seccompProfile: { type: RuntimeDefault }
     service:
       app:
-        controller: home-assistant
         ports:
           http:
             port: 8123
+            primary: true
           code-server:
             port: 12321
-    ingress:
-      app:
-        annotations:
-          external-dns.alpha.kubernetes.io/target: "external.${SECRET_DOMAIN}"
-        className: external
-        hosts:
-          - host: "hass.${SECRET_DOMAIN}"
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: http
-      code-server:
-        annotations:
-          external-dns.alpha.kubernetes.io/target: "internal.${SECRET_DOMAIN}"
-        className: internal
-        hosts:
-          - host: "hass-code.${SECRET_DOMAIN}"
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: code-server
+
+    route:
+      main:
+        enabled: true
+        hostnames:
+          - "hass.${SECRET_DOMAIN}"
+        parentRefs:
+          - name: external
+            namespace: kube-system
+            sectionName: https
+          - name: internal
+            namespace: kube-system
+            sectionName: https
+
     persistence:
       config:
         existingClaim: home-assistant

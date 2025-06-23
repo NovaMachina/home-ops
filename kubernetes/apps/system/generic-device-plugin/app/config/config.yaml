@@ -3,6 +3,10 @@ devices:
   - name: zwave
     groups:
       - count: 1000
-        usb:
-          - vendor: 10c4
-            product: ea60
+        paths:
+          - path: /dev/ttyUSB0
+  - name: coral
+    groups:
+      - count: 1000
+        paths:
+          - path: /dev/apex_0

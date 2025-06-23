@@ -6,9 +6,14 @@ metadata:
   name: qbittorrent
 spec:
   interval: 30m
-  chartRef:
-    kind: OCIRepository
-    name: app-template
+  chart:
+    spec:
+      chart: app-template
+      version: 4.1.1
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s-labs
+        namespace: flux-system
   dependsOn:
     - name: rook-ceph-cluster
       namespace: rook-ceph
@@ -180,16 +185,12 @@ spec:
                 subPath: Corefile
                 readOnly: true
 
-    ingress:
-      app:
-        annotations:
-          external-dns.alpha.kubernetes.io/target: "internal.${SECRET_DOMAIN}"
-        className: internal
-        hosts:
-          - host: "qbittorrent.${SECRET_DOMAIN}"
-            paths:
-              - path: /
-                pathType: Prefix
-                service:
-                  identifier: app
-                  port: *port
+    route:
+      main:
+        enabled: true
+        hostnames:
+          - "qbittorrent.${SECRET_DOMAIN}"
+        parentRefs:
+          - name: internal
+            namespace: kube-system
+            sectionName: https

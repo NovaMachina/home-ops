@@ -7,3 +7,4 @@ resources:
   - ./pvc.yaml
 components:
   - ../../../../components/volsync
+  - ../../../../components/keda/nas-nfs-scaler
