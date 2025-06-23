@@ -2,11 +2,9 @@
 # yaml-language-server: $schema=https://json.schemastore.org/kustomization
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-namespace: self-hosted
-components:
-  - ../../components/common
 resources:
-  - ./immich/ks.yaml
-  - ./dashboard/ks.yaml
-  - ./unifi/ks.yaml
-  - ./paperless/ks.yaml
+  - ./externalsecret.yaml
+  - ./helmrelease.yaml
+components:
+    - ../../../../components/volsync
+    - ../../../../components/keda/nas-nfs-scaler
