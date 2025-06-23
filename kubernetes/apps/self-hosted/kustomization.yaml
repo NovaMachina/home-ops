@@ -9,4 +9,4 @@ resources:
   - ./immich/ks.yaml
   - ./dashboard/ks.yaml
   - ./unifi/ks.yaml
-  # - ./paperless/ks.yaml
+  - ./paperless/ks.yaml
