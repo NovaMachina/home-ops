@@ -91,7 +91,7 @@ spec:
           gotenberg:
             image:
               repository: docker.io/gotenberg/gotenberg
-              tag: 8.20
+              tag: 8.210
             command:
               - "gotenberg"
               - "--chromium-disable-javascript=true"
