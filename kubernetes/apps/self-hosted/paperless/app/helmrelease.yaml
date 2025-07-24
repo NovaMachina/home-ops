@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 4.1.1
+      version: 4.1.2
       sourceRef:
         kind: HelmRepository
         name: bjw-s-labs
@@ -91,7 +91,7 @@ spec:
           gotenberg:
             image:
               repository: docker.io/gotenberg/gotenberg
-              tag: 8.20
+              tag: 8.210
             command:
               - "gotenberg"
               - "--chromium-disable-javascript=true"
@@ -103,7 +103,7 @@ spec:
           tika:
             image:
               repository: docker.io/apache/tika
-              tag: 3.2.0.0
+              tag: 3.2.1.0
 
     service:
       app:

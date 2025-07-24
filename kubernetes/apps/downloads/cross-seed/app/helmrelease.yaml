@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 4.1.1
+      version: 4.1.2
       sourceRef:
         kind: HelmRepository
         name: bjw-s-labs
@@ -37,7 +37,7 @@ spec:
           app:
             image:
               repository: ghcr.io/cross-seed/cross-seed
-              tag: 6.12.7
+              tag: 6.13.0
             args:
               - daemon
               - -v
