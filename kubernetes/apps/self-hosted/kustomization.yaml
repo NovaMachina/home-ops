@@ -10,4 +10,4 @@ resources:
   - ./dashboard/ks.yaml
   - ./unifi/ks.yaml
   - ./paperless/ks.yaml
-  - ./ollama/ks.yaml
+  # - ./ollama/ks.yaml
