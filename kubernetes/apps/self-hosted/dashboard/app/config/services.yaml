@@ -16,8 +16,6 @@
         widget:
             type: flood
             url: http://flood.downloads.svc.cluster.local.:3000
-            username: username # if set
-            password: password # if set
     - Sonarr:
         href: https://sonarr.${SECRET_DOMAIN}
         icon: sonarr.png
