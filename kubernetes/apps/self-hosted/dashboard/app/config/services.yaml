@@ -9,6 +9,13 @@
             url: http://jellyfin.media.svc.cluster.local.:8096
             key: {{HOMEPAGE_VAR_JELLYFIN_TOKEN}}
             enableNowPlaying: true
+    - Flood:
+        href: https://flood.${SECRET_DOMAIN}
+        icon: flood.png
+        description: Torrent Client
+        widget:
+            type: flood
+            url: http://flood.downloads.svc.cluster.local.:3000
     - Sonarr:
         href: https://sonarr.${SECRET_DOMAIN}
         icon: sonarr.png
