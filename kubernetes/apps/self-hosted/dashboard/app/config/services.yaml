@@ -15,7 +15,7 @@
         description: Torrent Client
         widget:
             type: qbittorrent
-            url: https://qbittorrent.downloads.svc.cluster.local.:8080
+            url: http://qbittorrent.downloads.svc.cluster.local.:8080
     - Sonarr:
         href: https://sonarr.${SECRET_DOMAIN}
         icon: sonarr.png
