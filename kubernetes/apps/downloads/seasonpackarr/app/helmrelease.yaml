@@ -75,6 +75,7 @@ spec:
               runAsGroup: 2000
               runAsNonRoot: true
               allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
               capabilities:
                 drop:
                   - ALL
@@ -87,6 +88,13 @@ spec:
             port: 42069
 
     persistence:
+      config:
+        enabled: true
+        type: emptyDir
+        advancedMounts:
+          seasonpackarr:
+            app:
+              - path: /config
       media:
         type: nfs
         server: ${SECRET_NFS_SERVER}
