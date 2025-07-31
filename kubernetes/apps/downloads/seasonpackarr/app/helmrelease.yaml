@@ -32,7 +32,7 @@ spec:
         containers:
           app:
             image:
-              repository: ghcr.io/nuxencs/seaseasonpackarr
+              repository: ghcr.io/nuxencs/seasonpackarr
               tag: v0.12.1
             envFrom:
               - secretRef:
