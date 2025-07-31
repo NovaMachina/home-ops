@@ -34,6 +34,21 @@ spec:
             image:
               repository: ghcr.io/nuxencs/seasonpackarr
               tag: v0.12.1
+            env:
+              - name: SEASONPACKARR__CLIENTS_DEFAULT_HOST
+                value: http://qbittorrent.downloads.svc.cluster.local
+              - name: SEASONPACKARR__CLIENTS_DEFAULT_PORT
+                value: 8080
+              - name: SEASONPACKARR__SMART_MODE
+                value: true
+              - name: SEASONPACKARR__SMART_MODE_THRESHOLD
+                value: 0.75
+              - name: SEASONPACKARR__PARSE_TORRENT_FILE
+                value: true
+              - name: SEASONPACKARR__FUZZY_MATCHING_SKIP_REPACK_COMPARE
+                value: true
+              - name: SEASONPACKARR__FUZZY_MATCHING_SIMPLIFY_HDR_COMPARE
+                value: false
             envFrom:
               - secretRef:
                   name: seasonpackarr-secret
@@ -71,12 +86,6 @@ spec:
             port: 42069
 
     persistence:
-      config-file:
-        type: secret
-        name: seasonpackarr-secret
-        globalMounts:
-          - path: /config/config.yaml
-            subPath: config.yaml
       media:
         type: nfs
         server: ${SECRET_NFS_SERVER}
