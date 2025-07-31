@@ -6,12 +6,7 @@ resources:
   - ./externalsecret.yaml
   - ./helmrelease.yaml
 components:
-  - ../../../../components/volsync
   - ../../../../components/keda/nas-nfs-scaler
-configMapGenerator:
-  - name: recyclarr
-    files:
-      - config/recyclarr.yml
 generatorOptions:
   annotations:
     kustomize.toolkit.fluxcd.io/substitute: disabled
