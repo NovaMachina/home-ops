@@ -83,6 +83,6 @@ spec:
         server: ${SECRET_NFS_SERVER}
         path: /mnt/pool0/Media
         advancedMounts:
-          cross-seed:
+          seasonpackarr:
             app:
               - path: /data/nas-media
