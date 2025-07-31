@@ -6,6 +6,7 @@ resources:
   - ./externalsecret.yaml
   - ./helmrelease.yaml
 components:
+  - ../../../../components/volsync
   - ../../../../components/keda/nas-nfs-scaler
 generatorOptions:
   annotations:
