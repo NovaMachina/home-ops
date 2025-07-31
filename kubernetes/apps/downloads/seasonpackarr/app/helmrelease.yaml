@@ -77,7 +77,6 @@ spec:
         globalMounts:
           - path: /config/config.yaml
             subPath: config.yaml
-            readOnly: true
       media:
         type: nfs
         server: ${SECRET_NFS_SERVER}
