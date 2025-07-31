@@ -49,6 +49,8 @@ spec:
                 value: true
               - name: SEASONPACKARR__FUZZY_MATCHING_SIMPLIFY_HDR_COMPARE
                 value: false
+              - name: SEASONPACKARR__DISABLE_CONFIG_FILE
+                value: true
             envFrom:
               - secretRef:
                   name: seasonpackarr-secret
