@@ -51,6 +51,8 @@ spec:
                 value: false
               - name: SEASONPACKARR__DISABLE_CONFIG_FILE
                 value: true
+              - name: SEASONPACKARR__CLIENTS_DEFAULT_PREIMPORTPATH
+                value: /data/nas-media/downloads/qbittorrent/tv-sonarr
             envFrom:
               - secretRef:
                   name: seasonpackarr-secret
