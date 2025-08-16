@@ -35,7 +35,7 @@ spec:
               tag: 17
             envFrom: &envFrom
               - secretRef:
-                  name: radarr-secret
+                  name: peppermint-secret
         containers:
           app:
             image:
