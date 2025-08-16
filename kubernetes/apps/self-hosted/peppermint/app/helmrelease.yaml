@@ -24,7 +24,7 @@ spec:
       retries: 3
   values:
     controllers:
-      immich:
+      peppermint:
         annotations:
           reloader.stakater.com/auto: "true"
         strategy: RollingUpdate
