@@ -42,21 +42,21 @@ spec:
               repository: pepperlabs/peppermint
               tag: latest@sha256:d13932713561c8d69baea49820ba2d42ea145b28193b6a7e33950a05812406fd
             envFrom: *envFrom
-            probes:
-              liveness: &probes
-                enabled: true
-                custom: true
-                spec:
-                  httpGet:
-                    path: /
-                    port: 5003
-                  initialDelaySeconds: 0
-                  periodSeconds: 10
-                  timeoutSeconds: 1
-                  failureThreshold: 5
-              readiness: *probes
-              startup:
-                enabled: false
+            # probes:
+            #   liveness: &probes
+            #     enabled: true
+            #     custom: true
+            #     spec:
+            #       httpGet:
+            #         path: /
+            #         port: 5003
+            #       initialDelaySeconds: 0
+            #       periodSeconds: 10
+            #       timeoutSeconds: 1
+            #       failureThreshold: 5
+            #   readiness: *probes
+            #   startup:
+            #     enabled: false
             resources:
               requests:
                 cpu: 10m
