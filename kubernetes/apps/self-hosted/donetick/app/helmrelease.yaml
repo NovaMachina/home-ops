@@ -44,8 +44,6 @@ spec:
             env:
               - name: DT_ENV
                 value: selfhosted
-              - name: DT_SQLITE_PATH
-                value: /donetick-data/donetick.db
             # probes:
             #   liveness: &probes
             #     enabled: true
