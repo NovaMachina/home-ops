@@ -9,7 +9,7 @@ resources:
   - ./donetick/ks.yaml
   - ./immich/ks.yaml
   - ./dashboard/ks.yaml
-  - ./unifi/ks.yaml
+  # - ./unifi/ks.yaml
   - ./paperless/ks.yaml
   - ./peppermint/ks.yaml
   # - ./ollama/ks.yaml
