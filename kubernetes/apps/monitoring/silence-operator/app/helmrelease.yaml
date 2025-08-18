@@ -17,5 +17,6 @@ spec:
     alertmanagerAddress: http://alertmanager.monitoring.svc.cluster.local:9093
     image:
       registry: quay.io
+      tag: 0.18.0
     networkPolicy:
       enabled: false
