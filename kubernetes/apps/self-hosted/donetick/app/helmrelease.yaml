@@ -89,7 +89,7 @@ spec:
 
     persistence:
       data:
-        existingClaim: dontetick
+        existingClaim: donetick
         globalMounts:
           - path: /data
       config-file:
