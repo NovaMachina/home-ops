@@ -22,7 +22,7 @@ spec:
     - name: actions-runner-controller
       namespace: actions-runner-system
     - name: openebs
-      namespace: openebs-system
+      namespace: openebs
   values:
     githubConfigUrl: https://github.com/NovaMachina/home-ops
     githubConfigSecret: actions-runner-controller-secret
