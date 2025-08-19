@@ -19,7 +19,7 @@ env:
 jobs:
   main:
     name: Schemas
-    runs-on: ubuntu-latest
+    runs-on: home-ops-runner
     permissions:
       contents: read
       packages: write
