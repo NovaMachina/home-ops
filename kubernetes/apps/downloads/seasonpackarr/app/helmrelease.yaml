@@ -36,7 +36,7 @@ spec:
               tag: v0.12.1
             env:
               - name: SEASONPACKARR__CLIENTS_DEFAULT_HOST
-                value: http://qbittorrent.downloads.svc.cluster.local
+                value: qbittorrent.downloads.svc.cluster.local
               - name: SEASONPACKARR__CLIENTS_DEFAULT_PORT
                 value: 8080
               - name: SEASONPACKARR__SMART_MODE
