@@ -58,6 +58,11 @@ spec:
         ports:
           http:
             port: 8971
+      api:
+        controller: frigate
+        ports:
+          http:
+            port: 5000
 
     route:
       main:
