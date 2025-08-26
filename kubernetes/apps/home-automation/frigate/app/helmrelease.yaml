@@ -73,6 +73,19 @@ spec:
           - name: internal
             namespace: kube-system
             sectionName: https
+        rules:
+          - backendRefs: [{}]
+      api:
+        hostnames:
+          - frigate-api.${SECRET_DOMAIN}
+        parentRefs:
+          - name: internal
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - backendRefs:
+              - name: app
+                port: 5000
 
     persistence:
       config:
