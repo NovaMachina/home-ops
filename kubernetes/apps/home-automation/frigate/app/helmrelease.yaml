@@ -84,7 +84,7 @@ spec:
             sectionName: https
         rules:
           - backendRefs:
-              - name: app
+              - name: frigate
                 port: 5000
 
     persistence:
