@@ -1,0 +1,106 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.jacob-williams.me/gateway.networking.k8s.io/gateway_v1.json
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: internal-root
+  labels:
+    type: internal
+spec:
+  gatewayClassName: envoy
+  infrastructure:
+    annotations:
+      lbipam.cilium.io/ips: 192.168.20.10,::ffff:192.168.20.10
+  listeners:
+    # sharing certs between root and wildcard domains,
+    # and sharing gateway's between root and wildcard domains
+    # causes improper http/2.0 connection coalescing, which causes random 404's
+    # so we need to explicitly use both a different cert and gateway to prevent it
+    - name: http
+      protocol: HTTP
+      port: 80
+      hostname: '${SECRET_DOMAIN}'
+      allowedRoutes:
+        namespaces:
+          from: Same
+    - name: https
+      protocol: HTTPS
+      port: 443
+      hostname: '${SECRET_DOMAIN}'
+      allowedRoutes:
+        namespaces:
+          from: All
+      tls:
+        certificateRefs:
+          - kind: Secret
+            name: ${SECRET_DOMAIN/./-}-tls
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.jacob-williams.me/gateway.networking.k8s.io/gateway_v1.json
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: internal
+  labels:
+    type: internal
+  annotations:
+    external-dns.alpha.kubernetes.io/target: &hostname internal.${SECRET_DOMAIN}
+spec:
+  gatewayClassName: envoy
+  infrastructure:
+    annotations:
+      external-dns.alpha.kubernetes.io/hostname: *hostname
+      lbipam.cilium.io/ips: 192.168.20.3,::ffff:192.168.20.3
+  listeners:
+    - name: http
+      protocol: HTTP
+      port: 80
+      hostname: '*.${SECRET_DOMAIN}'
+      allowedRoutes:
+        namespaces:
+          from: Same
+    - name: https
+      protocol: HTTPS
+      port: 443
+      hostname: '*.${SECRET_DOMAIN}'
+      allowedRoutes:
+        namespaces:
+          from: All
+      tls:
+        certificateRefs:
+          - kind: Secret
+            name: ${SECRET_DOMAIN/./-}-tls
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.jacob-williams.me/gateway.networking.k8s.io/gateway_v1.json
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: external
+  labels:
+    type: external
+  annotations:
+    external-dns.alpha.kubernetes.io/target: &hostname external.${SECRET_DOMAIN}
+spec:
+  gatewayClassName: envoy
+  infrastructure:
+    annotations:
+      external-dns.alpha.kubernetes.io/hostname: *hostname
+      lbipam.cilium.io/ips: 192.168.20.4,::ffff:192.168.20.4
+  listeners:
+    - name: http
+      protocol: HTTP
+      port: 80
+      hostname: '*.${SECRET_DOMAIN}'
+      allowedRoutes:
+        namespaces:
+          from: Same
+    - name: https
+      protocol: HTTPS
+      port: 443
+      hostname: '*.${SECRET_DOMAIN}'
+      allowedRoutes:
+        namespaces:
+          from: All
+      tls:
+        certificateRefs:
+          - kind: Secret
+            name: ${SECRET_DOMAIN/./-}-tls
