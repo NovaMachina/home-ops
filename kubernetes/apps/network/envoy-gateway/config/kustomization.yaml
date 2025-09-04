@@ -5,4 +5,5 @@ kind: Kustomization
 resources:
   - certificate.yaml
   - envoyproxy.yaml
+  - gateway.yaml
   - gatewayclass.yaml
