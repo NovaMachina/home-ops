@@ -82,7 +82,7 @@ spec:
           - "zwave.${SECRET_DOMAIN}"
         parentRefs:
           - name: internal
-            namespace: network
+            namespace: kube-system
             sectionName: https
 
     persistence:
