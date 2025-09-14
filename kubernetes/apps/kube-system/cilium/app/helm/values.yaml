@@ -16,9 +16,9 @@ cgroup:
 endpointRoutes:
   enabled: true
 envoy:
-  enabled: true
+  enabled: false
 gatewayAPI:
-  enabled: true
+  enabled: false
   enableAlpn: true
   gatewayClass:
     create: auto
