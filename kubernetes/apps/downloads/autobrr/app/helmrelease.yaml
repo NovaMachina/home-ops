@@ -100,5 +100,5 @@ spec:
           - "autobrr.${SECRET_DOMAIN}"
         parentRefs:
           - name: internal
-            namespace: kube-system
+            namespace: network
             sectionName: https

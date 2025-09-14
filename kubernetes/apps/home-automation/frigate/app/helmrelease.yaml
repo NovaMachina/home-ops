@@ -68,10 +68,10 @@ spec:
           - "frigate.${SECRET_DOMAIN}"
         parentRefs:
           - name: external
-            namespace: kube-system
+            namespace: network
             sectionName: https
           - name: internal
-            namespace: kube-system
+            namespace: network
             sectionName: https
         rules:
           - backendRefs: [{}]
@@ -80,7 +80,7 @@ spec:
           - frigate-api.${SECRET_DOMAIN}
         parentRefs:
           - name: internal
-            namespace: kube-system
+            namespace: network
             sectionName: https
         rules:
           - backendRefs:

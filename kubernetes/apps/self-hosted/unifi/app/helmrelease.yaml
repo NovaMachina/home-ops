@@ -96,7 +96,7 @@ spec:
         kind: TLSRoute
         parentRefs:
           - name: internal
-            namespace: kube-system
+            namespace: network
             sectionName: https
         rules:
           - matches:
@@ -113,7 +113,7 @@ spec:
           - "unifi-svc.${SECRET_DOMAIN}"
         parentRefs:
           - name: internal
-            namespace: kube-system
+            namespace: network
             sectionName: https
         rules:
           - matches:

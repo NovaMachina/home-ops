@@ -9,7 +9,7 @@ spec:
     - hubble.jacob-williams.me
   parentRefs:
     - name: internal
-      namespace: kube-system
+      namespace: network
       sectionName: https
   rules:
     - backendRefs:

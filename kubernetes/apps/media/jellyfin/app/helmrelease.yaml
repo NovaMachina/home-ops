@@ -86,10 +86,10 @@ spec:
           - "jellyfin.${SECRET_DOMAIN}"
         parentRefs:
           - name: internal
-            namespace: kube-system
+            namespace: network
             sectionName: https
           - name: external
-            namespace: kube-system
+            namespace: network
             sectionName: https
     persistence:
       config:
