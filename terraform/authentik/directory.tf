@@ -1,0 +1,39 @@
+locals {
+  authentik_groups = {
+    downloads      = { name = "Downloads" }
+    grafana_admin  = { name = "Grafana Admin" }
+    home           = { name = "Home" }
+    infrastructure = { name = "Infrastructure" }
+    media          = { name = "Media" }
+    monitoring     = { name = "Monitoring" }
+    users          = { name = "Users" }
+  }
+}
+
+data "authentik_group" "admins" {
+  name = "authentik Admins"
+}
+
+resource "authentik_group" "default" {
+  for_each     = local.authentik_groups
+  name         = each.value.name
+  is_superuser = false
+}
+
+resource "authentik_policy_binding" "application_policy_binding" {
+  for_each = local.applications
+
+  target = authentik_application.application[each.key].uuid
+  group  = authentik_group.default[each.value.group].id
+  order  = 0
+}
+
+resource "authentik_user" "Jacob" {
+  username = "NovaMachina"
+  name     = "Jacob Williams"
+  email    = "jacob.t.williams@outlook.com"
+  groups = concat(
+    [data.authentik_group.admins.id],
+    values(authentik_group.default)[*].id
+  )
+}

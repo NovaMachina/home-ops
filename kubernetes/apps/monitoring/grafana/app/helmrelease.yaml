@@ -1,4 +1,3 @@
----
 # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
@@ -13,13 +12,29 @@ spec:
   values:
     admin:
       existingSecret: grafana-admin-secret
-
     annotations:
       configmap.reloader.stakater.com/reload: grafana
       secret.reloader.stakater.com/reload: grafana-admin-secret
-
     replicas: 1
-
+    grafana.ini:
+      auth:
+        signout_redirect_url: https://auth.jacob-williams.me/application/o/grafana/end-session/
+        oauth_auto_login: false
+        oauth_allow_insecure_email_lookup: true
+      auth.anonymous:
+        enabled: true
+        org_name: Main Org.
+        org_role: Viewer
+        hide_version: true
+      auth.generic_oauth:
+        name: authentik
+        enabled: true
+        scopes: openid email profile
+        auth_url: https://auth.jacob-williams.me/application/o/authorize/
+        token_url: https://auth.jacob-williams.me/application/o/token/
+        api_url: https://auth.jacob-williams.me/application/o/userinfo/
+        # Optionally map user groups to Grafana roles
+        role_attribute_path: contains(groups[*], 'Grafana Admins') && 'Admin' || contains(groups[*], 'Grafana Editors') && 'Editor' || 'Viewer'
     dashboardProviders:
       dashboardproviders.yaml:
         apiVersion: 1
@@ -64,7 +79,6 @@ spec:
             editable: true
             options:
               path: /var/lib/grafana/dashboards/postgres
-
     dashboards:
       default:
         blackbox-exporter:
@@ -72,13 +86,11 @@ spec:
           gnetId: 13659
           revision: 1
           datasource: Prometheus
-
         cert-manager:
           # renovate: depName="Cert-manager-Kubernetes"
           gnetId: 20842
           revision: 3
           datasource: Prometheus
-
         cloudflared:
           # renovate: dashboardName="Cloudflare Tunnels (cloudflared)"
           gnetId: 17457
@@ -86,7 +98,6 @@ spec:
           datasource:
             - name: DS_PROMETHEUS
               value: Prometheus
-
         speedtest-exporter-hub:
           # renovate: depName="Speedtest Exporter"
           gnetId: 13665
@@ -94,17 +105,14 @@ spec:
           datasource:
             - name: DS_PROMETHEUS
               value: Prometheus
-
         external-dns:
           # renovate: dashboardName="External-DNS"
           gnetId: 15038
           revision: 3
           datasource: Prometheus
-
         external-secrets:
           url: https://raw.githubusercontent.com/external-secrets/external-secrets/main/docs/snippets/dashboard.json
           datasource: Prometheus
-
         node-exporter-full:
           # renovate: dashboardName="Node Exporter Full"
           gnetId: 1860
@@ -112,7 +120,6 @@ spec:
           datasource:
             - name: DS_PROMETHEUS
               value: Prometheus
-
         spegel:
           # renovate: dashboardName="Spegel"
           gnetId: 18089
@@ -120,7 +127,6 @@ spec:
           datasource:
             - name: DS_PROMETHEUS
               value: Prometheus
-
         volsync:
           # removate: dashboardName="VolSync Dashboard"
           gnetId: 21356
@@ -130,13 +136,11 @@ spec:
               value: Prometheus
             - name: VAR_REPLICATIONDESTNAME
               value: ".*-bootstrap"
-
         zfs:
           # renovate: dashboardName="ZFS"
           gnetId: 7845
           revision: 4
           datasource: Prometheus
-
       ceph:
         ceph-cluster:
           # renovate: dashboardName="Ceph Cluster"
@@ -153,7 +157,6 @@ spec:
           gnetId: 5342
           revision: 9
           datasource: Prometheus
-
       flux:
         flux-cluster:
           url: https://raw.githubusercontent.com/fluxcd/flux2-monitoring-example/main/monitoring/configs/dashboards/cluster.json
@@ -164,7 +167,6 @@ spec:
         flux-logs:
           url: https://raw.githubusercontent.com/fluxcd/flux2-monitoring-example/main/monitoring/configs/dashboards/logs.json
           datasource: Prometheus
-
       kubernetes:
         k8s-system-api-server:
           # renovate: dashboardName="Kubernetes / System / API Server"
@@ -196,7 +198,6 @@ spec:
           gnetId: 11454
           revision: 14
           datasource: Prometheus
-
     datasources:
       datasources.yaml:
         apiVersion: 1
@@ -218,7 +219,6 @@ spec:
             url: http://alertmanager.monitoring.svc.cluster.local:9093
             jsonData:
               implementation: prometheus
-
         deleteDatasources:
           - name: Alertmanager
             orgId: 1
@@ -226,7 +226,6 @@ spec:
             orgId: 1
           - name: Loki
             orgId: 1
-
     env:
       GF_ANALYTICS_CHECK_FOR_UPDATES: false
       GF_ANALYTICS_CHECK_FOR_PLUGIN_UPDATES: false
@@ -242,13 +241,10 @@ spec:
       GF_PLUGINS_ALLOW_LOADING_UNSIGNED_PLUGINS: natel-discrete-panel,pr0ps-trackmap-panel,panodata-map-panel
       GF_SECURITY_COOKIE_SAMESITE: grafana
       GF_SERVER_ROOT_URL: "https://grafana.${SECRET_DOMAIN}"
-
     imageRenderer:
       enabled: true
-
     persistence:
       enabled: false
-
     plugins:
       - grafana-clock-panel
       - grafana-piechart-panel
@@ -256,17 +252,14 @@ spec:
       - natel-discrete-panel
       - pr0ps-trackmap-panel
       - vonage-status-panel
-
     rbac:
       pspEnabled: false
-
     resources:
       limits:
         memory: 512Mi
       requests:
         cpu: 50m
         memory: 128Mi
-
     route:
       main:
         enabled: true
@@ -276,14 +269,11 @@ spec:
           - name: internal
             namespace: network
             sectionName: https
-
     serviceAccount:
       create: true
       autoMount: true
-
     serviceMonitor:
       enabled: true
-
     sidecar:
       dashboards:
         enabled: true
@@ -297,10 +287,8 @@ spec:
         enabled: true
         searchNamespace: ALL
         labelValue: ""
-
     testFramework:
       enabled: false
-
     topologySpreadConstraints:
       - maxSkew: 1
         topologyKey: kubernetes.io/hostname
