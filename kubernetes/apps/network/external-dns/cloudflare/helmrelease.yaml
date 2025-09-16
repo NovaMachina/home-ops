@@ -1,4 +1,3 @@
----
 # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
@@ -46,11 +45,14 @@ spec:
       enabled: true
     sources:
       - gateway-httproute
+      - gateway-grpcroute
+      - gateway-tlsroute
+      - gateway-tcproute
+      - gateway-udproute
       - crd
     triggerLoopOnEvent: true
     txtOwnerId: default
     txtPrefix: k8s.
-
   postRenderers:
     - kustomize:
         patches:
@@ -62,4 +64,3 @@ spec:
               - op: add
                 path: /spec/template/spec/enableServiceLinks
                 value: false
-
