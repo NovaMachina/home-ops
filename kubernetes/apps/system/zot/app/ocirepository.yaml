@@ -10,6 +10,6 @@ spec:
     operation: copy
   ref:
     tag: v2.1.8
-  url: oci://ghcr.io/project-zot/zot/nzot-linux-amd64
+  url: oci://ghcr.io/project-zot/zot/zot-linux-amd64
   verify:
     provider: cosign
