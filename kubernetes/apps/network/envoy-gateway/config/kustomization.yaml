@@ -1,4 +1,3 @@
----
 # yaml-language-server: $schema=https://json.schemastore.org/kustomization
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
@@ -9,5 +8,5 @@ resources:
   - envoyproxy.yaml
   - gateway.yaml
   - gatewayclass.yaml
-  - httproute.yaml
+  # - httproute.yaml
   - pushsecret.yaml
