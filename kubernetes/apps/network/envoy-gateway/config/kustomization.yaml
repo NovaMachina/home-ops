@@ -8,5 +8,5 @@ resources:
   - envoyproxy.yaml
   - gateway.yaml
   - gatewayclass.yaml
-  # - httproute.yaml
+  - httproute.yaml
   - pushsecret.yaml
