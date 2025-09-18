@@ -44,10 +44,29 @@ spec:
             probes:
               liveness:
                 enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /healthz
+                    port: 3000
               readiness:
                 enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /healthz
+                    port: 3000
               startup:
                 enabled: true
+                spec:
+                  httpGet:
+                    path: /healthz
+                    port: 3000
+                  initialDelaySeconds: 15
+                  periodSeconds: 5
+                  timeoutSeconds: 5
+                  successThreshold: 1
+                  failureThreshold: 60
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
