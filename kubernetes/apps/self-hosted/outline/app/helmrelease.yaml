@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: &app peppermint
+  name: &app outline
 spec:
   interval: 30m
   chart:
@@ -24,7 +24,7 @@ spec:
       retries: 3
   values:
     controllers:
-      peppermint:
+      outline:
         annotations:
           reloader.stakater.com/auto: "true"
         strategy: RollingUpdate
@@ -35,21 +35,23 @@ spec:
               tag: 17
             envFrom: &envFrom
               - secretRef:
-                  name: peppermint-secret
+                  name: outline-secret
         containers:
           app:
             image:
-              repository: pepperlabs/peppermint
-              tag: latest@sha256:d13932713561c8d69baea49820ba2d42ea145b28193b6a7e33950a05812406fd
-            envFrom: *envFrom
+              repository: docker.getoutline.com/outlinewiki/outline
+              tag: 0.87.4@sha256:659a8bf588ef2d914ef4e519409f38e472145369383c0a5aa89b286b4dfe860c
+            envFrom:
+              - configMapRef:
+                  name: outline-secret
             # probes:
             #   liveness: &probes
             #     enabled: true
             #     custom: true
             #     spec:
             #       httpGet:
-            #         path: /
-            #         port: 5003
+            #         path: /server/ping
+            #         port: 2283
             #       initialDelaySeconds: 0
             #       periodSeconds: 10
             #       timeoutSeconds: 1
@@ -60,21 +62,23 @@ spec:
             resources:
               requests:
                 cpu: 10m
-                memory: 150Mi
+                memory: 512Mi
+                # limits:
+                #   memory: 500Mi
             securityContext:
               allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: false
-              capabilities: { drop: ["ALL"] }
+              readOnlyRootFilesystem: true
+              capabilities: {drop: ["ALL"]}
         pod:
           enableServiceLinks: false
           securityContext:
-            runAsUser: 0
-            runAsGroup: 0
-            fsGroup: 0
+            runAsUser: 568
+            runAsGroup: 568
+            fsGroup: 568
             fsGroupChangePolicy: OnRootMismatch
     service:
       app:
-        controller: peppermint
+        controller: outline
         ports:
           http:
             port: 3000
@@ -82,11 +86,17 @@ spec:
       main:
         enabled: true
         hostnames:
-          - "tickets.${SECRET_DOMAIN}"
+          - "outline.${SECRET_DOMAIN}"
         parentRefs:
-          - name: external
-            namespace: network
-            sectionName: https
+          # - name: external
+          #   namespace: network
+          #   sectionName: https
           - name: internal
             namespace: network
             sectionName: https
+
+    persistence:
+      data:
+        existingClaim: outline
+        globalMounts:
+          - path: /var/lib/outline/data

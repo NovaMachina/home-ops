@@ -11,5 +11,4 @@ resources:
   - ./dashboard/ks.yaml
   # - ./unifi/ks.yaml
   - ./paperless/ks.yaml
-  # - ./peppermint/ks.yaml
-  # - ./ollama/ks.yaml
+  - ./outline/ks.yaml
