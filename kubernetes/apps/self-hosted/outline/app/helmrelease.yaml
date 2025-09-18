@@ -43,7 +43,7 @@ spec:
               tag: 0.87.4@sha256:659a8bf588ef2d914ef4e519409f38e472145369383c0a5aa89b286b4dfe860c
             env:
               - name: URL
-                value: "outline.${SECRET_DOMAIN}"
+                value: "https://outline.${SECRET_DOMAIN}"
             envFrom:
               - secretRef:
                   name: outline-secret
