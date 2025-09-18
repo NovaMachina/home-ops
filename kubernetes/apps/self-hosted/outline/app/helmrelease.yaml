@@ -42,7 +42,7 @@ spec:
               repository: docker.getoutline.com/outlinewiki/outline
               tag: 0.87.4@sha256:659a8bf588ef2d914ef4e519409f38e472145369383c0a5aa89b286b4dfe860c
             envFrom:
-              - configMapRef:
+              - secretRef:
                   name: outline-secret
             # probes:
             #   liveness: &probes
