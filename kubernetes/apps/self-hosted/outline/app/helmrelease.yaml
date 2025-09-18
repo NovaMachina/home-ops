@@ -100,3 +100,8 @@ spec:
         existingClaim: outline
         globalMounts:
           - path: /var/lib/outline/data
+      tmp:
+        type: emptyDir
+        globalMounts:
+          - path: /tmp
+
