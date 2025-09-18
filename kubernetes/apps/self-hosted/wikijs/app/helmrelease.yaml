@@ -104,3 +104,9 @@ spec:
         rules:
           - backendRefs:
               - {}
+
+    persistence:
+      data:
+        existingClaim: wikijs
+        globalMounts:
+          - path: /wiki/data

@@ -5,3 +5,6 @@ kind: Kustomization
 resources:
   - ./externalsecret.yaml
   - ./helmrelease.yaml
+components:
+  - ../../../../components/volsync
+  - ../../../../components/keda/nas-nfs-scaler
