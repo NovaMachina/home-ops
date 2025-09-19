@@ -95,9 +95,9 @@ spec:
         hostnames:
           - "wiki.${SECRET_DOMAIN}"
         parentRefs:
-          # - name: external
-          #   namespace: network
-          #   sectionName: https
+          - name: external
+            namespace: network
+            sectionName: https
           - name: internal
             namespace: network
             sectionName: https
