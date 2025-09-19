@@ -1,6 +1,7 @@
 locals {
   oauth_apps = [
-    "grafana"
+    "grafana",
+    "wikijs"
   ]
 }
 
@@ -17,9 +18,17 @@ locals {
       client_id     = module.onepassword_application["grafana"].fields["GRAFANA_CLIENT_ID"]
       client_secret = module.onepassword_application["grafana"].fields["GRAFANA_CLIENT_SECRET"]
       group         = "monitoring"
-      icon_url      = "https://raw.githubusercontent.com/homarr-labs/dashboard-icons/main/png/grafana.png"
+      icon_url      = "https://cdn.jsdelivr.net/gh/selfhst/icons/svg/grafana.svg"
       redirect_uri  = "https://grafana.${var.CLUSTER_DOMAIN}/login/generic_oauth"
       launch_url    = "https://grafana.${var.CLUSTER_DOMAIN}/login/generic_oauth"
+    },
+    wikijs = {
+      client_id     = module.onepassword_application["wikijs"].fields["client_id"]
+      client_secret = module.onepassword_application["wikijs"].fields["client_secret"]
+      group         = "monitoring"
+      icon_url      = "https://cdn.jsdelivr.net/gh/selfhst/icons/svg/wiki-js.svg"
+      redirect_uri  = "https://wiki.${var.CLUSTER_DOMAIN}/login/79229285-8f04-49de-b903-1a528885664e/callback"
+      launch_url    = "https://wiki.${var.CLUSTER_DOMAIN}/login"
     },
   }
 }

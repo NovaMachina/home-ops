@@ -7,6 +7,7 @@ locals {
     media          = { name = "Media" }
     monitoring     = { name = "Monitoring" }
     users          = { name = "Users" }
+    wiki_admin     = { name = "Administrators" }
   }
 }
 
