@@ -87,3 +87,7 @@ spec:
         existingClaim: zot
         globalMounts:
           - path: /var/lib/registry
+      tmp:
+        type: emptyDir
+        globalMounts:
+          - path: /tmp
