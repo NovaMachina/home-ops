@@ -15,5 +15,5 @@ data:
       },
       "log": {
         "level": "debug"
-      },
+      }
     }
