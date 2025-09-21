@@ -1,0 +1,89 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: zot
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: app-template
+      version: 4.2.0
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s-labs
+        namespace: flux-system
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      strategy: rollback
+      retries: 3
+  values:
+    controllers:
+      zot:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          app:
+            image:
+              repository: ghcr.io/project-zot/zot-linux-amd64
+              tag: v2.1.8@sha256:0e0f300dba2040a4d43b8d35d9a6d047b07b7e6cadad2a6634830189b02ec27e
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: {drop: ["ALL"]}
+            probes:
+              liveness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /livez
+                    port: 5000
+                  initialDelaySeconds: 5
+              readiness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /readyz
+                    port: 5000
+                  initialDelaySeconds: 5
+              startup:
+                enabled: true
+                spec:
+                  httpGet:
+                    path: /startupz
+                    port: 5000
+                  initialDelaySeconds: 5
+                  periodSeconds: 10
+                  timeoutSeconds: 5
+                  failureThreshold: 3
+            resources:
+              requests:
+                cpu: 10m
+                memory: 512Mi
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 568
+        runAsGroup: 568
+        fsGroup: 568
+        fsGroupChangePolicy: OnRootMismatch
+        seccompProfile: {type: RuntimeDefault}
+
+    service:
+      app:
+        ports:
+          http:
+            port: 5000
+
+    persistence:
+      config:
+        existingClaim: zot
+        globalMounts:
+          - path: /var/lib/registry
