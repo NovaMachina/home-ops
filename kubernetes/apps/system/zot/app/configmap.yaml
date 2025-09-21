@@ -4,7 +4,7 @@ kind: ConfigMap
 metadata:
   name: zot-cofnig
 data:
-  zot.yaml: |-
+  config.yaml: |-
     storage:
       rootDirectory: /var/lib/registry
     http:
