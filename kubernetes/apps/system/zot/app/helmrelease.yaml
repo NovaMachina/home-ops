@@ -65,8 +65,8 @@ spec:
                   failureThreshold: 3
             resources:
               requests:
-                cpu: 10m
-                memory: 512Mi
+                cpu: 200m
+                memory: 150Mi
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
@@ -83,10 +83,14 @@ spec:
             port: 5000
 
     persistence:
-      config:
+      registry:
         existingClaim: zot
         globalMounts:
           - path: /var/lib/registry
+      config:
+        type: configMap
+        name: zot-config
+        path: /etc/zot
       tmp:
         type: emptyDir
         globalMounts:

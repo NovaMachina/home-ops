@@ -1,0 +1,14 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: zot-cofnig
+data:
+  zot.yaml: |-
+    storage:
+      rootDirectory: /var/lib/registry
+    http:
+      addr: 0.0.0.0
+      port: 5000
+    log:
+      level: debug
