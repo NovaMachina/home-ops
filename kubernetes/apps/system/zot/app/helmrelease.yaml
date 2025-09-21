@@ -90,7 +90,10 @@ spec:
       config:
         type: configMap
         name: zot-config
-        path: /etc/zot
+        advancedMounts:
+          zot:
+            app:
+              - path: /etc/zot
       tmp:
         type: emptyDir
         globalMounts:
