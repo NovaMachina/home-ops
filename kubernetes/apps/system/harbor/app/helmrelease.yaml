@@ -68,4 +68,4 @@ spec:
 
     nginx:
       podAnnotations:
-        secret.reloader.stakater.com/reload: harbor-cert
+        secret.reloader.stakater.com/reload: harbor-secret
