@@ -15,5 +15,18 @@ data:
       },
       "log": {
         "level": "debug"
+      },
+      "extensions": {
+        "sync": {
+          "registries": [
+            {
+              "urls": [
+                "https://ghcr.io"
+              ],
+              "onDemand": true,
+              "tlsVerify": true
+            }
+          ]
+        }
       }
     }
