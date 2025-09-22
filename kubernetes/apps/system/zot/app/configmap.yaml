@@ -27,6 +27,9 @@ data:
               "tlsVerify": true
             }
           ]
+        },
+        "ui": {
+          "enable": true
         }
       }
     }
