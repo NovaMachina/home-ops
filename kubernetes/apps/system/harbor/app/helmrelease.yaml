@@ -29,11 +29,11 @@ spec:
         enabled: true
         certSource: secret
         auto:
-          commonName: "harbor.${SECRET_DOMAIN}"
+          commonName: "registry.${SECRET_DOMAIN}"
         secret:
           secretName: harbor-cert
 
-    externalURL: https://harbor.${SECRET_DOMAIN}
+    externalURL: https://registry.${SECRET_DOMAIN}
     ipFamily:
       ipv6:
         enabled: false
