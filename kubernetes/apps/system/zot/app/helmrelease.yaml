@@ -82,6 +82,16 @@ spec:
           http:
             port: 5000
 
+    route:
+      main:
+        enabled: true
+        hostnames:
+          - "zot.${SECRET_DOMAIN}"
+        parentRefs:
+          - name: internal
+            namespace: network
+            sectionName: https
+
     persistence:
       registry:
         existingClaim: zot
