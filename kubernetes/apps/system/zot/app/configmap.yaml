@@ -27,7 +27,8 @@ data:
                 "prefix": "**"
               },
               "onDemand": true,
-              "tlsVerify": true
+              "tlsVerify": true,
+              "onlySigned": false
             }
           ]
         },
