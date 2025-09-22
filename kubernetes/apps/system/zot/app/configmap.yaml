@@ -12,9 +12,9 @@ data:
       "http": {
         "address": "0.0.0.0",
         "port": "5000",
-        "compat": {
+        "compat": [
           "docker2s2"
-        }
+        ]
       },
       "log": {
         "level": "trace"
@@ -22,19 +22,19 @@ data:
       "extensions": {
         "sync": {
           "registries": [
-          {
-            "urls": [
-              "https://ghcr.io"
-            ],
-            "content": [
             {
-              "prefix": "**"
+              "urls": [
+                "https://ghcr.io"
+              ],
+              "content": [
+                {
+                  "prefix": "**"
+                }
+              ],
+              "onDemand": true,
+              "tlsVerify": true
             }
-            ],
-            "onDemand": true,
-            "tlsVerify": true
-          }
-        ]
+          ]
         },
         "search": {
           "enable": true,
