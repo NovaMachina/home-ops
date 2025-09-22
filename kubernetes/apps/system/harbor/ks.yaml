@@ -23,9 +23,6 @@ spec:
     substituteFrom:
       - name: cluster-secrets
         kind: Secret
-      - name: harbor-secret
-        kind: Secret
-        optional: false
     substitute:
       APP: *appname
       VOLSYNC_CAPACITY: 50Gi
