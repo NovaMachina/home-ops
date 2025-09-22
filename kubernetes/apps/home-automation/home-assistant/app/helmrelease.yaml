@@ -39,7 +39,7 @@ spec:
         containers:
           app:
             image:
-              repository: ghcr.io/home-operations/home-assistant
+              repository: zot.jacob-williams.me/home-operations/home-assistant
               tag: 2025.8.3@sha256:7ef14f513e487add292b43306cccb4f1cd9dbcbd5eaf85d6438f98b197f930a4
             env:
               TZ: America/Chicago
@@ -48,7 +48,7 @@ spec:
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
-              capabilities: { drop: ["ALL"] }
+              capabilities: {drop: ["ALL"]}
             resources:
               requests:
                 cpu: 100m
@@ -57,13 +57,16 @@ spec:
             image:
               repository: ghcr.io/coder/code-server
               tag: 4.103.1@sha256:fc1d8a57dc5ca5fab67999416165d994ab78a7338b046c4b29f168033a6b7b38
-            args: [
-              "--auth", "none",
-              "--user-data-dir", "/config/.vscode",
-              "--extensions-dir", "/config/.vscode",
-              "--port", "12321",
-              "/config"
-            ]
+            args:
+              - "--auth"
+              - "none"
+              - "--user-data-dir"
+              - "/config/.vscode"
+              - "--extensions-dir"
+              - "/config/.vscode"
+              - "--port"
+              - "12321"
+              - "/config"
             resources:
               requests:
                 cpu: 100m
@@ -75,7 +78,7 @@ spec:
         runAsGroup: 568
         fsGroup: 568
         fsGroupChangePolicy: OnRootMismatch
-        seccompProfile: { type: RuntimeDefault }
+        seccompProfile: {type: RuntimeDefault}
     service:
       app:
         ports:
@@ -98,7 +101,8 @@ spec:
             namespace: network
             sectionName: https
         rules:
-          - backendRefs: [{}]
+          - backendRefs:
+              - {}
       code:
         hostnames:
           - hass-code.${SECRET_DOMAIN}
