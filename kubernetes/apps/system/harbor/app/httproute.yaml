@@ -15,4 +15,4 @@ spec:
     - backendRefs:
         - name: harbor
           namespace: system
-          port: 443
+          port: 80
