@@ -23,6 +23,9 @@ data:
               "urls": [
                 "https://ghcr.io"
               ],
+              "content": {
+                "prefix": "**"
+              },
               "onDemand": true,
               "tlsVerify": true
             }
