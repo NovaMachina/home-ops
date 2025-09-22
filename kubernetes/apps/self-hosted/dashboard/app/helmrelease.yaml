@@ -36,7 +36,7 @@ spec:
         containers:
           app:
             image:
-              repository: zot.jacob-williams.me/v2/ghcr.io/gethomepage/homepage
+              repository: ghcr.io/gethomepage/homepage
               tag: v1.4.5@sha256:9cdc0cb35224fdfcbdc1d37440b42f05bd803d475a7211fed13bd69a65e4a1d4
               pullPolicy: Always
             env:
