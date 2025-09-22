@@ -26,7 +26,7 @@ spec:
     expose:
       type: clusterIP
       tls:
-        enabled: true
+        enabled: false
         certSource: secret
         auto:
           commonName: "registry.${SECRET_DOMAIN}"
