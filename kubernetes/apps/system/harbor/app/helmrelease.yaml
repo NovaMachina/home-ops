@@ -60,12 +60,13 @@ spec:
     updateStrategy:
       type: Recreate
 
-    harborAdminPassword: "${ADMIN_PASSWORD}"
-    secretKey: "${ENCRPYTION_KEY}"
+    existingSecretAdminPassword: harbor-secret
+    existingSecretAdminPasswordKey: ADMIN_PASSWORD
+    existingSecretSecretKey: harbor-secret
 
     notary:
       enabled: false
 
     nginx:
       podAnnotations:
-        secret.reloader.stakater.com/reload: harbor-secret
+        secret.reloader.stakater.com/reload: harbor-cert
