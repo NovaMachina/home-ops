@@ -1,0 +1,71 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app harbor
+spec:
+  interval: 30m
+  timeout: 15m
+  chart:
+    spec:
+      chart: harbor
+      version: 1.18.0
+      sourceRef:
+        kind: HelmRepository
+        name: harbor
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      strategy: rollback
+      retries: 3
+  values:
+    expose:
+      type: clusterIP
+      tls:
+        enabled: true
+        certSource: secret
+        auto:
+          commonName: "harbor.${SECRET_DOMAIN}"
+        secret:
+          secretName: harbor-cert
+
+    externalURL: https://harbor.${SECRET_DOMAIN}
+    ipFamily:
+      ipv6:
+        enabled: false
+    persistence:
+      enabled: true
+      persistentVolumeClaim:
+        registry:
+          existingClaim: harbor
+          storageClass: ceph-block
+          subPath: registry
+        jobservice:
+          jobLog:
+            storageClass: ceph-block
+        database:
+          storageClass: ceph-block
+        redis:
+          storageClass: ceph-block
+        trivy:
+          storageClass: ceph-block
+
+    database:
+      type: internal
+
+    updateStrategy:
+      type: Recreate
+
+    harborAdminPassword: "${ADMIN_PASSWORD}"
+    secretKey: "${ENCRPYTION_KEY}"
+
+    notary:
+      enabled: false
+
+    nginx:
+      podAnnotations:
+        secret.reloader.stakater.com/reload: harbor-cert
