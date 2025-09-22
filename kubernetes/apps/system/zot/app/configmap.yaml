@@ -28,6 +28,12 @@ data:
             }
           ]
         },
+        "search": {
+          "enabled": true,
+          "cve": {
+            "updateInterval": "2h"
+          }
+        },
         "ui": {
           "enable": true
         }
