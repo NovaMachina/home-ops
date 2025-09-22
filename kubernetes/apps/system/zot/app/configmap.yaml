@@ -29,7 +29,7 @@ data:
           ]
         },
         "search": {
-          "enabled": true,
+          "enable": true,
           "cve": {
             "updateInterval": "2h"
           }
