@@ -32,7 +32,8 @@ data:
                 }
               ],
               "onDemand": true,
-              "tlsVerify": true
+              "tlsVerify": true,
+              "preserveDigest": true
             }
           ]
         },
