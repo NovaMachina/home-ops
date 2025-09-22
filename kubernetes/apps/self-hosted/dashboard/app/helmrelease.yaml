@@ -35,7 +35,7 @@ spec:
         containers:
           app:
             image:
-              repository: ghcr.io/gethomepage/homepage
+              repository: zot.system.svc.cluster.local:5000/gethomepage/homepage
               tag: v1.4.5@sha256:9cdc0cb35224fdfcbdc1d37440b42f05bd803d475a7211fed13bd69a65e4a1d4
             env:
               TZ: America/Chicago
@@ -84,7 +84,7 @@ spec:
             path: /app/config/kubernetes.yaml
           - subPath: services.yaml
             path: /app/config/services.yaml
-          # - subPath: settings.yaml
-          #   path: /app/config/settings.yaml
-          # - subPath: widgets.yaml
-          #   path: /app/config/widgets.yaml
+            # - subPath: settings.yaml
+            #   path: /app/config/settings.yaml
+            # - subPath: widgets.yaml
+            #   path: /app/config/widgets.yaml
