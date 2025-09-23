@@ -8,6 +8,6 @@ resources:
   - ./intel-device-plugins/ks.yaml
   - ./keda/ks.yaml
   - ./node-feature-discovery/ks.yaml
-  - ./harbor/ks.yaml
+  # - ./harbor/ks.yaml
 components:
   - ../../components/common
