@@ -36,7 +36,7 @@ spec:
               allowPrivilegeEscalation: true
               privileged: true
               readOnlyRootFilesystem: false
-              capabilities: { drop: ["ALL"] }
+              capabilities: {drop: ["ALL"]}
             resources:
               requests:
                 cpu: 100m
@@ -51,7 +51,7 @@ spec:
         runAsGroup: 0
         fsGroup: 0
         fsGroupChangePolicy: OnRootMismatch
-        seccompProfile: { type: RuntimeDefault }
+        seccompProfile: {type: RuntimeDefault}
     service:
       app:
         controller: frigate
@@ -60,6 +60,10 @@ spec:
             port: 8971
           api:
             port: 5000
+          rtsp:
+            port: 8554
+          webrtc:
+            port: 8555
 
     route:
       main:
@@ -74,7 +78,8 @@ spec:
             namespace: network
             sectionName: https
         rules:
-          - backendRefs: [{}]
+          - backendRefs:
+              - {}
       api:
         hostnames:
           - frigate-api.${SECRET_DOMAIN}
