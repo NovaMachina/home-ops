@@ -34,6 +34,9 @@ spec:
             envFrom:
               - secretRef:
                   name: pgadmin-secret
+            env:
+              - name: PGADMIN_CUSTOM_CONFIG_DISTRO_FILE
+                value: /tmp/config_distro.py
             probes:
               liveness:
                 enabled: true
@@ -102,3 +105,10 @@ spec:
           - path: /pgadmin4/servers.json
             subPath: servers.json
             readOnly: true
+      tmpfs:
+        type: emptyDir
+        advancedMounts:
+          pgadmin:
+            app:
+              - path: /tmp
+                subPath: tmp
