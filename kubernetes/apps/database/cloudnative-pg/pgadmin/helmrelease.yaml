@@ -96,7 +96,7 @@ spec:
             scrapeTimeout: 10s
     persistence:
       config-file:
-        type: config-map
+        type: configMap
         name: pgadmin-configmap
         globalMounts:
           - path: /pgadmin4/servers.json
