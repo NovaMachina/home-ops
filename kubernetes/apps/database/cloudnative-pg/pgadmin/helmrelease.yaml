@@ -114,3 +114,13 @@ spec:
             app:
               - path: /tmp
                 subPath: tmp
+              - path: /var/log/pgadmin
+                subPath: logs
+              - path: /usr/bin/python3
+                subPath: python3
+      data:
+        type: emptyDir
+        advancedMounts:
+          pgadmin:
+            app:
+              - path: /var/lib/pgadmin
