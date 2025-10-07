@@ -1,0 +1,18 @@
+---
+servers.json: |-
+  {
+    "Servers": {
+      "1": {
+          "Name": "Homelab",
+          "Group": "Homelab",
+          "Port": 5432,
+          "Username": "postgres",
+          "Host": "postgres16-rw.database.svc.cluster.local",
+          "MaintenanceDB": "postgres",
+          "ConnectionParameters": {
+              "sslmode": "prefer",
+              "connect_timeout": 10
+          }
+      },
+    }
+  }

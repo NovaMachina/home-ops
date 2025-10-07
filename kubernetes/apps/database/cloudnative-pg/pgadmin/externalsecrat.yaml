@@ -1,0 +1,24 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.bjw-s.dev/external-secrets.io/externalsecret_v1.json
+apiVersion: external-secrets.io/v1
+kind: ExternalSecret
+metadata:
+  name: pgadmin
+spec:
+  refreshInterval: 5m
+  secretStoreRef:
+    kind: ClusterSecretStore
+    name: onepassword
+  target:
+    name: pgadmin-secret
+    creationPolicy: Owner
+  data:
+    - secretKey: PGADMIN_DEFAULT_EMAIL
+      remoteRef:
+        key: pgadmin
+        property: default_email
+    - secretKey: PGADMIN_DEFAULT_PASSWORD
+      remoteRef:
+        key: pgadmin
+        property: default_password
+
