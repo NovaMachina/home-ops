@@ -5,6 +5,9 @@ kind: Kustomization
 resources:
   - ./helmrelease.yaml
   - ./externalsecret.yaml
+components:
+  - ../../../../components/volsync
+  - ../../../../components/keda/nas-nfs-scaler
 configMapGenerator:
   - name: pgadmin-configmap
     files:

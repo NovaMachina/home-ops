@@ -24,103 +24,53 @@ spec:
   values:
     controllers:
       pgadmin:
-        replicas: 1
-        strategy: RollingUpdate
+        strategy: Recreate
+        annotations:
+          reloader.stakater.com/auto: "true"
         containers:
-          app:
+          main:
             image:
-              repository: dpage/pgadmin4
-              tag: 9.8.0@sha256:d115bcd737940a6cfb61a54439d50de8b850e0782e2363102c9fa761f4022f49
+              repository: docker.io/dpage/pgadmin4
+              tag: 9.8@sha256:d115bcd737940a6cfb61a54439d50de8b850e0782e2363102c9fa761f4022f49
+            env:
+              PGADMIN_CONFIG_X_CONTENT_TYPE_OPTIONS: "''"
+              PGADMIN_CONFIG_ENHANCED_COOKIE_PROTECTION: "False"
+              PGADMIN_CONFIG_X_XSS_PROTECTION: 0
             envFrom:
               - secretRef:
                   name: pgadmin-secret
-            env:
-              - name: PGADMIN_CUSTOM_CONFIG_DISTRO_FILE
-                value: /tmp/config_distro.py
-              - name: PGADMIN_DISABLE_POSTFIX
-                value: true
-            probes:
-              liveness:
-                enabled: true
-                custom: true
-                spec:
-                  httpGet:
-                    path: /misc/ping
-                    port: &port 80
-                  initialDelaySeconds: 15
-                  periodSeconds: 20
-                  timeoutSeconds: 1
-                  failureThreshold: 3
-              readiness:
-                enabled: true
-                custom: true
-                spec:
-                  httpGet:
-                    path: /misc/ping
-                    port: *port
-                  initialDelaySeconds: 5
-                  periodSeconds: 10
-                  timeoutSeconds: 1
-                  failureThreshold: 3
             resources:
               requests:
-                cpu: 10m
-                memory: 64Mi
-            securityContext:
-              allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: true
-              capabilities: {drop: ["ALL"]}
+                memory: 256Mi
+              limits:
+                memory: 256Mi
         pod:
           securityContext:
-            runAsUser: 65534
-            runAsGroup: 65534
-            runAsNonRoot: true
-          topologySpreadConstraints:
-            - maxSkew: 1
-              topologyKey: kubernetes.io/hostname
-              whenUnsatisfiable: DoNotSchedule
-              labelSelector:
-                matchLabels:
-                  app.kubernetes.io/name: *app
+            runAsUser: 0
+            runAsGroup: 0
     service:
       app:
-        controller: *app
+        controller: pgadmin
         ports:
           http:
-            port: *port
-    serviceAccount:
-      pgadmin: {}
-    serviceMonitor:
+            port: &port 80
+    route:
       app:
-        serviceName: *app
-        endpoints:
-          - port: metrics
-            scheme: http
-            path: /metrics
-            interval: 1m
-            scrapeTimeout: 10s
+        hostnames:
+          - "pgadmin.${SECRET_DOMAIN}"
+        parentRefs:
+          - name: envoy-external
+            namespace: network
+            sectionName: https
     persistence:
-      config-file:
+      config:
+        existingClaim: "{{ .Release.Name }}"
+        globalMounts:
+          - path: /var/lib/pgadmin
+      server-json:
+        enabled: true
         type: configMap
         name: pgadmin-configmap
         globalMounts:
           - path: /pgadmin4/servers.json
             subPath: servers.json
-            readOnly: true
-      tmpfs:
-        type: emptyDir
-        advancedMounts:
-          pgadmin:
-            app:
-              - path: /tmp
-                subPath: tmp
-              - path: /var/log/pgadmin
-                subPath: logs
-              - path: /usr/bin/python3
-                subPath: python3
-      data:
-        type: emptyDir
-        advancedMounts:
-          pgadmin:
-            app:
-              - path: /var/lib/pgadmin
