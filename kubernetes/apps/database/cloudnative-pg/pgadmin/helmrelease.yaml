@@ -37,6 +37,8 @@ spec:
             env:
               - name: PGADMIN_CUSTOM_CONFIG_DISTRO_FILE
                 value: /tmp/config_distro.py
+              - name: PGADMIN_DISABLE_POSTFIX
+                value: true
             probes:
               liveness:
                 enabled: true
