@@ -7,6 +7,6 @@ resources:
 configMapGenerator:
   - name: pgadmin-configmap
     files:
-      - ./configs/servers.yaml
+      - ./config/servers.yaml
 generatorOptions:
   disableNameSuffixHash: true
