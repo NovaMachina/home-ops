@@ -59,12 +59,12 @@ spec:
         hostnames:
           - "pgadmin.${SECRET_DOMAIN}"
         parentRefs:
-          - name: envoy-external
+          - name: internal
             namespace: network
             sectionName: https
     persistence:
       config:
-        existingClaim: "{{ .Release.Name }}"
+        existingClaim: pgadmin
         globalMounts:
           - path: /var/lib/pgadmin
       server-json:
