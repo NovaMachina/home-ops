@@ -69,14 +69,6 @@ spec:
         certificateRefs:
           - kind: Secret
             name: ${SECRET_DOMAIN/./-}-tls
-    - name: postgres
-      protocol: TCP
-      port: 5432
-      allowedRoutes:
-        kinds:
-          - kind: TCPRoute
-        namespaces:
-          from: All
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.jacob-williams.me/gateway.networking.k8s.io/gateway_v1.json
 apiVersion: gateway.networking.k8s.io/v1
