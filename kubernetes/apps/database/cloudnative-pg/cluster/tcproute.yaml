@@ -10,4 +10,4 @@ spec:
   rules:
     - backendRefs:
         - name: postgres16-rw
-          port: 5$32
+          port: 5432
