@@ -11,7 +11,7 @@ resources:
   - ./kube-prometheus-stack/ks.yaml
   - ./loki/ks.yaml
   - ./node-exporter/ks.yaml
-  - ./opentelemetry/ks.yaml
+  - ./open-telemetry/ks.yaml
   - ./prometheus-operator/ks.yaml
   - ./promtail/ks.yaml
   - ./silence-operator/ks.yaml
