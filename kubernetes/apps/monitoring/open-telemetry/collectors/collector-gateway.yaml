@@ -140,6 +140,13 @@ spec:
             enabled: true
       k8s_events:
         auth_type: serviceAccount
+      otlp:
+        protocols:
+          grpc:
+            endpoint: 0.0.0.0:4317
+            max_recv_msg_size_mib: 4
+          http:
+            endpoint: 0.0.0.0:4318
     service:
       extensions:
         - health_check
