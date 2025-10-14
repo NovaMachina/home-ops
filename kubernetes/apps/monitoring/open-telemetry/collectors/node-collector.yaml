@@ -62,7 +62,7 @@ spec:
   config:
     exporters:
       otlp:
-        endpoint: opentelemetry-gateway-collector.monitoring.svc.cluster.local
+        endpoint: opentelemetry-gateway-collector.monitoring.svc.cluster.local:4317
         tls:
           insecure: true
     extensions:
