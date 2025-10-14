@@ -5,6 +5,7 @@ kind: Kustomization
 resources:
   - ./helmrelease.yaml
   - ./helmrepository.yaml
+  - ./pvc.yaml
 components:
   - ../../../../components/volsync
   - ../../../../components/keda/nas-nfs-scaler

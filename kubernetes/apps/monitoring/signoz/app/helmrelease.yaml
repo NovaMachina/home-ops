@@ -17,3 +17,6 @@ spec:
     clickhouse:
       persistence:
         existingClaim: signoz
+    signoz:
+      persistence:
+        existingClaim: signoz-data
