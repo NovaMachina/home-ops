@@ -10,8 +10,7 @@ spec:
     - name: OTEL_SECRETS_PATH
       value: /secrets
     - name: K8S_CLUSTER_NAME
-      value:
-
+      value: "ope"
     - name: K8S_NODE_NAME
       valueFrom:
         fieldRef:
