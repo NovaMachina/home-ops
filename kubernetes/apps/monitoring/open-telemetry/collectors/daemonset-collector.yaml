@@ -60,11 +60,11 @@ spec:
       readOnly: true
       mountPropagation: HostToContainer
   config:
-    # exporters:
-    #   otlp:
-    #     endpoint: ${env:OTEL_EXPORTER_OTLP_ENDPOINT}
-    #     tls:
-    #       insecure: true
+    exporters:
+      otlp:
+        endpoint: ${env:OTEL_EXPORTER_OTLP_ENDPOINT}
+        tls:
+          insecure: true
     extensions:
       health_check:
         endpoint: 0.0.0.0:13133
