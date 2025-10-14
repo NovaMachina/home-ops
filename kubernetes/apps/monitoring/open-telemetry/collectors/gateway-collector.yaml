@@ -2,7 +2,7 @@
 apiVersion: opentelemetry.io/v1beta1
 kind: OpenTelemetryCollector
 metadata:
-  name: signoz-collector-deployment
+  name: opentelemetry-gateway-collector
 spec:
   mode: deployment
   image: docker.io/otel/opentelemetry-collector-contrib:0.109.0
