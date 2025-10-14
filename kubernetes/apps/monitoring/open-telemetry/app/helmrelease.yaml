@@ -6,13 +6,9 @@ metadata:
   name: open-telemetry
 spec:
   interval: 30m
-  chart:
-    spec:
-      chart: open-telemetry
-      version: 0.136.0
-      sourceRef:
-        kind: HelmRepository
-        name: open-telemetry
+  chartRef:
+    kind: OCIRepository
+    name: open-telemetry
   values:
     manager:
       collectorImage:
