@@ -64,7 +64,7 @@ spec:
   config:
     exporters:
       otlp:
-        endpoint: signoz-otel-collector.monitoring.svc.cluster.local
+        endpoint: signoz-otel-collector.monitoring.svc.cluster.local:4317
         # headers:
         #   signoz-ingestion-key: ${env:SIGNOZ_INGESTION_KEY}
         tls:
