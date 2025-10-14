@@ -140,6 +140,13 @@ spec:
             enabled: true
       k8s_events:
         auth_type: serviceAccount
+      otlp:
+        protocols:
+          grpc:
+            endpoint: 0.0.0.0:4317
+            max_recv_msg_size_mib: 4
+          http:
+            endpoint: 0.0.0.0:4318
     service:
       extensions:
         - health_check
@@ -155,6 +162,7 @@ spec:
             - batch
           receivers:
             - k8s_events
+            - otlp
         metrics/internal:
           exporters:
             - otlp
@@ -164,6 +172,16 @@ spec:
             - batch
           receivers:
             - k8s_cluster
+            - otlp
+        traces:
+          exporters:
+            - otlp
+          processors:
+            - resourcedetection
+            - k8sattributes
+            - batch
+          receivers:
+            - otlp
       telemetry:
         logs:
           encoding: json
