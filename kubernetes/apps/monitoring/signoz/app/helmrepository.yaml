@@ -3,8 +3,8 @@
 apiVersion: source.toolkit.fluxcd.io/v1
 kind: HelmRepository
 metadata:
-  name: open-telemetry
+  name: signoz
   namespace: monitoring
 spec:
   interval: 30m
-  url: https://ghcr.io/open-telemetry/opentelemetry-operator/opentelemetry-operator
+  url: https://charts.signoz.io
