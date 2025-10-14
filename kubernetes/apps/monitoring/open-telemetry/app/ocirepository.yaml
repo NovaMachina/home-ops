@@ -11,5 +11,3 @@ spec:
   ref:
     tag: 0.136.0
   url: oci://ghcr.io/open-telemetry/opentelemetry-operator/opentelemetry-operator
-  verify:
-    provider: cosign
