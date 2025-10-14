@@ -62,7 +62,7 @@ spec:
   config:
     exporters:
       otlp:
-        endpoint: ${env:OTEL_EXPORTER_OTLP_ENDPOINT}
+        endpoint: opentelemetry-gateway-collector.monitoring.svc.cluster.local
         tls:
           insecure: true
     extensions:
