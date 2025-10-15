@@ -24,6 +24,12 @@ spec:
               static_configs:
                 - targets:
                     - '0.0.0.0:8888'
+              relabel_configs:
+                # Drop any target whose job or namespace matches a pattern
+                - source_labels:
+                    - __meta_kubernetes_pod_label_app
+                  regex: "dragonfly"
+                  action: drop
 
     exporters:
       debug: {}
