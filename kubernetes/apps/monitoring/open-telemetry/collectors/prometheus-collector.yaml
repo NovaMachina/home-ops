@@ -26,7 +26,10 @@ spec:
                     - '0.0.0.0:8888'
 
     exporters:
-      debug: {}
+      otlp:
+        endpoint: opentelemetry-gateway-collector.monitoring.svc.cluster.local:4317
+        tls:
+          insecure: true
 
     service:
       pipelines:
@@ -34,4 +37,4 @@ spec:
           receivers:
             - prometheus
           exporters:
-            - debug
+            - otlp
