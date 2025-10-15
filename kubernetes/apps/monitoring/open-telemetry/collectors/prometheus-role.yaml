@@ -44,6 +44,7 @@ rules:
       - servicemonitors
       - podmonitors
       - probes
+      - scrapeconfigs
     verbs:
       - '*'
   - apiGroups:
