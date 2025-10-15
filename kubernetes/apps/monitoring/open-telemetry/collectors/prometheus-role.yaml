@@ -43,6 +43,7 @@ rules:
     resources:
       - servicemonitors
       - podmonitors
+      - probes
     verbs:
       - '*'
   - apiGroups:
