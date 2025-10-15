@@ -61,12 +61,6 @@ spec:
       mountPath: /hostfs
       readOnly: true
       mountPropagation: HostToContainer
-  targetAllocator:
-    enabled: true
-    prometheusCR:
-      enabled: true
-      podMonitorSelector: {}
-      serviceMonitorSelector: {}
   config:
     exporters:
       otlp:
