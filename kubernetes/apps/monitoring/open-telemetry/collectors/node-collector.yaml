@@ -62,6 +62,7 @@ spec:
       readOnly: true
       mountPropagation: HostToContainer
   targetAllocator:
+    enabled: true
     prometheusCR:
       enabled: true
       podMonitorSelector: {}
