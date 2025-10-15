@@ -5,3 +5,4 @@ kind: Kustomization
 resources:
   - ./node-collector.yaml
   - ./gateway-collector.yaml
+  - ./rbac.yaml
