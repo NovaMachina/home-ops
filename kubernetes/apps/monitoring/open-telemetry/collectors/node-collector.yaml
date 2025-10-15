@@ -6,6 +6,7 @@ metadata:
   name: opentelemetry-node
 spec:
   mode: daemonset
+  hostNetwork: true
   image: docker.io/otel/opentelemetry-collector-contrib:0.109.0
   env:
     - name: K8S_CLUSTER_NAME
