@@ -1,4 +1,5 @@
 ---
+# yaml-language-server: $schema=https://kubernetes-schemas.jacob-williams.me/opentelemetry.io/opentelemetrycollector_v1beta1.json
 apiVersion: opentelemetry.io/v1beta1
 kind: OpenTelemetryCollector
 metadata:
@@ -214,7 +215,7 @@ spec:
       kubeletstats:
         auth_type: serviceAccount
         collection_interval: 30s
-        endpoint: ${env:K8S_HOST_IP}:10250
+        # endpoint: ${env:K8S_HOST_IP}:10250
         extra_metadata_labels:
           - container.id
           - k8s.volume.type
