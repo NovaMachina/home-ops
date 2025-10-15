@@ -10,18 +10,14 @@ spec:
     - name: K8S_CLUSTER_NAME
       value: "ope"
     - name: K8S_NODE_NAME
-      valueFrom:
-        fieldRef:
-          fieldPath: spec.nodeName
+      value: /etc/podinfo/nodeName
     - name: K8S_POD_IP
       valueFrom:
         fieldRef:
           apiVersion: v1
           fieldPath: status.podIP
     - name: K8S_HOST_IP
-      valueFrom:
-        fieldRef:
-          fieldPath: status.hostIP
+      value: /etc/podinfo/hostIP
     - name: K8S_POD_NAME
       valueFrom:
         fieldRef:
@@ -48,6 +44,18 @@ spec:
     - name: hostfs
       hostPath:
         path: /
+    - name: podinfo
+      downwardAPI:
+        items:
+          - path: "nodeName"
+            fieldRef:
+              fieldPath: spec.nodeName
+          - path: "podIP"
+            fieldRef:
+              fieldPath: status.podIP
+          - path: "hostIP"
+            fieldRef:
+              fieldPath: status.hostIP
   volumeMounts:
     - name: varlog
       mountPath: /var/log
@@ -59,6 +67,9 @@ spec:
       mountPath: /hostfs
       readOnly: true
       mountPropagation: HostToContainer
+    - name: podinfo
+      mountPath: /etc/podinfo
+      readOnly: true
   config:
     exporters:
       otlp:
