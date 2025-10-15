@@ -13,7 +13,6 @@ resources:
   - ./node-exporter/ks.yaml
   - ./prometheus-operator/ks.yaml
   - ./promtail/ks.yaml
-  - ./signoz/ks.yaml
   - ./silence-operator/ks.yaml
   - ./speedtest-exporter/ks.yaml
 components:
