@@ -1,0 +1,58 @@
+---
+apiVersion: opentelemetry.io/v1beta1
+kind: OpenTelemetryCollector
+metadata:
+  name: otel-gateway
+  namespace: monitoring
+spec:
+  mode: deployment
+  config:
+    receivers:
+      otlp:
+        protocols:
+          grpc:
+          http:
+
+    exporters:
+      otlphttp/victoriametrics:
+        endpoint: http://vmsingle-metrics.monitoring:8428/opentelemetry/api/v1/push
+
+      otlphttp/victorialogs:
+        endpoint: http://vlsingle-logs.monitoring:9428/otlp/v1/logs
+
+      # otlphttp/victoriatraces:
+      #   endpoint: http://victoriatraces.monitoring:9428/otlp/v1/traces
+
+    processors:
+      batch:
+      memory_limiter:
+        check_interval: 1s
+        limit_mib: 400
+        spike_limit_mib: 100
+
+    service:
+      pipelines:
+        metrics:
+          receivers:
+            - otlp
+          processors:
+            - memory_limiter
+            - batch
+          exporters:
+            - otlphttp/victoriametrics
+        logs:
+          receivers:
+            - otlp
+          processors:
+            - memory_limiter
+            - batch
+          exporters:
+            - otlphttp/victorialogs
+          # traces:
+          #   receivers:
+          #     - otlp
+          #   processors:
+          #     - memory_limiter
+          #     - batch
+          #   exporters:
+          #     - otlphttp/victoriatraces
