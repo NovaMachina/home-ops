@@ -15,5 +15,6 @@ resources:
   - ./promtail/ks.yaml
   - ./silence-operator/ks.yaml
   - ./speedtest-exporter/ks.yaml
+  - ./victoria/ks.yaml
 components:
   - ../../components/common
