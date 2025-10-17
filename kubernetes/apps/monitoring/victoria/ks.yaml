@@ -26,7 +26,9 @@ apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: &app victoria-operator
+  namespace: &namespace monitoring
 spec:
+  targetNamespace: *namespace
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
@@ -49,7 +51,9 @@ spec:
   # kind: Kustomization
   # metadata:
   #   name: &app victoria-metrics
+  #   namespace: &namespace monitoring
   # spec:
+  #   targetNamespace: *namespace
   #   commonMetadata:
   #     labels:
   #       app.kubernetes.io/name: *app
@@ -70,7 +74,9 @@ spec:
   # kind: Kustomization
   # metadata:
   #   name: &app victoria-logs
+  #   namespace: &namespace monitoring
   # spec:
+  #   targetNamespace: *namespace
   #   commonMetadata:
   #     labels:
   #       app.kubernetes.io/name: *app
