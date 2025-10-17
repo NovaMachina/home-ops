@@ -1,0 +1,44 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: victoria-operator
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: victoria-metrics-operator
+  driftDetection:
+    mode: enabled
+    ignore:
+      - paths:
+          - "/metadata/labels/app.kubernetes.io~1name"
+        target:
+          kind: VMServiceScrape
+  install:
+    crds: Skip
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    crds: Skip
+    remediation:
+      retries: 3
+  values:
+    crds:
+      enabled: false
+    fullnameOverride: victoria-operator
+    operator:
+      disable_prometheus_converter: false
+      enable_converter_ownership: true
+    admissionWebhooks:
+      enabled: true
+      certManager:
+        enabled: true
+        issuer:
+          name: letsencrypt-production
+          kind: ClusterIssuer
+          group: cert-manager.io
+    serviceMonitor:
+      enabled: true
