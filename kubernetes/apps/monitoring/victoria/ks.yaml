@@ -1,35 +1,22 @@
 # https://github.com/VictoriaMetrics/helm-charts/issues/2420
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/source.toolkit.fluxcd.io/ocirepository_v1.json
-apiVersion: source.toolkit.fluxcd.io/v1
-kind: OCIRepository
-metadata:
-  name: victoria-metrics-operator-crds
-spec:
-  interval: 1h
-  layerSelector:
-    mediaType: "application/vnd.cncf.helm.chart.content.v1.tar+gzip"
-    operation: extract
-  url: oci://ghcr.io/victoriametrics/helm-charts/victoria-metrics-operator-crds
-  ref:
-    tag: 0.5.1
-  ignore: |
-    /*
-    !/crd.yaml
----
 # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: &app victoria-crds
+  namespace: &namespace monitoring
 spec:
+  targetNamespace: *namespace
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
+  path: ./kubernetes/apps/monitoring/victoria/crds
   prune: false
   sourceRef:
-    kind: OCIRepository
-    name: victoria-metrics-operator-crds
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
   interval: 1h
   retryInterval: 2m
   timeout: 5m
