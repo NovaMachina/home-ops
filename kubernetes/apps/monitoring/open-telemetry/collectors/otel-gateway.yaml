@@ -2,7 +2,7 @@
 apiVersion: opentelemetry.io/v1beta1
 kind: OpenTelemetryCollector
 metadata:
-  name: otel-gateway
+  name: open-telemetry-gateway
   namespace: monitoring
 spec:
   mode: deployment
