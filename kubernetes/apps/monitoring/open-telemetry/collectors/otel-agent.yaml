@@ -8,7 +8,7 @@ spec:
   mode: daemonset
   targetAllocator:
     enabled: true
-    allocation_strategy: per-node
+    allocationStrategy: per-node
     prometheusCR:
       enabled: true
       podMonitorSelector: {}
