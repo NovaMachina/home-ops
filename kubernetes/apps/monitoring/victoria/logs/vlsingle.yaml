@@ -1,0 +1,17 @@
+---
+apiVersion: operator.victoriametrics.com/v1
+kind: VLSingle
+metadata:
+  name: logs
+  namespace: monitoring
+spec:
+  retentionPeriod: "2w"
+  storage:
+    accessModes:
+      - ReadWriteOnce
+    resources:
+      requests:
+        storage: 10Gi
+    storageClassName: ceph-block
+  useDefaultResources: false
+  useStrictSecurity: true
