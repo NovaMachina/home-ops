@@ -28,6 +28,7 @@ spec:
               static_configs:
                 - targets:
                     - '0.0.0.0:8888'
+              bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
               tls_config:
                 ca_file: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
                 insecure_skip_verify: true
