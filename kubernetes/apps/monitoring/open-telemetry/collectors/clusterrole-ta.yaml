@@ -44,6 +44,8 @@ rules:
     resources:
       - servicemonitors
       - podmonitors
+      - probes
+      - scrapeconfigs
     verbs:
       - '*'
   - nonResourceURLs:
