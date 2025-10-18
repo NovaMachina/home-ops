@@ -1,4 +1,5 @@
 ---
+# yaml-language-server: $schema=https://kubernetes-schemas.jacob-williams.me/opentelemetry.io/opentelemetrycollector_v1beta1.json
 apiVersion: opentelemetry.io/v1beta1
 kind: OpenTelemetryCollector
 metadata:
@@ -12,16 +13,30 @@ spec:
         protocols:
           grpc:
           http:
+          # k8s_cluster:
+          #   auth_type: serviceAccount
+          #   collection_interval: 10s
+          #   node_conditions_to_report:
+          #     - Ready
+          #     - DiskPressure
+          #     - MemoryPressure
+          #     - PIDPressure
+          #     - NetworkUnavailable
+          #   allocatable_types_to_report:
+          #     - cpu
+          #     - memory
+          #     - ephemeral-storage
+          #     - pods
 
     exporters:
       otlphttp/victoriametrics:
         endpoint: http://vmsingle-metrics.monitoring.svc.cluster.local:8428/opentelemetry
 
       otlphttp/victorialogs:
-        endpoint: http://vlsingle-logs.monitoring:9428/otlp/v1/logs
+        endpoint: http://vlsingle-logs.monitoring:9428/insert/opentelemetry/v1/logs
 
       # otlphttp/victoriatraces:
-      #   endpoint: http://victoriatraces.monitoring:9428/otlp/v1/traces
+      #   endpoint: http://vtsingle-traces.monitoring:9428/insert/opentelemetry/v1/traces
 
     processors:
       batch:
@@ -34,6 +49,7 @@ spec:
       pipelines:
         metrics:
           receivers:
+            # - k8s_cluster
             - otlp
           processors:
             - memory_limiter
@@ -42,6 +58,7 @@ spec:
             - otlphttp/victoriametrics
         logs:
           receivers:
+            # - k8s_cluster
             - otlp
           processors:
             - memory_limiter
