@@ -15,7 +15,7 @@ spec:
 
     exporters:
       otlphttp/victoriametrics:
-        endpoint: http://vmsingle-metrics.monitoring.svc.cluster.local:8428/opentelemetry/v1/metrics
+        endpoint: http://vmsingle-metrics.monitoring.svc.cluster.local:8428/opentelemetry
 
       otlphttp/victorialogs:
         endpoint: http://vlsingle-logs.monitoring:9428/otlp/v1/logs
