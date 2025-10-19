@@ -38,6 +38,48 @@ spec:
               tls_config:
                 ca_file: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
                 insecure_skip_verify: true
+      kubeletstats:
+        auth_type: serviceAccount
+        collection_interval: 30s
+        endpoint: ${env:K8S_HOST_IP}:10250
+        extra_metadata_labels:
+          - container.id
+          - k8s.volume.type
+        insecure_skip_verify: true
+        metric_groups:
+          - container
+          - pod
+          - node
+          - volume
+        metrics:
+          container.cpu.usage:
+            enabled: true
+          container.uptime:
+            enabled: true
+          k8s.container.cpu_limit_utilization:
+            enabled: true
+          k8s.container.cpu_request_utilization:
+            enabled: true
+          k8s.container.memory_limit_utilization:
+            enabled: true
+          k8s.container.memory_request_utilization:
+            enabled: true
+          k8s.node.cpu.usage:
+            enabled: true
+          k8s.node.uptime:
+            enabled: true
+          k8s.pod.cpu.usage:
+            enabled: true
+          k8s.pod.cpu_limit_utilization:
+            enabled: true
+          k8s.pod.cpu_request_utilization:
+            enabled: true
+          k8s.pod.memory_limit_utilization:
+            enabled: true
+          k8s.pod.memory_request_utilization:
+            enabled: true
+          k8s.pod.uptime:
+            enabled: true
 
     exporters:
       otlp:
@@ -81,6 +123,7 @@ spec:
         metrics:
           receivers:
             - prometheus
+            - kubeletstats
             - otlp
           processors:
             - k8sattributes
