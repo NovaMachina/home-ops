@@ -14,7 +14,7 @@ rules:
       - nodes/spec
       - pods
       - pods/status
-      - replicationcontrollersc
+      - replicationcontrollers
       - replicationcontrollers/status
       - resourcequotas
       - services
