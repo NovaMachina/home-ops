@@ -96,7 +96,6 @@ spec:
             - otlphttp/victoriametrics
         logs:
           receivers:
-            - k8s_cluster
             - otlp
           processors:
             - k8sattributes
