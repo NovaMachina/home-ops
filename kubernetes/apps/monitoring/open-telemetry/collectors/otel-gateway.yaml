@@ -33,10 +33,10 @@ spec:
         endpoint: http://vmsingle-metrics.monitoring.svc.cluster.local:8428/opentelemetry
 
       otlphttp/victorialogs:
-        endpoint: http://vlsingle-logs.monitoring:9428/insert/opentelemetry/v1/logs
+        endpoint: http://vlsingle-logs.monitoring:9428/insert/opentelemetry
 
       # otlphttp/victoriatraces:
-      #   endpoint: http://vtsingle-traces.monitoring:9428/insert/opentelemetry/v1/traces
+      #   endpoint: http://vtsingle-traces.monitoring:9428/insert/opentelemetry
 
     processors:
       batch:
