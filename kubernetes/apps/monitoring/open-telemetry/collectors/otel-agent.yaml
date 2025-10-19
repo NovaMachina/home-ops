@@ -45,7 +45,7 @@ spec:
       kubeletstats:
         auth_type: serviceAccount
         collection_interval: 30s
-        endpoint: ${env:K8S_NODE_IP}:10250
+        endpoint: "${env:K8S_NODE_IP}:10250"
         extra_metadata_labels:
           - container.id
           - k8s.volume.type
