@@ -83,12 +83,10 @@ spec:
             - otlphttp/victoriametrics
         logs:
           receivers:
-            - k8sattributes
             - k8s_cluster
             - otlp
           processors:
-            - memory_limiter
-            - batch
+            - k8sattributes - memory_limiter - batch
           exporters:
             - otlphttp/victorialogs
           # traces:
