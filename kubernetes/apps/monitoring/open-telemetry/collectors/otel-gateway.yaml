@@ -14,19 +14,32 @@ spec:
           grpc:
           http:
       k8s_cluster:
-        auth_type: serviceAccount
-        collection_interval: 10s
-        node_conditions_to_report:
-          - Ready
-          - DiskPressure
-          - MemoryPressure
-          - PIDPressure
-          - NetworkUnavailable
         allocatable_types_to_report:
           - cpu
           - memory
-          - ephemeral-storage
-          - pods
+        collection_interval: 30s
+        metrics:
+          k8s.node.condition:
+            enabled: true
+          k8s.pod.status_reason:
+            enabled: true
+        node_conditions_to_report:
+          - Ready
+          - MemoryPressure
+          - DiskPressure
+          - PIDPressure
+          - NetworkUnavailable
+        resource_attributes:
+          container.runtime:
+            enabled: true
+          container.runtime.version:
+            enabled: true
+          k8s.container.status.last_terminated_reason:
+            enabled: true
+          k8s.kubelet.version:
+            enabled: true
+          k8s.pod.qos_class:
+            enabled: true
 
     exporters:
       otlphttp/victoriametrics:
