@@ -46,8 +46,4 @@ spec:
   dependsOn:
     - name: open-telemetry-operator
       namespace: monitoring
-  postBuild:
-    substituteFrom:
-      - name: cluster-secrets
-        kind: Secret
   wait: false
