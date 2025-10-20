@@ -28,6 +28,27 @@ spec:
       valueFrom:
         fieldRef:
           fieldPath: status.hostIP
+  volumes:
+    - name: varlogpods
+      hostPath:
+        path: /var/log/pods
+    - name: varlibdockercontainers
+      hostPath:
+        path: /var/lib/docker/containers
+    - name: hostfs
+      hostPath:
+        path: /
+  volumeMounts:
+    - name: varlogpods
+      mountPath: /var/log/pods
+      readOnly: true
+    - name: varlibdockercontainers
+      mountPath: /var/lib/docker/containers
+      readOnly: true
+    - name: hostfs
+      mountPath: /hostfs
+      readOnly: true
+      mountPropagation: HostToContainer
   config:
     extensions:
       health_check:
@@ -102,6 +123,52 @@ spec:
             enabled: true
           k8s.pod.uptime:
             enabled: true
+      hostmetrics:
+        collection_interval: 10s
+        root_path: /hostfs
+        scrapers:
+          cpu: null
+          disk: null
+          filesystem:
+            exclude_fs_types:
+              fs_types:
+                - autofs
+                - binfmt_misc
+                - bpf
+                - cgroup2
+                - configfs
+                - debugfs
+                - devpts
+                - devtmpfs
+                - fusectl
+                - hugetlbfs
+                - iso9660
+                - mqueue
+                - nsfs
+                - overlay
+                - proc
+                - procfs
+                - pstore
+                - rpc_pipefs
+                - securityfs
+                - selinuxfs
+                - squashfs
+                - sysfs
+                - tracefs
+              match_type: strict
+            exclude_mount_points:
+              match_type: regexp
+              mount_points:
+                - /dev/*
+                - /proc/*
+                - /sys/*
+                - /run/k3s/containerd/*
+                - /var/lib/docker/*
+                - /var/lib/kubelet/*
+                - /snap/*
+          load: null
+          memory: null
+          network: null
 
     exporters:
       otlp:
@@ -152,6 +219,7 @@ spec:
             - otlp
             - kubeletstats
             - prometheus
+            - hostmetrics
           processors:
             - k8sattributes
             - memory_limiter
