@@ -11,6 +11,7 @@ rules:
       - "namespaces"
       - "nodes"
       - "nodes/stats"
+      - "nodes/proxy"
     verbs:
       - "get"
       - "watch"
