@@ -31,7 +31,7 @@ spec:
   config:
     extensions:
       health_check:
-        endpoint: "${env.MY_POD_ID}:13133"
+        endpoint: "${env:MY_POD_ID}:13133"
 
     receivers:
       otlp:
