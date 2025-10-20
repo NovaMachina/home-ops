@@ -31,15 +31,15 @@ spec:
   config:
     extensions:
       health_check:
-        endpoint: ${env.MY_POD_ID}:13133
+        endpoint: "${env.MY_POD_ID}:13133"
 
     receivers:
       otlp:
         protocols:
           grpc:
-            endpoint: ${env:MY_POD_IP}:4317
+            endpoint: "${env:MY_POD_IP}:4317"
           http:
-            endpoint: ${env:MY_POD_IP}:4318
+            endpoint: "${env:MY_POD_IP}:4318"
       filelog:
         exclude:
           - /var/log/pods/default_test-collector-opentelemetry-collector*_*/opentelemetry-collector/*.log
@@ -61,7 +61,7 @@ spec:
               scrape_interval: 10s
               static_configs:
                 - targets:
-                    - ${env:MY_POD_IP}:8888
+                    - "${env:MY_POD_IP}:8888"
       kubeletstats:
         auth_type: serviceAccount
         collection_interval: 30s
