@@ -18,7 +18,6 @@ rules:
       - replicationcontrollers/status
       - resourcequotas
       - services
-      - "nodes"
     verbs:
       - "get"
       - "watch"
@@ -61,6 +60,13 @@ rules:
       - get
       - list
       - watch
+  - apiGroups:
+      - "events.k8s.io"
+    resources:
+      - "events"
+    verbs:
+      - "watch"
+      - "list"
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
