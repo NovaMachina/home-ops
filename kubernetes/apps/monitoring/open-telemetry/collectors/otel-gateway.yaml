@@ -99,11 +99,11 @@ spec:
             #     - batch
             #   exporters:
             #     - otlphttp/victoriatraces
-telemetry:
-  metrics:
-    readers:
-      - pull:
-          exporter:
-            prometheus:
-              host: ${env:MY_POD_IP}
-              port: 8888
+      telemetry:
+        metrics:
+          readers:
+            - pull:
+                exporter:
+                  prometheus:
+                    host: ${env:MY_POD_IP}
+                    port: 8888
