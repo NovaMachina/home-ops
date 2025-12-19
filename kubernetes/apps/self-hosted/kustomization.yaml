@@ -12,3 +12,4 @@ resources:
   # - ./unifi/ks.yaml
   - ./paperless/ks.yaml
   - ./wikijs/ks.yaml
+  - ./lounge/ks.yaml
