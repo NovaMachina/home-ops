@@ -33,6 +33,10 @@ spec:
             image:
               repository: docker.io/library/busybox
               tag: latest
+            securityContext:
+              runAsUser: 0
+              runAsGroup: 0
+              runAsNonRoot: false
             command:
               - sh
               - -c
