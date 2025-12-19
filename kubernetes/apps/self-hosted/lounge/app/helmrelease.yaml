@@ -37,9 +37,6 @@ spec:
               - sh
               - -c
               - chown -R 1000:1000 /var/opt/thelounge
-            volumeMounts:
-              - name: data
-                mountPath: /var/opt/thelounge
         containers:
           app:
             image:
