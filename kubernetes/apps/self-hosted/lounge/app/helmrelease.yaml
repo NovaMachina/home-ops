@@ -42,7 +42,7 @@ spec:
                 memory: 300Mi
             securityContext:
               allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: true
+              readOnlyRootFilesystem: false
               capabilities: {drop: ["ALL"]}
         pod:
           enableServiceLinks: false
