@@ -29,8 +29,10 @@ spec:
           reloader.stakater.com/auto: "true"
         strategy: RollingUpdate
         initContainers:
-          - name: volume-permissions
-            image: busybox
+          volume-permissions:
+            image:
+              repository: docker.io/library/busybox
+              tag: latest
             command:
               - sh
               - -c
