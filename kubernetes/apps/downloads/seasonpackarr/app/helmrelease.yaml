@@ -33,7 +33,7 @@ spec:
           app:
             image:
               repository: ghcr.io/nuxencs/seasonpackarr
-              tag: v0.12.1
+              tag: v0.14.0
             env:
               - name: SEASONPACKARR__CLIENTS_DEFAULT_HOST
                 value: qbittorrent.downloads.svc.cluster.local
