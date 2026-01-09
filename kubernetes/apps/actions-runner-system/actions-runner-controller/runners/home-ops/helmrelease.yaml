@@ -46,7 +46,7 @@ spec:
           feature.node.kubernetes.io/system-os_release.ID: talos
         containers:
           - name: runner
-            image: ghcr.io/home-operations/actions-runner:2.328.0@sha256:c43873ef6800697dfa181582f6bb02366a9a0afb52026bde7bad7c71b21b1052
+            image: ghcr.io/home-operations/actions-runner:2.331.0@sha256:17e4be4e4664067b9a5f2e43d0e66e0a249654f3783a0a3f17448844a5422be5
             command: ['/home/runner/run.sh']
             env:
               - name: ACTIONS_RUNNER_REQUIRE_JOB_CONTAINER
