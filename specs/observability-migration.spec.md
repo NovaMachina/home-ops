@@ -87,6 +87,12 @@ V22: node-exporter & kube-state-metrics remain — OTel hostmetrics/k8s_cluster 
 V23: blackbox-exporter probes.yaml (Probe CRs) → verify OTel covers | keep blackbox-exporter until confirmed
 ```
 
+### OTel label fidelity
+
+```
+V24: ∀ prometheus-scraped metrics in VMSingle → `job` label present & = scrape job_name; ∴ PrometheusRule job= filters match
+```
+
 ---
 
 ## §T — Tasks
@@ -152,3 +158,4 @@ V23: blackbox-exporter probes.yaml (Probe CRs) → verify OTel covers | keep bla
 | B2 | 2026-05-01 | `kube-prometheus-stack-operator` SM skipped by TA: SA `open-telemetry-agent-targetallocator` lacks `get secrets` in `monitoring` ns — cannot fetch TLS CA `kube-prometheus-stack-admission`. TA logs: `skipping servicemonitor` every 5m. Prometheus scrapes 1 target; OTel scrapes 0. Fix: add `secrets` get verb to TA ClusterRole, or skip operator SM (KPS being removed). | V1,V8 |
 | B3 | 2026-05-01 | `apiserver` SM discovered by TA (job present) but 0 targets allocated. Root cause: `per-node` allocation strategy requires pod-scheduled targets; kube-apiserver runs as Talos static pod on control-plane nodes — no matching OTel collector pod. Additionally SM uses `bearerTokenFile` (file path) which agent may not resolve. Prometheus scrapes 3 apiserver targets; OTel scrapes 0. Fix: scrape apiserver via OTel `k8s_cluster` or `hostmetrics` receiver, or add a static scrape job. | V1,V8 |
 | B4 | 2026-05-01 | Blackbox Probe CRs (`probe/monitoring/devices`, `probe/monitoring/nfs`) not present in TA job list despite TA ClusterRole having `probes` verb. TA `probeSelector` likely unset — no Probe CRs discovered. Prometheus scrapes 2 probe targets; OTel scrapes 0. See T6 for decision (keep blackbox-exporter until OTel covers or explicit decision). | V1,V8,V23 |
+| B5 | 2026-05-01 | OTel prometheus receiver (TargetAllocator) maps `job` scrape label → `service.name` resource attribute; VMSingle receives `service=X`, `job` absent. ∀ PrometheusRule alert expressions filtering `job=` evaluate empty series → alerts inactive. Fix: add `transform/add_job_label` processor in gateway metrics pipeline — copy `attributes["service"]` → `attributes["job"]` when job absent. | V24 |

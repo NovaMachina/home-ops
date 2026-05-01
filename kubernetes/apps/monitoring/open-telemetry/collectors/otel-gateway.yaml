@@ -68,6 +68,11 @@ spec:
         check_interval: 5s
         limit_percentage: 80
         spike_limit_percentage: 25
+      transform/add_job_label:
+        metric_statements:
+          - context: datapoint
+            statements:
+              - set(attributes["job"], attributes["service"]) where attributes["job"] == nil and attributes["service"] != nil
 
     service:
       extensions:
@@ -80,6 +85,7 @@ spec:
             - k8s_cluster
           processors:
             - memory_limiter
+            - transform/add_job_label
             - batch
           exporters:
             - otlphttp/victoriametrics
