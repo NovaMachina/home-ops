@@ -177,7 +177,9 @@ spec:
           insecure: true
 
     processors:
-      batch: {}
+      batch:
+        send_batch_size: 4096
+        send_batch_max_size: 5000
       k8sattributes:
         extract:
           annotations: []

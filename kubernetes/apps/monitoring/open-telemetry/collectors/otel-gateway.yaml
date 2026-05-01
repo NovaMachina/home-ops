@@ -31,6 +31,7 @@ spec:
         protocols:
           grpc:
             endpoint: "${env:MY_POD_IP}:4317"
+            max_recv_msg_size_mib: 20
           http:
             endpoint: "${env:MY_POD_IP}:4318"
       k8s_cluster:

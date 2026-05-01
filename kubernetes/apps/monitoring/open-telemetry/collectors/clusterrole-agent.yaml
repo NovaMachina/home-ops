@@ -12,6 +12,7 @@ rules:
       - "nodes"
       - "nodes/stats"
       - "nodes/proxy"
+      - "nodes/metrics"
     verbs:
       - "get"
       - "watch"

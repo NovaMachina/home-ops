@@ -95,12 +95,13 @@ V23: blackbox-exporter probes.yaml (Probe CRs) → verify OTel covers | keep bla
 
 | id | status | task | cites |
 |----|--------|------|-------|
-| T1 | . | Query VMSingle: confirm ∀ key metric series present (node, kubelet, kube-state-metrics, app ServiceMonitors) | V1,V4a |
-| T2 | . | Query VLSingle: confirm logs arriving from ∀ namespaces via OTel filelog | V1,V2 |
-| T3 | . | Compare Prometheus scrape target list vs OTel TargetAllocator target list — identify gaps | V1,V8 |
-| T4 | . | Check VMAlert firing/resolved states match Prometheus alertmanager history | V1,V13 |
+| T1 | x | Query VMSingle: confirm ∀ key metric series present (node, kubelet, kube-state-metrics, app ServiceMonitors) | V1,V4a |
+| T2 | x | Query VLSingle: confirm logs arriving from ∀ namespaces via OTel filelog | V1,V2 |
+| T3 | x | Compare Prometheus scrape target list vs OTel TargetAllocator target list — identify gaps | V1,V8 |
+| T4 | ~ | Check VMAlert firing/resolved states match Prometheus alertmanager history | V1,V13 |
 | T5 | . | Audit Loki storage actual usage (vs 50Gi) to right-size VLSingle 10Gi | V12 |
-| T6 | . | Audit blackbox-exporter Probe CRs — determine if OTel covers or must keep | V23 |
+| T6  | . | Audit blackbox-exporter Probe CRs — determine if OTel covers or must keep | V23 |
+| T26 | . | Fix B3: apiserver 0-target gap — add static scrape job (or `k8s_cluster` receiver) to OTel agent for kube-apiserver endpoints; per-node TA cannot allocate static-pod targets on control-plane nodes | V1,V4a,B3 |
 
 ### Phase 2 — Grafana cutover
 
@@ -148,3 +149,6 @@ V23: blackbox-exporter probes.yaml (Probe CRs) → verify OTel covers | keep bla
 | id | date | cause | fix |
 |----|------|-------|-----|
 | B1 | 2026-04-25 | Promtail + OTel filelog both shipping same `/var/log/pods` logs → duplicate entries in Loki & VLSingle during overlap | V2 |
+| B2 | 2026-05-01 | `kube-prometheus-stack-operator` SM skipped by TA: SA `open-telemetry-agent-targetallocator` lacks `get secrets` in `monitoring` ns — cannot fetch TLS CA `kube-prometheus-stack-admission`. TA logs: `skipping servicemonitor` every 5m. Prometheus scrapes 1 target; OTel scrapes 0. Fix: add `secrets` get verb to TA ClusterRole, or skip operator SM (KPS being removed). | V1,V8 |
+| B3 | 2026-05-01 | `apiserver` SM discovered by TA (job present) but 0 targets allocated. Root cause: `per-node` allocation strategy requires pod-scheduled targets; kube-apiserver runs as Talos static pod on control-plane nodes — no matching OTel collector pod. Additionally SM uses `bearerTokenFile` (file path) which agent may not resolve. Prometheus scrapes 3 apiserver targets; OTel scrapes 0. Fix: scrape apiserver via OTel `k8s_cluster` or `hostmetrics` receiver, or add a static scrape job. | V1,V8 |
+| B4 | 2026-05-01 | Blackbox Probe CRs (`probe/monitoring/devices`, `probe/monitoring/nfs`) not present in TA job list despite TA ClusterRole having `probes` verb. TA `probeSelector` likely unset — no Probe CRs discovered. Prometheus scrapes 2 probe targets; OTel scrapes 0. See T6 for decision (keep blackbox-exporter until OTel covers or explicit decision). | V1,V8,V23 |
