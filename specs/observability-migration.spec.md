@@ -107,7 +107,7 @@ V24: ∀ prometheus-scraped metrics in VMSingle → `job` label present & = scra
 | T4 | x | Check VMAlert firing/resolved states match Prometheus alertmanager history | V1,V13 |
 | T5 | x | Audit Loki storage actual usage (vs 50Gi) to right-size VLSingle 10Gi | V12 |
 | T6  | x | Audit blackbox-exporter Probe CRs — determine if OTel covers or must keep | V23 |
-| T26 | . | Fix B3: apiserver 0-target gap — add static scrape job (or `k8s_cluster` receiver) to OTel agent for kube-apiserver endpoints; per-node TA cannot allocate static-pod targets on control-plane nodes | V1,V4a,B3 |
+| T26 | ~ | Fix B3: apiserver 0-target gap — add static scrape job (or `k8s_cluster` receiver) to OTel agent for kube-apiserver endpoints; per-node TA cannot allocate static-pod targets on control-plane nodes | V1,V4a,B3 |
 | T27 | . | Fix B6: TargetAllocator ignores ServiceMonitor jobLabel — add transform processor in gateway to rename job values (e.g. `kube-prometheus-stack-kubelet` → `kubelet`) so PrometheusRule expressions match | V24,B6 |
 
 ### Phase 2 — Grafana cutover

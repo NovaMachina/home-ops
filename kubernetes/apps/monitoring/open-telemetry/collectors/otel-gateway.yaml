@@ -51,6 +51,27 @@ spec:
               static_configs:
                 - targets:
                     - "${env:MY_POD_IP}:8888"
+            - job_name: apiserver
+              scrape_interval: 30s
+              scheme: https
+              bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
+              tls_config:
+                ca_file: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+                server_name: kubernetes
+              static_configs:
+                - targets:
+                    - "10.0.40.100:6443"
+                    - "10.0.40.101:6443"
+                    - "10.0.40.102:6443"
+              metric_relabel_configs:
+                - action: drop
+                  regex: (apiserver|etcd|rest_client)_request(|_sli|_slo)_duration_seconds_bucket
+                  source_labels:
+                    - __name__
+                - action: drop
+                  regex: (apiserver_response_sizes_bucket|apiserver_watch_events_sizes_bucket)
+                  source_labels:
+                    - __name__
 
     exporters:
       otlphttp/victoriametrics:
