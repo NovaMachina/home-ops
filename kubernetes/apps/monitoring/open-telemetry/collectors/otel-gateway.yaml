@@ -94,6 +94,7 @@ spec:
           - context: datapoint
             statements:
               - set(attributes["job"], attributes["service"]) where attributes["job"] == nil and attributes["service"] != nil
+              - set(attributes["job"], resource.attributes["service.name"]) where attributes["job"] == nil and resource.attributes["service.name"] != nil
 
     service:
       extensions:
