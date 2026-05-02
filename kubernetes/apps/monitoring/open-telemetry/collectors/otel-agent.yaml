@@ -14,6 +14,7 @@ spec:
       enabled: true
       podMonitorSelector: {}
       serviceMonitorSelector: {}
+      probeSelector: {}
   env:
     - name: MY_POD_IP
       valueFrom:
