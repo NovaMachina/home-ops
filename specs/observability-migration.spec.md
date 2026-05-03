@@ -116,7 +116,7 @@ V24: ∀ prometheus-scraped metrics in VMSingle → `job` label present & = scra
 |----|--------|------|-------|
 | T7  | x | Add VMSingle as Grafana datasource (Prometheus-compat URL) | V16 |
 | T8  | x | Add VLSingle as Grafana datasource | V17 |
-| T9  | . | Audit ∀ Grafana dashboards using Loki datasource — identify LogQL queries needing rewrite | V18 |
+| T9  | x | Audit ∀ Grafana dashboards using Loki datasource — identify LogQL queries needing rewrite | V18 |
 | T10 | . | Replace/rewrite Loki-backed dashboards against VictoriaLogs API | V18 |
 | T11 | . | Import victoria-metrics Kubernetes dashboards (replace KPS-injected ones) | V19 |
 | T12 | . | Validate ∀ Grafana dashboards against new datasources | V16,V17 |
