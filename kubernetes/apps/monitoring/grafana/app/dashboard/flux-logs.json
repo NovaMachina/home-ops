@@ -167,7 +167,10 @@
   ],
   "refresh": "30s",
   "schemaVersion": 38,
-  "tags": ["flux", "logs"],
+  "tags": [
+    "flux",
+    "logs"
+  ],
   "templating": {
     "list": [
       {
@@ -197,7 +200,12 @@
         "multi": true,
         "name": "namespace",
         "options": [],
-        "query": "namespace",
+        "query": {
+          "field": "k8s.namespace.name",
+          "query": "",
+          "refId": "VictoriaLogsVariableQueryEditor-VariableQuery",
+          "type": "fieldValue"
+        },
         "refresh": 2,
         "regex": "",
         "sort": 1,
