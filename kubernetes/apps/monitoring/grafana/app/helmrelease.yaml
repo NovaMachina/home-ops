@@ -165,9 +165,6 @@ spec:
         flux-control-plane:
           url: https://raw.githubusercontent.com/fluxcd/flux2-monitoring-example/main/monitoring/configs/dashboards/control-plane.json
           datasource: Prometheus
-        flux-logs:
-          url: https://raw.githubusercontent.com/fluxcd/flux2-monitoring-example/main/monitoring/configs/dashboards/logs.json
-          datasource: Prometheus
       kubernetes:
         k8s-system-api-server:
           # renovate: dashboardName="Kubernetes / System / API Server"
@@ -210,10 +207,6 @@ spec:
             isDefault: true
             jsonData:
               prometheusType: Prometheus
-          - access: proxy
-            name: Loki
-            type: loki
-            url: http://loki-headless.monitoring.svc.cluster.local:3100
           - name: Alertmanager
             type: alertmanager
             access: proxy
