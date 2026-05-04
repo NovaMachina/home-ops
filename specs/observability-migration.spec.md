@@ -2,22 +2,21 @@
 
 ## §G — Goal
 
-Replace Prometheus + Promtail + Loki with OTel collectors + VictoriaMetrics + VictoriaLogs. Zero observability gap during cutover.
+Replace Prometheus + Promtail + Loki with OTel collectors + VictoriaMetrics + VictoriaLogs. Complete cutover — no gradual migration, no dual-run, no compat layer. Dashboards rewritten from scratch against new backends. Brief observability gap during cutover acceptable.
 
 ---
 
 ## §C — Constraints
 
-- VictoriaMetrics stack (operator, VMSingle, VMAlert, VLSingle) already deployed & receiving data
-- OTel agent (DaemonSet) + gateway (Deployment) already deployed & routing to Victoria
-- OTel TargetAllocator (`prometheusCR.enabled: true`, empty selectors) scrapes ∀ ServiceMonitor/PodMonitor cluster-wide — replaces Prometheus pull
-- VMAlert (`selectAllByDefault: true`) reads ∀ PrometheusRule objects — replaces Prometheus alerting
-- `prometheus-operator/crds` must remain: VMAlert + VMAgent read `PrometheusRule`/`ServiceMonitor`/`PodMonitor` CRDs; removal breaks alerting
-- alertmanager standalone (not in kube-prometheus-stack) + silence-operator → both stay unchanged
-- kube-prometheus-stack `grafana.forceDeployDashboards: true` injects Kubernetes dashboards via sidecar → must preserve or migrate before removal
-- VLSingle endpoint: `http://vlsingle-logs.monitoring:9428`; Prometheus-compat query at `http://vmsingle-metrics.monitoring.svc:8429`
-- OTel `filelog` receiver covers same `/var/log/pods` source as Promtail → duplicate collection until Promtail removed
+- VictoriaMetrics stack (operator, VMSingle, VMAlert, VLSingle) deployed & receiving data
+- OTel agent (DaemonSet) + gateway (Deployment) deployed & routing to Victoria
+- OTel TargetAllocator (`prometheusCR.enabled: true`, empty selectors) scrapes ∀ ServiceMonitor/PodMonitor cluster-wide
+- VMAlert (`selectAllByDefault: true`) reads ∀ PrometheusRule objects
+- `prometheus-operator/crds` ! remain: VMAlert + VMAgent read `PrometheusRule`/`ServiceMonitor`/`PodMonitor` CRDs
+- alertmanager standalone + silence-operator → unchanged
+- VLSingle endpoint: `http://vlsingle-logs.monitoring:9428`; VMSingle Prometheus-compat: `http://vmsingle-metrics.monitoring.svc:8429`
 - Traces pipeline commented out in gateway (future: VictoriaTraces)
+- ⊥ compat between old & new: Loki/Prometheus removed wholesale, dashboards rewritten
 
 ---
 
@@ -27,7 +26,7 @@ Replace Prometheus + Promtail + Loki with OTel collectors + VictoriaMetrics + Vi
 metrics write:  OTel gateway → otlphttp → vmsingle-metrics.monitoring.svc:8428/opentelemetry
 metrics query:  VMSingle Prometheus-compat API → vmsingle-metrics.monitoring.svc:8429
 logs write:     OTel gateway → otlphttp → vlsingle-logs.monitoring:9428/insert/opentelemetry
-logs query:     VLSingle → vlsingle-logs.monitoring:9428 (VictoriaLogs query API)
+logs query:     VLSingle → vlsingle-logs.monitoring:9428 (VictoriaLogs query API, LogsQL)
 alerting:       VMAlert → alertmanager.monitoring.svc:9093
 scrape:         OTel TargetAllocator (per-node) → ServiceMonitor/PodMonitor → agent → gateway → VMSingle
 ```
@@ -36,118 +35,105 @@ scrape:         OTel TargetAllocator (per-node) → ServiceMonitor/PodMonitor �
 
 ## §V — Invariants
 
-### Cutover safety
+### Cutover
 
 ```
-V1:  ∀ removal step → verify replacement ingesting same data first (query both, compare)
-V2:  Promtail removed only after VLSingle confirmed receiving logs from OTel filelog
-V3:  Loki removed only after Grafana datasource switched to VLSingle & dashboards validated
-V4:  kube-prometheus-stack (Prometheus) removed only after:
-       a) VMSingle confirmed receiving ∀ same metrics via OTel TargetAllocator
-       b) ∀ Grafana dashboards migrated or confirmed working against VMSingle
-       c) Grafana Kubernetes folder dashboards re-injected via alternative method
-V5:  prometheus-operator/crds ⊥ removed — VMAlert depends on PrometheusRule CRDs
+V1:  cutover atomic per component — no dual-run gates; brief gap acceptable
+V2:  prometheus-operator/crds ⊥ removed — VMAlert depends on PrometheusRule CRDs
+V3:  kube-prometheus-stack removed entirely — no dashboard-only retention
+V4:  ⊥ Loki, ⊥ Promtail, ⊥ Prometheus instance post-cutover
 ```
 
 ### OTel pipeline
 
 ```
-V6:  OTel agent → gateway via OTLP (insecure gRPC on port 4317); no direct Victoria writes from agent
-V7:  TargetAllocator allocationStrategy: per-node → each agent scrapes only local-node targets
-V8:  ∀ ServiceMonitor/PodMonitor → picked up by TargetAllocator (empty selectors) ∴ no per-monitor changes needed
-V9:  OTel gateway exporters: victoriametrics (metrics pipeline) & victorialogs (logs pipeline) — traces exporter ? (commented out, future)
-V10: memory_limiter processor ∈ ∀ pipeline — prevents OOM under log bursts
+V5:  OTel agent → gateway via OTLP (insecure gRPC port 4317); ⊥ direct Victoria writes from agent
+V6:  TargetAllocator allocationStrategy: per-node → each agent scrapes only local-node targets
+V7:  ∀ ServiceMonitor/PodMonitor → picked up by TargetAllocator (empty selectors)
+V8:  OTel gateway exporters: victoriametrics (metrics) & victorialogs (logs); traces ? future
+V9:  memory_limiter processor ∈ ∀ pipeline
 ```
 
 ### Victoria
 
 ```
-V11: VMSingle retention: 2w, storage: 30Gi ceph-block — review if Prometheus had 14d/55Gi
-V12: VLSingle retention: 2w, storage: 10Gi ceph-block — monitor usage; Loki had 50Gi (assess actual utilization first)
-V13: VMAlert evaluationInterval: 1m — matches Prometheus scrapeInterval: 1m in kube-prometheus-stack
-V14: VMAlert notifiers → alertmanager.monitoring.svc:9093 — same endpoint, no alertmanager changes needed
-V15: ∀ PrometheusRule objects → read by VMAlert; no migration of alert rules needed
+V10: VMSingle retention: 2w, storage: 30Gi ceph-block
+V11: VLSingle retention: 2w, storage: 10Gi ceph-block
+V12: VMAlert evaluationInterval: 1m
+V13: VMAlert notifiers → alertmanager.monitoring.svc:9093
+V14: ∀ PrometheusRule objects → read by VMAlert; ⊥ rule migration needed
 ```
 
 ### Grafana
 
 ```
-V16: Grafana Prometheus datasource URL → http://vmsingle-metrics.monitoring.svc:8429 (Prometheus-compat)
-V17: Grafana Loki datasource URL → http://vlsingle-logs.monitoring:9428 (VictoriaLogs query API)
-V18: VictoriaLogs query API ≠ Loki API — LogQL dashboards require migration to MetricsQL/VictoriaLogs syntax | replace with official Victoria dashboards
-V19: kube-prometheus-stack dashboard injection (grafana_folder: Kubernetes) → replace with victoria-metrics community dashboards or standalone ConfigMaps before KPS removal
+V15: Grafana Prometheus datasource URL → http://vmsingle-metrics.monitoring.svc:8429
+V16: Grafana Loki datasource removed; VictoriaLogs datasource added → http://vlsingle-logs.monitoring:9428
+V17: ∀ dashboards rewritten from scratch — ⊥ LogQL→LogsQL translation, ⊥ legacy KPS dashboards retained
+V18: dashboard sources: official VictoriaMetrics community dashboards + hand-written ConfigMaps with `grafana_dashboard: "1"` label & `grafana_folder` annotation
 ```
 
-### Cleanup
+### Cleanup retain
 
 ```
-V20: after full cutover, remove: promtail, loki, kube-prometheus-stack (Prometheus instance only)
-V21: kube-prometheus-stack HelmRelease ? kept as dashboard-only (grafana.forceDeployDashboards: true, prometheus disabled) | or migrate dashboards & remove entirely
-V22: node-exporter & kube-state-metrics remain — OTel hostmetrics/k8s_cluster partial overlap but not full replacement
-V23: blackbox-exporter probes.yaml (Probe CRs) → verify OTel covers | keep blackbox-exporter until confirmed
+V19: node-exporter & kube-state-metrics remain — OTel hostmetrics/k8s_cluster ⊥ full replacement
+V20: blackbox-exporter remains — OTel ⊥ replaces ICMP/TCP_connect probing (B4)
 ```
 
 ### OTel label fidelity
 
 ```
-V24: ∀ prometheus-scraped metrics in VMSingle → `job` label present & = scrape job_name; ∴ PrometheusRule job= filters match
+V21: ∀ prometheus-scraped metrics in VMSingle → `job` label present & = scrape job_name; ∴ PrometheusRule job= filters match (B5)
+V22: TargetAllocator ⊥ honor ServiceMonitor `jobLabel` → gateway transform processor renames job values to expected names (B6); moot post-T16
+V23: apiserver scraped via static job / k8s_cluster receiver — per-node TA cannot allocate Talos static-pod targets (B3)
+V24: transform/add_job_label ⊥ overwrite pre-set `job` on OTLP-pushed metrics; stmts 1&2 (nil-guard) sufficient for prometheus-sourced metrics; stmt 3 removed (B7)
 ```
 
 ---
 
 ## §T — Tasks
 
-### Phase 1 — Verify (no removals yet)
+### Phase 1 — Pre-cutover (DONE)
 
 | id | status | task | cites |
 |----|--------|------|-------|
-| T1 | x | Query VMSingle: confirm ∀ key metric series present (node, kubelet, kube-state-metrics, app ServiceMonitors) | V1,V4a |
-| T2 | x | Query VLSingle: confirm logs arriving from ∀ namespaces via OTel filelog | V1,V2 |
-| T3 | x | Compare Prometheus scrape target list vs OTel TargetAllocator target list — identify gaps | V1,V8 |
-| T4 | x | Check VMAlert firing/resolved states match Prometheus alertmanager history | V1,V13 |
-| T5 | x | Audit Loki storage actual usage (vs 50Gi) to right-size VLSingle 10Gi | V12 |
-| T6  | x | Audit blackbox-exporter Probe CRs — determine if OTel covers or must keep | V23 |
-| T26 | x | Fix B3: apiserver 0-target gap — add static scrape job (or `k8s_cluster` receiver) to OTel agent for kube-apiserver endpoints; per-node TA cannot allocate static-pod targets on control-plane nodes | V1,V4a,B3 |
-| T27 | x | Fix B6: TargetAllocator ignores ServiceMonitor jobLabel — add transform processor in gateway to rename job values (e.g. `kube-prometheus-stack-kubelet` → `kubelet`) so PrometheusRule expressions match | V24,B6 |
+| T1 | x | OTel/Victoria stack deployed & ingesting | V5,V8 |
+| T2 | x | TargetAllocator + VMAlert wired to existing SM/PM/PrometheusRule | V7,V14 |
+| T3 | x | Fix B3: apiserver static scrape job in OTel agent | V23 |
+| T4 | x | Fix B5: gateway `transform/add_job_label` stmts 1&2 — set job from service.name when nil | V21 |
+| T5 | x | Audit blackbox Probe CRs — keep blackbox-exporter (OTel ⊥ cover) | V20 |
 
-### Phase 2 — Grafana cutover
+### Phase 2 — Dashboard rewrite
 
 | id | status | task | cites |
 |----|--------|------|-------|
-| T7  | x | Add VMSingle as Grafana datasource (Prometheus-compat URL) | V16 |
-| T8  | x | Add VLSingle as Grafana datasource | V17 |
-| T9  | x | Audit ∀ Grafana dashboards using Loki datasource — identify LogQL queries needing rewrite | V18 |
-| T10 | x | Replace/rewrite Loki-backed dashboards against VictoriaLogs API | V18 |
-| T11 | . | Import victoria-metrics Kubernetes dashboards (replace KPS-injected ones) | V19 |
-| T12 | . | Validate ∀ Grafana dashboards against new datasources | V16,V17 |
+| T6  | x | Add VMSingle Grafana datasource (Prometheus-compat URL) | V15 |
+| T7  | x | Add VLSingle Grafana datasource | V16 |
+| T8  | x | Inventory current dashboards → drop list (KPS-injected, Loki-backed, custom) | V17 |
+| T9  | x | Import official VictoriaMetrics community dashboards (Kubernetes, node-exporter, kube-state-metrics) as ConfigMaps | V18 |
+| T10 | . | Write new VictoriaLogs LogsQL dashboards from scratch (flux-logs, app logs, ingress) | V17,V18 |
+| T11 | . | Write any custom app dashboards needed against VMSingle/VLSingle | V18 |
+| T12 | . | Remove Grafana Loki datasource | V16 |
+| T22 | . | Fix B7: remove stmt 3 from `transform/add_job_label` in otel-gateway; stmts 1&2 sufficient | V24,B7 |
 
-### Phase 3 — Remove Promtail + Loki
-
-| id | status | task | cites |
-|----|--------|------|-------|
-| T13 | . | Remove promtail HelmRelease + ks.yaml | V2 |
-| T14 | . | Remove promtail from monitoring/kustomization.yaml | V2 |
-| T15 | . | Remove loki HelmRelease + ks.yaml after Grafana validated on VLSingle | V3 |
-| T16 | . | Remove loki from monitoring/kustomization.yaml | V3 |
-| T17 | . | Delete loki ceph-block PVC (50Gi recovered) | V3 |
-
-### Phase 4 — Remove Prometheus
+### Phase 3 — Rip out old stack
 
 | id | status | task | cites |
 |----|--------|------|-------|
-| T18 | . | Disable Prometheus in kube-prometheus-stack values (set `prometheus.enabled: false`) | V4 |
-| T19 | . | Verify no alerting gap after Prometheus removed (VMAlert covers all rules) | V4,V13,V15 |
-| T20 | . | Decide: keep kube-prometheus-stack for dashboard injection only OR remove entirely & use ConfigMap dashboards | V21 |
-| T21 | . | If removing KPS entirely: migrate Kubernetes dashboards to standalone ConfigMaps with grafana_folder annotation | V19,V21 |
-| T22 | . | Remove kube-prometheus-stack HelmRelease + ks.yaml (after T20 decision) | V4 |
-| T23 | . | Remove prometheus-operator from kube-prometheus-stack values; keep CRDs HelmRelease | V5 |
+| T13 | . | Remove promtail HelmRelease + ks.yaml + monitoring/kustomization.yaml entry | V4 |
+| T14 | . | Remove loki HelmRelease + ks.yaml + monitoring/kustomization.yaml entry | V4 |
+| T15 | . | Delete loki ceph-block PVC (50Gi recovered) | V4 |
+| T16 | . | Remove kube-prometheus-stack HelmRelease + ks.yaml entirely (Prometheus + Grafana dashboard sidecar injection both gone) | V3,V4 |
+| T17 | . | Verify `prometheus-operator-crds` HelmRelease still present (VMAlert deps) | V2 |
+| T18 | . | Remove monitoring/kustomization.yaml entries for KPS | V3 |
+| T19 | . | Post-cutover: confirm VMAlert firing rules, alertmanager receiving, dashboards rendering | V12,V13,V14 |
 
-### Phase 5 — Traces (future)
+### Phase 4 — Traces (future)
 
 | id | status | task | cites |
 |----|--------|------|-------|
-| T24 | ? | Deploy VictoriaTraces (VTSingle) when available | V9 |
-| T25 | ? | Un-comment traces pipeline in otel-gateway.yaml | V9 |
+| T20 | ? | Deploy VictoriaTraces (VTSingle) when available | V8 |
+| T21 | ? | Un-comment traces pipeline in otel-gateway.yaml | V8 |
 
 ---
 
@@ -155,9 +141,11 @@ V24: ∀ prometheus-scraped metrics in VMSingle → `job` label present & = scra
 
 | id | date | cause | fix |
 |----|------|-------|-----|
-| B1 | 2026-04-25 | Promtail + OTel filelog both shipping same `/var/log/pods` logs → duplicate entries in Loki & VLSingle during overlap | V2 |
-| B2 | 2026-05-01 | `kube-prometheus-stack-operator` SM skipped by TA: SA `open-telemetry-agent-targetallocator` lacks `get secrets` in `monitoring` ns — cannot fetch TLS CA `kube-prometheus-stack-admission`. TA logs: `skipping servicemonitor` every 5m. Prometheus scrapes 1 target; OTel scrapes 0. Fix: add `secrets` get verb to TA ClusterRole, or skip operator SM (KPS being removed). | V1,V8 |
-| B3 | 2026-05-01 | `apiserver` SM discovered by TA (job present) but 0 targets allocated. Root cause: `per-node` allocation strategy requires pod-scheduled targets; kube-apiserver runs as Talos static pod on control-plane nodes — no matching OTel collector pod. Additionally SM uses `bearerTokenFile` (file path) which agent may not resolve. Prometheus scrapes 3 apiserver targets; OTel scrapes 0. Fix: scrape apiserver via OTel `k8s_cluster` or `hostmetrics` receiver, or add a static scrape job. | V1,V8 |
-| B4 | 2026-05-01 | Blackbox Probe CRs (`probe/monitoring/devices`, `probe/monitoring/nfs`) not present in TA job list. Root cause: `probeSelector` absent from TA config — only `podMonitorSelector`/`serviceMonitorSelector` set. Fix: add `probeSelector: {}` to TA `prometheusCR` block in `otel-agent.yaml`. OTel ⊥ replaces ICMP/TCP_connect probing → blackbox-exporter stays. | V1,V8,V23 |
-| B5 | 2026-05-01 | OTel prometheus receiver (TargetAllocator) maps `job` scrape label → `service.name` resource attribute; VMSingle receives `service=X`, `job` absent. ∀ PrometheusRule alert expressions filtering `job=` evaluate empty series → alerts inactive. Fix: add `transform/add_job_label` processor in gateway metrics pipeline — copy `attributes["service"]` → `attributes["job"]` when job absent. | V24 |
-| B6 | 2026-05-01 | TargetAllocator does not honor ServiceMonitor `spec.jobLabel` — job name stays as SM name (e.g. `kube-prometheus-stack-kubelet`) instead of resolving via jobLabel `k8s-app` → `kubelet`. Prometheus applies jobLabel relabeling; OTel TA does not. Result: VMSingle has `job="kube-prometheus-stack-kubelet"`, PrometheusRules expect `job="kubelet"` → KubeletDown false-fires, kubelet-specific recording rules miss. Fix: add `metricstransform` or `transform` processor to rename job values, or patch TA to honor jobLabel. | V24,V1 |
+| B1 | 2026-04-25 | Promtail + OTel filelog both shipping `/var/log/pods` → duplicate entries during overlap | resolved by atomic cutover (V1); ⊥ recurs post-T13 |
+| B2 | 2026-05-01 | `kube-prometheus-stack-operator` SM skipped by TA: SA `open-telemetry-agent-targetallocator` lacks `get secrets` in `monitoring` ns. TA ⊥ fetch TLS CA. | moot post-T16 (KPS removed) |
+| B3 | 2026-05-01 | `apiserver` SM 0 targets allocated under per-node strategy (Talos static pod, no matching collector). | V23 |
+| B4 | 2026-05-01 | Blackbox Probe CRs absent from TA job list — `probeSelector` missing. | added `probeSelector: {}` to TA prometheusCR; blackbox-exporter retained per V20 |
+| B5 | 2026-05-01 | OTel prometheus receiver maps `job` → `service.name`; VMSingle missing `job` label → PrometheusRule `job=` filters empty. | V21 — `transform/add_job_label` processor in gateway |
+| B6 | 2026-05-01 | TA ⊥ honor ServiceMonitor `jobLabel` → job stays as SM name (e.g. `kube-prometheus-stack-kubelet` not `kubelet`). | V22 — `metricstransform`/`transform` processor renames job values; moot per-job once KPS SMs gone (T16) |
+| B7 | 2026-05-03 | `transform/add_job_label` stmt 3 unconditionally overwrites `job`=`service.name` ∀ metrics where they differ — clobbers OTLP app-set `job` labels | V24 — remove stmt 3; stmts 1&2 nil-guard sufficient (T22) |
+| B8 | 2026-05-03 | `grafana` helmrelease datasources block adds `Prometheus` (url: `prometheus-operated…:9090`, `isDefault: true`) then deletes it via `deleteDatasources` → net: no default datasource; `VictoriaMetrics` (:8429) present but ⊥ `isDefault` | V15 — remove stale Prometheus entry; set `VictoriaMetrics` `isDefault: true` (fix in T16 cleanup) |
