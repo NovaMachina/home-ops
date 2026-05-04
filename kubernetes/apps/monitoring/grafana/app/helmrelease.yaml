@@ -36,175 +36,168 @@ spec:
         api_url: https://auth.jacob-williams.me/application/o/userinfo/
         # Optionally map user groups to Grafana roles
         role_attribute_path: contains(groups[*], 'Grafana Admins') && 'Admin' || contains(groups[*], 'Grafana Editors') && 'Editor' || 'Viewer'
-    dashboardProviders:
-      dashboardproviders.yaml:
-        apiVersion: 1
-        providers:
-          - name: default
-            disableDeletion: false
-            editable: true
-            folder: ""
-            options:
-              path: /var/lib/grafana/dashboards/default
-            orgId: 1
-            type: file
-          - name: ceph
-            orgId: 1
-            folder: Ceph
-            type: file
-            disableDeletion: false
-            editable: true
-            options:
-              path: /var/lib/grafana/dashboards/ceph
-          - name: flux
-            orgId: 1
-            folder: Flux
-            type: file
-            disableDeletion: false
-            editable: true
-            options:
-              path: /var/lib/grafana/dashboards/flux
-          - name: kubernetes
-            orgId: 1
-            folder: Kubernetes
-            type: file
-            disableDeletion: false
-            editable: true
-            options:
-              path: /var/lib/grafana/dashboards/kubernetes
-          - name: postgres
-            orgId: 1
-            folder: Postgres
-            type: file
-            disableDeletion: false
-            editable: true
-            options:
-              path: /var/lib/grafana/dashboards/postgres
-    dashboards:
-      default:
-        blackbox-exporter:
-          # renovate: depName="Blackbox Exporter (HTTP prober)"
-          gnetId: 13659
-          revision: 1
-          datasource: Prometheus
-        cert-manager:
-          # renovate: depName="Cert-manager-Kubernetes"
-          gnetId: 20842
-          revision: 3
-          datasource: Prometheus
-        cloudflared:
-          # renovate: dashboardName="Cloudflare Tunnels (cloudflared)"
-          gnetId: 17457
-          revision: 6
-          datasource:
-            - name: DS_PROMETHEUS
-              value: Prometheus
-        speedtest-exporter-hub:
-          # renovate: depName="Speedtest Exporter"
-          gnetId: 13665
-          revision: 4
-          datasource:
-            - name: DS_PROMETHEUS
-              value: Prometheus
-        external-dns:
-          # renovate: dashboardName="External-DNS"
-          gnetId: 15038
-          revision: 3
-          datasource: Prometheus
-        external-secrets:
-          url: https://raw.githubusercontent.com/external-secrets/external-secrets/main/docs/snippets/dashboard.json
-          datasource: Prometheus
-        node-exporter-full:
-          # renovate: dashboardName="Node Exporter Full"
-          gnetId: 1860
-          revision: 40
-          datasource:
-            - name: DS_PROMETHEUS
-              value: VictoriaMetrics
-        volsync:
-          # removate: dashboardName="VolSync Dashboard"
-          gnetId: 21356
-          revision: 2
-          datasource:
-            - name: DS_PROMETHEUS
-              value: Prometheus
-            - name: VAR_REPLICATIONDESTNAME
-              value: ".*-bootstrap"
-        zfs:
-          # renovate: dashboardName="ZFS"
-          gnetId: 7845
-          revision: 4
-          datasource: Prometheus
-      ceph:
-        ceph-cluster:
-          # renovate: dashboardName="Ceph Cluster"
-          gnetId: 2842
-          revision: 18
-          datasource: Prometheus
-        ceph-osd:
-          # renovate: dashboardName="Ceph - OSD (Single)"
-          gnetId: 5336
-          revision: 9
-          datasource: Prometheus
-        ceph-pools:
-          # renovate: dashboardName="Ceph - Pools"
-          gnetId: 5342
-          revision: 9
-          datasource: Prometheus
-      flux:
-        flux-cluster:
-          url: https://raw.githubusercontent.com/fluxcd/flux2-monitoring-example/main/monitoring/configs/dashboards/cluster.json
-          datasource: Prometheus
-        flux-control-plane:
-          url: https://raw.githubusercontent.com/fluxcd/flux2-monitoring-example/main/monitoring/configs/dashboards/control-plane.json
-          datasource: Prometheus
-      kubernetes:
-        k8s-system-api-server:
-          # renovate: dashboardName="Kubernetes / System / API Server"
-          gnetId: 15761
-          revision: 19
-          datasource: VictoriaMetrics
-        k8s-views-global:
-          # renovate: dashboardName="Kubernetes / Views / Global"
-          gnetId: 15757
-          revision: 43
-          datasource: VictoriaMetrics
-        k8s-views-nodes:
-          # renovate: dashboardName="Kubernetes / Views / Nodes"
-          gnetId: 15759
-          revision: 35
-          datasource: VictoriaMetrics
-        k8s-views-namespaces:
-          # renovate: dashboardName="Kubernetes / Views / Namespaces"
-          gnetId: 15758
-          revision: 42
-          datasource: VictoriaMetrics
-        k8s-views-pods:
-          # renovate: dashboardName="Kubernetes / Views / Pods"
-          gnetId: 15760
-          revision: 36
-          datasource: VictoriaMetrics
-        k8s-volumes:
-          # renovate: dashboardName="K8s / Storage / Volumes / Cluster"
-          gnetId: 11454
-          revision: 14
-          datasource: VictoriaMetrics
-        kube-state-metrics:
-          # renovate: dashboardName="Kubernetes State Metrics"
-          gnetId: 13332
-          revision: 12
-          datasource: VictoriaMetrics
+    # dashboardProviders:
+    #   dashboardproviders.yaml:
+    #     apiVersion: 1
+    #     providers:
+    #       - name: default
+    #         disableDeletion: false
+    #         editable: true
+    #         folder: ""
+    #         options:
+    #           path: /var/lib/grafana/dashboards/default
+    #         orgId: 1
+    #         type: file
+    #       - name: ceph
+    #         orgId: 1
+    #         folder: Ceph
+    #         type: file
+    #         disableDeletion: false
+    #         editable: true
+    #         options:
+    #           path: /var/lib/grafana/dashboards/ceph
+    #       - name: flux
+    #         orgId: 1
+    #         folder: Flux
+    #         type: file
+    #         disableDeletion: false
+    #         editable: true
+    #         options:
+    #           path: /var/lib/grafana/dashboards/flux
+    #       - name: kubernetes
+    #         orgId: 1
+    #         folder: Kubernetes
+    #         type: file
+    #         disableDeletion: false
+    #         editable: true
+    #         options:
+    #           path: /var/lib/grafana/dashboards/kubernetes
+    #       - name: postgres
+    #         orgId: 1
+    #         folder: Postgres
+    #         type: file
+    #         disableDeletion: false
+    #         editable: true
+    #         options:
+    #           path: /var/lib/grafana/dashboards/postgres
+    # dashboards:
+    #   default:
+    #     blackbox-exporter:
+    #       # renovate: depName="Blackbox Exporter (HTTP prober)"
+    #       gnetId: 13659
+    #       revision: 1
+    #       datasource: Prometheus
+    #     cert-manager:
+    #       # renovate: depName="Cert-manager-Kubernetes"
+    #       gnetId: 20842
+    #       revision: 3
+    #       datasource: Prometheus
+    #     cloudflared:
+    #       # renovate: dashboardName="Cloudflare Tunnels (cloudflared)"
+    #       gnetId: 17457
+    #       revision: 6
+    #       datasource:
+    #         - name: DS_PROMETHEUS
+    #           value: Prometheus
+    #     speedtest-exporter-hub:
+    #       # renovate: depName="Speedtest Exporter"
+    #       gnetId: 13665
+    #       revision: 4
+    #       datasource:
+    #         - name: DS_PROMETHEUS
+    #           value: Prometheus
+    #     external-dns:
+    #       # renovate: dashboardName="External-DNS"
+    #       gnetId: 15038
+    #       revision: 3
+    #       datasource: Prometheus
+    #     external-secrets:
+    #       url: https://raw.githubusercontent.com/external-secrets/external-secrets/main/docs/snippets/dashboard.json
+    #       datasource: Prometheus
+    #     node-exporter-full:
+    #       # renovate: dashboardName="Node Exporter Full"
+    #       gnetId: 1860
+    #       revision: 40
+    #       datasource:
+    #         - name: DS_PROMETHEUS
+    #           value: VictoriaMetrics
+    #     volsync:
+    #       # removate: dashboardName="VolSync Dashboard"
+    #       gnetId: 21356
+    #       revision: 2
+    #       datasource:
+    #         - name: DS_PROMETHEUS
+    #           value: Prometheus
+    #         - name: VAR_REPLICATIONDESTNAME
+    #           value: ".*-bootstrap"
+    #     zfs:
+    #       # renovate: dashboardName="ZFS"
+    #       gnetId: 7845
+    #       revision: 4
+    #       datasource: Prometheus
+    #   ceph:
+    #     ceph-cluster:
+    #       # renovate: dashboardName="Ceph Cluster"
+    #       gnetId: 2842
+    #       revision: 18
+    #       datasource: Prometheus
+    #     ceph-osd:
+    #       # renovate: dashboardName="Ceph - OSD (Single)"
+    #       gnetId: 5336
+    #       revision: 9
+    #       datasource: Prometheus
+    #     ceph-pools:
+    #       # renovate: dashboardName="Ceph - Pools"
+    #       gnetId: 5342
+    #       revision: 9
+    #       datasource: Prometheus
+    #   flux:
+    #     flux-cluster:
+    #       url: https://raw.githubusercontent.com/fluxcd/flux2-monitoring-example/main/monitoring/configs/dashboards/cluster.json
+    #       datasource: Prometheus
+    #     flux-control-plane:
+    #       url: https://raw.githubusercontent.com/fluxcd/flux2-monitoring-example/main/monitoring/configs/dashboards/control-plane.json
+    #       datasource: Prometheus
+    #   kubernetes:
+    #     k8s-system-api-server:
+    #       # renovate: dashboardName="Kubernetes / System / API Server"
+    #       gnetId: 15761
+    #       revision: 19
+    #       datasource: VictoriaMetrics
+    #     k8s-views-global:
+    #       # renovate: dashboardName="Kubernetes / Views / Global"
+    #       gnetId: 15757
+    #       revision: 43
+    #       datasource: VictoriaMetrics
+    #     k8s-views-nodes:
+    #       # renovate: dashboardName="Kubernetes / Views / Nodes"
+    #       gnetId: 15759
+    #       revision: 35
+    #       datasource: VictoriaMetrics
+    #     k8s-views-namespaces:
+    #       # renovate: dashboardName="Kubernetes / Views / Namespaces"
+    #       gnetId: 15758
+    #       revision: 42
+    #       datasource: VictoriaMetrics
+    #     k8s-views-pods:
+    #       # renovate: dashboardName="Kubernetes / Views / Pods"
+    #       gnetId: 15760
+    #       revision: 36
+    #       datasource: VictoriaMetrics
+    #     k8s-volumes:
+    #       # renovate: dashboardName="K8s / Storage / Volumes / Cluster"
+    #       gnetId: 11454
+    #       revision: 14
+    #       datasource: VictoriaMetrics
+    #     kube-state-metrics:
+    #       # renovate: dashboardName="Kubernetes State Metrics"
+    #       gnetId: 13332
+    #       revision: 12
+    #       datasource: VictoriaMetrics
     datasources:
       datasources.yaml:
         apiVersion: 1
         datasources:
-          - access: proxy
-            name: Prometheus
-            type: prometheus
-            url: http://prometheus-operated.monitoring.svc.cluster.local:9090
-            isDefault: true
-            jsonData:
-              prometheusType: Prometheus
           - name: Alertmanager
             type: alertmanager
             access: proxy
@@ -215,6 +208,7 @@ spec:
             name: VictoriaMetrics
             type: victoriametrics-metrics-datasource
             url: http://vmsingle-metrics.monitoring.svc:8429
+            isDefault: true
           - access: proxy
             name: VictoriaLogs
             type: victoriametrics-logs-datasource
