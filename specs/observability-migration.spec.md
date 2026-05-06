@@ -113,14 +113,14 @@ V24: transform/add_job_label ⊥ overwrite pre-set `job` on OTLP-pushed metrics;
 | T9  | x | Import official VictoriaMetrics community dashboards (Kubernetes, node-exporter, kube-state-metrics) as ConfigMaps | V18 |
 | T10 | . | Write new VictoriaLogs LogsQL dashboards from scratch (flux-logs, app logs, ingress) | V17,V18 |
 | T11 | . | Write any custom app dashboards needed against VMSingle/VLSingle | V18 |
-| T12 | . | Remove Grafana Loki datasource | V16 |
-| T22 | . | Fix B7: remove stmt 3 from `transform/add_job_label` in otel-gateway; stmts 1&2 sufficient | V24,B7 |
+| T12 | x | Remove Grafana Loki datasource | V16 |
+| T22 | x | Fix B7: remove stmt 3 from `transform/add_job_label` in otel-gateway; stmts 1&2 sufficient | V24,B7 |
 
 ### Phase 3 — Rip out old stack
 
 | id | status | task | cites |
 |----|--------|------|-------|
-| T13 | . | Remove promtail HelmRelease + ks.yaml + monitoring/kustomization.yaml entry | V4 |
+| T13 | x | Remove promtail HelmRelease + ks.yaml + monitoring/kustomization.yaml entry | V4 |
 | T14 | . | Remove loki HelmRelease + ks.yaml + monitoring/kustomization.yaml entry | V4 |
 | T15 | . | Delete loki ceph-block PVC (50Gi recovered) | V4 |
 | T16 | . | Remove kube-prometheus-stack HelmRelease + ks.yaml entirely (Prometheus + Grafana dashboard sidecar injection both gone) | V3,V4 |

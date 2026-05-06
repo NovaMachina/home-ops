@@ -95,7 +95,6 @@ spec:
             statements:
               - set(attributes["job"], attributes["service"]) where attributes["job"] == nil and attributes["service"] != nil
               - set(attributes["job"], resource.attributes["service.name"]) where attributes["job"] == nil and resource.attributes["service.name"] != nil
-              - set(attributes["job"], resource.attributes["service.name"]) where resource.attributes["service.name"] != nil and attributes["job"] != resource.attributes["service.name"]
 
     service:
       extensions:
