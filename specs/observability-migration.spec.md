@@ -133,7 +133,7 @@ V24: transform/add_job_label ⊥ overwrite pre-set `job` on OTLP-pushed metrics;
 | id | status | task | cites |
 |----|--------|------|-------|
 | T20 | x | Deploy VictoriaTraces (VTSingle) when available | V8 |
-| T21 | ? | Un-comment traces pipeline in otel-gateway.yaml | V8 |
+| T21 | x | Un-comment traces pipeline in otel-gateway.yaml | V8 |
 
 ---
 

@@ -80,8 +80,8 @@ spec:
       otlphttp/victorialogs:
         endpoint: http://vlsingle-logs.monitoring:9428/insert/opentelemetry
 
-      # otlphttp/victoriatraces:
-      #   endpoint: http://vtsingle-traces.monitoring:9428/insert/opentelemetry
+      otlphttp/victoriatraces:
+        endpoint: http://vtsingle-traces.monitoring:10428/insert/opentelemetry/v1/traces
 
     processors:
       batch: {}
@@ -120,14 +120,14 @@ spec:
             - batch
           exporters:
             - otlphttp/victorialogs
-            # traces:
-            #   receivers:
-            #     - otlp
-            #   processors:
-            #     - memory_limiter
-            #     - batch
-            #   exporters:
-            #     - otlphttp/victoriatraces
+        traces:
+          receivers:
+            - otlp
+          processors:
+            - memory_limiter
+            - batch
+          exporters:
+            - otlphttp/victoriatraces
       telemetry:
         metrics:
           readers:
