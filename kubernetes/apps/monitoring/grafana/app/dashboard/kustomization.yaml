@@ -7,6 +7,8 @@ configMapGenerator:
     files:
       - home.json
       - flux-logs.json
+      - app-logs.json
+      - ingress-logs.json
 generatorOptions:
   disableNameSuffixHash: true
   annotations:

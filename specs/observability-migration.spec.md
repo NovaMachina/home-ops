@@ -111,7 +111,7 @@ V24: transform/add_job_label ⊥ overwrite pre-set `job` on OTLP-pushed metrics;
 | T7  | x | Add VLSingle Grafana datasource | V16 |
 | T8  | x | Inventory current dashboards → drop list (KPS-injected, Loki-backed, custom) | V17 |
 | T9  | x | Import official VictoriaMetrics community dashboards (Kubernetes, node-exporter, kube-state-metrics) as ConfigMaps | V18 |
-| T10 | . | Write new VictoriaLogs LogsQL dashboards from scratch (flux-logs, app logs, ingress) | V17,V18 |
+| T10 | x | Write new VictoriaLogs LogsQL dashboards from scratch (flux-logs, app logs, ingress) | V17,V18 |
 | T11 | . | Write any custom app dashboards needed against VMSingle/VLSingle | V18 |
 | T12 | x | Remove Grafana Loki datasource | V16 |
 | T22 | x | Fix B7: remove stmt 3 from `transform/add_job_label` in otel-gateway; stmts 1&2 sufficient | V24,B7 |
