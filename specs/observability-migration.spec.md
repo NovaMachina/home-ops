@@ -122,10 +122,10 @@ V24: transform/add_job_label ⊥ overwrite pre-set `job` on OTLP-pushed metrics;
 |----|--------|------|-------|
 | T13 | x | Remove promtail HelmRelease + ks.yaml + monitoring/kustomization.yaml entry | V4 |
 | T14 | x | Remove loki HelmRelease + ks.yaml + monitoring/kustomization.yaml entry | V4 |
-| T15 | . | Delete loki ceph-block PVC (50Gi recovered) | V4 |
-| T16 | . | Remove kube-prometheus-stack HelmRelease + ks.yaml entirely (Prometheus + Grafana dashboard sidecar injection both gone) | V3,V4 |
+| T15 | x | Delete loki ceph-block PVC (50Gi recovered) | V4 |
+| T16 | x | Remove kube-prometheus-stack HelmRelease + ks.yaml entirely (Prometheus + Grafana dashboard sidecar injection both gone) | V3,V4 |
 | T17 | . | Verify `prometheus-operator-crds` HelmRelease still present (VMAlert deps) | V2 |
-| T18 | . | Remove monitoring/kustomization.yaml entries for KPS | V3 |
+| T18 | x | Remove monitoring/kustomization.yaml entries for KPS | V3 |
 | T19 | . | Post-cutover: confirm VMAlert firing rules, alertmanager receiving, dashboards rendering | V12,V13,V14 |
 
 ### Phase 4 — Traces (future)
