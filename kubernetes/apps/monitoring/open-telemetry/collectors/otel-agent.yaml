@@ -84,7 +84,7 @@ spec:
             max_log_size: 102400
           - id: json-body-parser
             type: json_parser
-            if: 'body matches "^\\s*\\{'
+            if: 'body matches "^\\s*\\{"'
             parse_from: body
             parse_to: attributes
             on_error: send
