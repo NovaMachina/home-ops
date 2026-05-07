@@ -39,6 +39,10 @@ spec:
     - name: hostfs
       hostPath:
         path: /
+    - name: otelcol-storage
+      hostPath:
+        path: /var/lib/otelcol
+        type: DirectoryOrCreate
   volumeMounts:
     - name: varlogpods
       mountPath: /var/log/pods
@@ -50,10 +54,14 @@ spec:
       mountPath: /hostfs
       readOnly: true
       mountPropagation: HostToContainer
+    - name: otelcol-storage
+      mountPath: /var/lib/otelcol
   config:
     extensions:
       health_check:
         endpoint: "${env:MY_POD_IP}:13133"
+      file_storage:
+        directory: /var/lib/otelcol
 
     receivers:
       otlp:
@@ -67,13 +75,53 @@ spec:
           - /var/log/pods/*/*/*.log
         include_file_name: false
         include_file_path: true
-        operators:
-          - id: container-parser
-            max_log_size: 102400
-            type: container
         retry_on_failure:
           enabled: true
         start_at: end
+        operators:
+          - id: container-parser
+            type: container
+            max_log_size: 102400
+          - id: json-body-parser
+            type: json_parser
+            if: 'body matches "^\\s*\\{'
+            parse_from: body
+            parse_to: attributes
+            on_error: send
+          - id: severity-from-level
+            type: severity_parser
+            if: 'attributes["level"] != nil'
+            parse_from: attributes["level"]
+            on_error: send
+          - id: severity-from-severity
+            type: severity_parser
+            if: 'attributes["severity"] != nil and attributes["level"] != nil'
+            parse_from: attributes["severity"]
+            on_error: send
+          - id: time-from-time
+            type: time_parser
+            if: 'attributes["time"] != nil'
+            parse_from: attributes["time"]
+            layout_type: gotime
+            layout: '2006-01-02T15:04:05.999999999Z07:00'
+            on_error: send
+          - id: time-from-timestamp
+            type: time_parser
+            if: 'attributes["timestamp"] != nil and attributes["time"] != nil'
+            parse_from: attributes["timestamp"]
+            layout_type: gotime
+            layout: '2006-01-02T15:04:05.999999999Z07:00'
+            on_error: send
+          - id: promote-message
+            type: move
+            if: 'attributes["message"] != nil'
+            from: attributes["message"]
+            to: body
+          - id: promote-msg
+            type: move
+            if: 'attributes["msg"] != nil'
+            from: attributes["msg"]
+            to: body
       prometheus:
         config:
           scrape_configs:
@@ -216,6 +264,7 @@ spec:
     service:
       extensions:
         - health_check
+        - file_storage
       pipelines:
         metrics:
           receivers:
@@ -224,8 +273,8 @@ spec:
             - prometheus
             - hostmetrics
           processors:
-            - k8sattributes
             - memory_limiter
+            - k8sattributes
             - batch
           exporters:
             - otlp
@@ -234,8 +283,17 @@ spec:
             - otlp
             - filelog
           processors:
-            - k8sattributes
             - memory_limiter
+            - k8sattributes
+            - batch
+          exporters:
+            - otlp
+        traces:
+          receivers:
+            - otlp
+          processors:
+            - memory_limiter
+            - k8sattributes
             - batch
           exporters:
             - otlp
