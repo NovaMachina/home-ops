@@ -120,6 +120,6 @@ spec:
       data:
         existingClaim: forgejo
         globalMounts:
-          - path: /data
+          - path: /var/lib/gitea
       tmp:
         type: emptyDir
