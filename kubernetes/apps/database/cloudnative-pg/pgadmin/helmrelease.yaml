@@ -31,7 +31,7 @@ spec:
           fix-ownership:
             image:
               repository: docker.io/library/busybox
-              tag: 1.37.0@sha256:db142d433cdde11f10ae479dbf92f3b13d693fd1c4a94c56d8b14fe4b7c17dec
+              tag: 1.37.0@sha256:1487d0af5f52b4ba31c7e465126ee2123fe3f2305d638e7827681e7cf6c83d5e
             command:
               - "sh"
               - "-c"
