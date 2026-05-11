@@ -98,7 +98,7 @@ V24: ∀ PSA exception → tracked in this spec §B
 
 | id | status | task | cites |
 |----|--------|------|-------|
-| T1 | . | Fix pgAdmin: set PGADMIN_UID=5050, remove runAsUser: 0, re-enable security headers | V2,V21 |
+| T1 | x | Fix pgAdmin: pod securityContext runAsUser/Group/NonRoot: 5050 + fsGroup: 5050 (RBD root-owned PVC; fsGroup triggers kubelet recursive chown); add PGADMIN_UID: "5050"; remove X_CONTENT_TYPE_OPTIONS & X_XSS_PROTECTION disables; keep ENHANCED_COOKIE_PROTECTION: "False" (required behind Envoy reverse proxy) | V2,V21 |
 | T2 | . | Remove lounge initContainer; confirm fsGroup: 1000 covers ownership | V9 |
 | T3 | . | Un-comment or delete immich REDIS_PASSWORD in ExternalSecret; document dragonfly DB index isolation | V15,V16 |
 | T4 | . | Fix flood: remove FLOOD_OPTION_QBPASS: dummy; un-comment envFrom secret ref | V14 |
