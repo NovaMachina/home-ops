@@ -48,6 +48,7 @@ V6:  ∀ pod → seccompProfile.type: RuntimeDefault (minimum)
 V7:  ∀ pod → securityContext.fsGroupChangePolicy: OnRootMismatch (not Always — avoids chown on large volumes)
 V8:  hostNetwork: true | hostPID: true | hostIPC: true → ! inline comment + restricted to system namespace
 V9:  initContainers for chown ⊥ when fsGroup covers it  [≡ V.core.19]
+V25: ∀ app doing os.chmod on PVC files at startup → initContainer chown uid before main; fsGroup ⊥ sufficient (sets gid only, chmod needs uid match)
 ```
 
 ### Images
@@ -129,3 +130,4 @@ V24: ∀ PSA exception → tracked in this spec §B
 | B1 | 2026-04-25 | `FLOOD_OPTION_QBPASS: dummy` + commented envFrom → qBittorrent WebUI passwordless | V14 |
 | B2 | 2026-04-25 | pgAdmin `runAsUser: 0` + XSS/cookie headers disabled → unnecessary attack surface on internal app | V2,V21 |
 | B3 | 2026-04-25 | immich ExternalSecret `REDIS_PASSWORD` commented out → dragonfly auth gap or silent misconfiguration | V15,V16 |
+| B4 | 2026-05-11 | `fsGroup` sets gid only; pgAdmin `os.chmod` at startup requires uid ownership → `EPERM` on root-owned PVC files | V25 |

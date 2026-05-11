@@ -27,6 +27,18 @@ spec:
         strategy: Recreate
         annotations:
           reloader.stakater.com/auto: "true"
+        initContainers:
+          fix-ownership:
+            image:
+              repository: docker.io/library/busybox
+              tag: 1.37.0@sha256:db142d433cdde11f10ae479dbf92f3b13d693fd1c4a94c56d8b14fe4b7c17dec
+            command:
+              - "sh"
+              - "-c"
+              - "chown -R 5050:5050 /var/lib/pgadmin"
+            securityContext:
+              runAsUser: 0
+              runAsNonRoot: false
         containers:
           main:
             image:
