@@ -35,6 +35,8 @@ spec:
             envFrom: &envFrom
               - secretRef:
                   name: forgejo-secret
+              - secretRef:
+                  name: forgejo-initdb
         containers:
           app:
             image:
