@@ -13,3 +13,4 @@ resources:
   - ./paperless/ks.yaml
   - ./wikijs/ks.yaml
   - ./lounge/ks.yaml
+  - ./forgejo/ks.yaml
