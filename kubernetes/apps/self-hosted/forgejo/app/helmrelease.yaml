@@ -45,8 +45,6 @@ spec:
             envFrom:
               - secretRef:
                   name: forgejo-secret
-              - secretRef:
-                  name: forgejo-initdb
             probes:
               liveness:
                 enabled: true
