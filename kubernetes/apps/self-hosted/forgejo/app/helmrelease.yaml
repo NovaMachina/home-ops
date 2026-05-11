@@ -123,5 +123,12 @@ spec:
         existingClaim: forgejo
         globalMounts:
           - path: /var/lib/gitea
+      config-file:
+        type: secret
+        name: forgejo-config
+        globalMounts:
+          - path: /var/lib/gitea/custom/conf/app.ini
+            subPath: app.ini
+            readOnly: true
       tmp:
         type: emptyDir
