@@ -53,6 +53,8 @@ spec:
                 secretKeyRef:
                   name: forgejo-secret
                   key: DB_PASSWORD
+              FORGEJO__mailer__ENABLED: true
+              FORGEJO__mailer__PROTOCOL: smtps
             probes:
               liveness:
                 enabled: true
