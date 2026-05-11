@@ -45,6 +45,13 @@ spec:
             envFrom: *envFrom
             env:
               ROOT_URL: "https://forgejo.${SECRET_DOMAIN}"
+              DB_TYPE: postgres
+              HOST: postgres16-rw.database.svc.cluster.local:5432
+              USER: forgejo
+              PASSWD:
+                secretKeyRef:
+                  name: forgejo-secret
+                  key: DB_PASSWORD
             probes:
               liveness:
                 enabled: true
