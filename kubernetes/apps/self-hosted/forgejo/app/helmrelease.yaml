@@ -111,3 +111,5 @@ spec:
         existingClaim: forgejo
         globalMounts:
           - path: /data
+      tmp:
+        type: emptyDir
