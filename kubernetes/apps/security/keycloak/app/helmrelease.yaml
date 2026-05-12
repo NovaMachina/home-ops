@@ -31,6 +31,17 @@ spec:
       - "--hostname-strict=false"
       - "--spi-events-listener-jboss-logging-success-level=info"
       - "--spi-events-listener-jboss-logging-error-level=warn"
+    extraEnv: |
+      - name: KEYCLOAK_ADMIN
+        valueFrom:
+          secretKeyRef:
+            name: keycloak-secret
+            key: KC_BOOTSTRAP_ADMIN_USERNAME
+      - name: KEYCLOAK_ADMIN_PASSWORD
+        valueFrom:
+          secretKeyRef:
+            name: keycloak-secret
+            key: KC_BOOTSTRAP_ADMIN_PASSWORD
     extraInitContianers:
       init-db:
         image:
