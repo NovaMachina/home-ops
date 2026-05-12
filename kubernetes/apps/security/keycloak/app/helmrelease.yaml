@@ -27,6 +27,7 @@ spec:
       - "/opt/keycloak/bin/kc.sh"
       - "--verbose"
       - "start"
+      - "--hostname=https://sso.${SECRET_DOMAIN}"
       - "--http-port=8080"
       - "--hostname-strict=false"
       - "--spi-events-listener-jboss-logging-success-level=info"
