@@ -27,7 +27,6 @@ spec:
       - "/opt/keycloak/bin/kc.sh"
       - "--verbose"
       - "start"
-      - "--log-level=debug"
       - "--http-access-log-enabled=true"
       - "--hostname=https://sso.${SECRET_DOMAIN}"
       - "--http-port=8080"
