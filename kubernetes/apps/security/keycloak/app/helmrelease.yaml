@@ -45,6 +45,7 @@ spec:
       enabled: true
       hostnames:
         - "sso.${SECRET_DOMAIN}"
+      servicePort: 8080
       parentRefs:
         - name: internal
           namespace: network
