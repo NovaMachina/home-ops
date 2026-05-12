@@ -13,5 +13,5 @@ spec:
       sectionName: https
   rules:
     - backendRefs:
-        - name: keycloak-keycloakx
+        - name: keycloak-keycloakx-http
           port: 80
