@@ -38,6 +38,14 @@ spec:
                   name: keycloak-secret
               - secretRef:
                   name: keycloak-initdb
+          copy-quarkus-lib:
+            image:
+              repository: quay.io/keycloak/keycloak
+              tag: 26.6.1@sha256:6b64906150cbf6b95f4033eb378eb3e71a9026173cafec6002e6e9208d0ac2d9
+            command:
+              - sh
+              - -c
+              - cp -a /opt/keycloak/lib/quarkus/. /mnt/quarkus-lib/
         containers:
           app:
             image:
@@ -117,5 +125,9 @@ spec:
           - path: /opt/keycloak/data
       keycloak-lib-quarkus:
         type: emptyDir
-        globalMounts:
-          - path: /opt/keycloak/lib/quarkus
+        advancedMounts:
+          keycloak:
+            copy-quarkus-lib:
+              - path: /mnt/quarkus-lib
+            app:
+              - path: /opt/keycloak/lib/quarkus
