@@ -1,110 +1,56 @@
-
 ---
-# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: keycloak
 spec:
-  interval: 30m
-  chart:
-    spec:
-      chart: app-template
-      version: 4.2.0
-      sourceRef:
-        kind: HelmRepository
-        name: bjw-s-labs
-        namespace: flux-system
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: codecentric
+  driftDetection:
+    mode: enabled
+    ignore:
+      - paths:
+          - /spec/replicas
   install:
     remediation:
       retries: -1
   upgrade:
     cleanupOnFail: true
     remediation:
-      strategy: rollback
       retries: 3
   values:
-    controllers:
-      keycloak:
-        annotations:
-          reloader.stakater.com/auto: "true"
-        initContainers:
-          init-db:
-            image:
-              repository: ghcr.io/home-operations/postgres-init
-              tag: 17
-            envFrom:
-              - secretRef:
-                  name: keycloak-secret
-              - secretRef:
-                  name: keycloak-initdb
-        containers:
-          app:
-            image:
-              repository: ghcr.io/novamachina/keycloak
-              tag: eba291c
-            envFrom:
-              - secretRef:
-                  name: keycloak-secret
-            probes:
-              liveness:
-                enabled: true
-                custom: true
-                spec:
-                  httpGet:
-                    path: /health/live
-                    port: 9000
-              readiness:
-                enabled: true
-                custom: true
-                spec:
-                  httpGet:
-                    path: /health/ready
-                    port: 9000
-              startup:
-                enabled: true
-                spec:
-                  httpGet:
-                    path: /health
-                    port: 9000
-                  initialDelaySeconds: 15
-                  periodSeconds: 5
-                  timeoutSeconds: 5
-                  successThreshold: 1
-                  failureThreshold: 60
-            securityContext:
-              allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: true
-              capabilities: {drop: ["ALL"]}
-            resources:
-              requests:
-                cpu: 100m
-                memory: 475Mi
-    defaultPodOptions:
-      securityContext:
-        runAsNonRoot: true
-        runAsUser: 1000
-        runAsGroup: 1000
-        fsGroup: 1000
-        fsGroupChangePolicy: OnRootMismatch
-        seccompProfile: {type: RuntimeDefault}
-    service:
-      app:
-        ports:
-          http:
-            port: 8080
-          metrics:
-            port: 9000
-
-    route:
-      main:
-        enabled: true
-        hostnames:
-          - "sso.${SECRET_DOMAIN}"
-        parentRefs:
-          - name: internal
-            namespace: network
-            sectionName: https
-        rules:
-          - backendRefs:
-              - {}
+    image:
+      tag: "26.6.1"
+    extraInitContianers:
+      init-db:
+        image:
+          repository: ghcr.io/home-operations/postgres-init
+          tag: 17
+        envFrom:
+          - secretRef:
+              name: keycloak-secret
+          - secretRef:
+              name: keycloak-initdb
+    httpRoute:
+      enabled: true
+      hostnames:
+        - "sso.${SECRET_DOMAIN}"
+      parentRefs:
+        - name: internal
+          namespace: network
+          sectionName: https
+      rules:
+        - backendRefs:
+            - {}
+    dbchecker:
+      enabled: true
+    database:
+      vendor: postgres
+      hostname: postgres16-rw.database.svc.cluster.local
+      port: 5432
+      database: forgejo
+      username: forgejo
+      existingSecret: keycloak-secret
+      existingSecretKey: KC_DB_PASSWORD
