@@ -55,7 +55,7 @@ spec:
       vendor: postgres
       hostname: postgres16-rw.database.svc.cluster.local
       port: 5432
-      database: forgejo
-      username: forgejo
+      database: keycloak
+      username: keycloak
       existingSecret: keycloak-secret
       existingSecretKey: KC_DB_PASSWORD
