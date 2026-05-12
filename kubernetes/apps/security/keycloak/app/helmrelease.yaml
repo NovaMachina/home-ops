@@ -45,7 +45,7 @@ spec:
             command:
               - sh
               - -c
-              - cp -a /opt/keycloak/lib/quarkus/. /mnt/quarkus-lib/
+              - cp -r /opt/keycloak/lib/quarkus/. /mnt/quarkus-lib/
         containers:
           app:
             image:
