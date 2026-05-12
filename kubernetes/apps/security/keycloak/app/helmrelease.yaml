@@ -42,7 +42,7 @@ spec:
           app:
             image:
               repository: ghcr.io/novamachina/keycloak
-              tag: 370750b@sha256:bdc8cfda583e27eb40ea4b003a572fb20f93f8ac23f55965e3174f985b174be0
+              tag: 370750b
             envFrom:
               - secretRef:
                   name: keycloak-secret
