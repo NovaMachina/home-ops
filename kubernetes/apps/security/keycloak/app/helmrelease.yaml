@@ -32,7 +32,6 @@ spec:
       - "--hostname=https://sso.${SECRET_DOMAIN}"
       - "--http-port=8080"
       - "--hostname-strict=false"
-      - "--http-relative-path=/"
       - "--spi-events-listener-jboss-logging-success-level=info"
       - "--spi-events-listener-jboss-logging-error-level=warn"
     extraEnv: |
@@ -66,3 +65,5 @@ spec:
       username: keycloak
       existingSecret: keycloak-secret
       existingSecretKey: KC_DB_PASSWORD
+    http:
+      relativePath: "/"
