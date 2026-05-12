@@ -53,22 +53,6 @@ spec:
               name: keycloak-secret
           - secretRef:
               name: keycloak-initdb
-    httpRoute:
-      enabled: true
-      hostnames:
-        - "sso.${SECRET_DOMAIN}"
-      parentRefs:
-        - name: internal
-          namespace: network
-          sectionName: https
-      console:
-        enabled: true
-        hostnames:
-          - "sso.${SECRET_DOMAIN}"
-        parentRefs:
-          - name: internal
-            namespace: network
-            sectionName: https
     dbchecker:
       enabled: true
     database:
