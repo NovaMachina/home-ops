@@ -32,12 +32,12 @@ spec:
       - "--spi-events-listener-jboss-logging-success-level=info"
       - "--spi-events-listener-jboss-logging-error-level=warn"
     extraEnv: |
-      - name: KEYCLOAK_ADMIN
+      - name: KC_BOOTSTRAP_ADMIN_USERNAME
         valueFrom:
           secretKeyRef:
             name: keycloak-secret
             key: KC_BOOTSTRAP_ADMIN_USERNAME
-      - name: KEYCLOAK_ADMIN_PASSWORD
+      - name: KC_BOOTSTRAP_ADMIN_PASSWORD
         valueFrom:
           secretKeyRef:
             name: keycloak-secret
