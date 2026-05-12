@@ -110,3 +110,12 @@ spec:
         rules:
           - backendRefs:
               - {}
+    persistence:
+      keycloak-data:
+        type: emptyDir
+        globalMounts:
+          - path: /opt/keycloak/data
+      keycloak-lib-quarkus:
+        type: emptyDir
+        globalMounts:
+          - path: /opt/keycloak/lib/quarkus
