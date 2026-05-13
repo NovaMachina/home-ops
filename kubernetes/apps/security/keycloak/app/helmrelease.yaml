@@ -28,7 +28,7 @@ spec:
       - "--verbose"
       - "start"
       - "--hostname=https://sso.${SECRET_DOMAIN}"
-      - "--hostname=https://sso-admin.${SECRET_DOMAIN}"
+      - "--hostname-admin=https://sso-admin.${SECRET_DOMAIN}"
       - "--http-port=8080"
       - "--hostname-strict=false"
       - "--spi-events-listener-jboss-logging-success-level=info"
