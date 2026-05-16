@@ -15,16 +15,23 @@ metadata:
 spec:
   matchConstraints:
     resourceRules:
-      - apiGroups: ["batch"]
-        apiVersions: ["v1"]
-        operations: ["CREATE", "UPDATE"]
-        resources: ["jobs"]
+      - apiGroups:
+          - "batch"
+        apiVersions:
+          - "v1"
+        operations:
+          - "CREATE"
+          - "UPDATE"
+        resources:
+          - "jobs"
   matchConditions:
     - name: has-volsync-job-name-prefix
       expression: >
-        object.metadata.name.startsWith("volsync-src-")
+        has(object.metadata.name) && object.metadata.name.startsWith("volsync-src-")
     - name: has-volsync-created-by-labels
       expression: >
+        has(object.metadata.labels) &&
+        "app.kubernetes.io/created-by" in object.metadata.labels &&
         object.metadata.labels["app.kubernetes.io/created-by"] == "volsync"
   failurePolicy: Fail
   reinvocationPolicy: IfNeeded
@@ -64,16 +71,23 @@ metadata:
 spec:
   matchConstraints:
     resourceRules:
-      - apiGroups: ["batch"]
-        apiVersions: ["v1"]
-        operations: ["CREATE", "UPDATE"]
-        resources: ["jobs"]
+      - apiGroups:
+          - "batch"
+        apiVersions:
+          - "v1"
+        operations:
+          - "CREATE"
+          - "UPDATE"
+        resources:
+          - "jobs"
   matchConditions:
     - name: has-volsync-job-name-prefix
       expression: >
-        object.metadata.name.startsWith("volsync-")
+        has(object.metadata.name) && object.metadata.name.startsWith("volsync-")
     - name: has-volsync-created-by-labels
       expression: >
+        has(object.metadata.labels) &&
+        "app.kubernetes.io/created-by" in object.metadata.labels &&
         object.metadata.labels["app.kubernetes.io/created-by"] == "volsync"
     - name: repository-volume-does-not-exist
       expression: >
@@ -83,7 +97,7 @@ spec:
   mutations:
     - patchType: "JSONPatch"
       jsonPatch:
-        expression: >
+        expression: >-
           [
             JSONPatch{
               op: "add", path: "/spec/template/spec/volumes/-",
