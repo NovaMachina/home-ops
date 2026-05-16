@@ -10,5 +10,5 @@ spec:
       sectionName: ssh
   rules:
     - backendRefs:
-        - name: forgejo-app
+        - name: forgejo
           port: 2222
