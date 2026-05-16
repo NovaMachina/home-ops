@@ -6,5 +6,7 @@ resources:
   - ./helmrelease.yaml
   - ./externalsecret.yaml
   - ./tcproute.yaml
+  - ./configmap.yaml
+  - ./runner-scaler.yaml
 components:
   - ../../../../components/volsync
