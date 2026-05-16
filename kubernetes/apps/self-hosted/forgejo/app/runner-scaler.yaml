@@ -74,7 +74,7 @@ spec:
                 mountPath: /config
                 readOnly: false
           - name: daemon
-            image: docker:27.4.1-dind
+            image: docker:27.5.1-dind
             command:
               - sh
               - -c
