@@ -38,6 +38,14 @@ servers:
       - name: loop
       - name: reload
       - name: loadbalance
+  - zones:
+      - zone: jacob-williams.me.
+    port: 53
+    plugins:
+      - name: forward
+        parameters: . 10.0.40.1
+      - name: cache
+        parameters: 30
 affinity:
   nodeAffinity:
     requiredDuringSchedulingIgnoredDuringExecution:
