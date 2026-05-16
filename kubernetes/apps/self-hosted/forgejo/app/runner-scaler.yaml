@@ -33,7 +33,7 @@ spec:
           - name: runner-registration
             configMap:
               name: runner-registration
-          - name: docker-certs
+          - name: docker-sock
             emptyDir: {}
         restartPolicy: Never
         shareProcessNamespace: true
@@ -44,7 +44,7 @@ spec:
               - sh
               - -c
               - |
-                while ! nc -z localhost 2376 </dev/null; do
+                while ! [ -S /var/run/docker.sock ]; do
                   echo 'waiting for docker daemon...'
                   sleep 5
                 done
@@ -56,16 +56,9 @@ spec:
             securityContext:
               privileged: true
               runAsUser: 0
-            env:
-              - name: DOCKER_HOST
-                value: tcp://localhost:2376
-              - name: DOCKER_CERT_PATH
-                value: /certs/client
-              - name: DOCKER_TLS_VERIFY
-                value: "1"
             volumeMounts:
-              - name: docker-certs
-                mountPath: /certs
+              - name: docker-sock
+                mountPath: /var/run
               - name: runner-data
                 mountPath: /data
               - name: runner-registration
@@ -75,7 +68,7 @@ spec:
                 mountPath: /config
                 readOnly: false
           - name: daemon
-            image: docker:29.5.0-dind-rootless
+            image: docker:29.5.0-dind
             command:
               - sh
               - -c
@@ -91,15 +84,13 @@ spec:
                 exit 0
             env:
               - name: DOCKER_TLS_CERTDIR
-                value: /certs
-              - name: DOCKER_HOST
-                value: tcp://0.0.0.0:2376
+                value: ""
             securityContext:
               privileged: true
               runAsUser: 0
             volumeMounts:
-              - name: docker-certs
-                mountPath: /certs
+              - name: docker-sock
+                mountPath: /var/run
               - name: runner-data
                 mountPath: /data
   minReplicaCount: 0
