@@ -12,7 +12,7 @@ data:
       "uuid": "08b14448-0430-40ac-af09-742ffd01a0ec",
       "name": "runner",
       "token": "f4f4db2a5ca7fb51bbdf39002182b48ac02e88fa",
-      "address": "https://forgejo.jacob-williams.me/",
+      "address": "http://forgejo.self-hosted.svc.cluster.local:3000/",
       "labels": [
         "ubuntu-20:docker://node:20-bookworm",
         "docker:docker://ghcr.io/catthehacker/ubuntu:act-latest"
