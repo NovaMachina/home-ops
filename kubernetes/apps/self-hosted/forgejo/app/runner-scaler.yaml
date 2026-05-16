@@ -102,7 +102,7 @@ spec:
             volumeMounts:
               - name: docker-certs
                 mountPath: /certs
-  minReplicaCount: 1
+  minReplicaCount: 0
   maxReplicaCount: 20
   pollingInterval: 30
   triggers:
