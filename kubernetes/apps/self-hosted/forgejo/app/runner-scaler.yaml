@@ -81,7 +81,8 @@ spec:
               - |
                 dockerd-entrypoint.sh 2>&1 &
 
-                while kill -0 7 2>/dev/null
+                DIND_PID=$!
+                while kill -0 $DIND_PID 2>/dev/null
                   do sleep 10
                   echo "watching main job execution"
                 done;
