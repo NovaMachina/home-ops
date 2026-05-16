@@ -15,7 +15,7 @@ kind: ScaledJob
 metadata:
   labels:
     app: forgejo-runner
-  name: upload-platform-forgejo-runner
+  name: forgejo-runner
   namespace: self-hosted
 spec:
   jobTargetRef:
@@ -29,10 +29,10 @@ spec:
             emptyDir: {}
           - name: runner-config
             configMap:
-              name: upload-platform-runner-config
+              name: forgejo-runner-config
           - name: runner-registration
             configMap:
-              name: upload-platform-runner-registration
+              name: runner-registration
           - name: docker-certs
             emptyDir: {}
         restartPolicy: Never
