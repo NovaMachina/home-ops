@@ -51,7 +51,8 @@ spec:
 
                 cp /config/.runner /data/.runner
 
-                exec forgejo-runner -c /registration/registration.yaml one-job
+                forgejo-runner -c /registration/registration.yaml one-job
+                touch /data/runner-done
             securityContext:
               privileged: true
               runAsUser: 0
@@ -81,13 +82,10 @@ spec:
               - |
                 dockerd-entrypoint.sh 2>&1 &
 
-                DIND_PID=$!
-                while kill -0 $DIND_PID 2>/dev/null
-                  do sleep 10
+                until [ -f /data/runner-done ]; do
+                  sleep 5
                   echo "watching main job execution"
-                done;
-
-                sleep 10
+                done
 
                 echo "main container exited, stopping dind"
                 exit 0
@@ -102,6 +100,8 @@ spec:
             volumeMounts:
               - name: docker-certs
                 mountPath: /certs
+              - name: runner-data
+                mountPath: /data
   minReplicaCount: 0
   maxReplicaCount: 20
   pollingInterval: 30
