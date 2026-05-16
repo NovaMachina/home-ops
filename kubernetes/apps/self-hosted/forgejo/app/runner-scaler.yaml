@@ -28,7 +28,7 @@ spec:
           - name: runner-data
             emptyDir: {}
           - name: runner-config
-            configMap:
+            secret:
               name: forgejo-runner-config
           - name: runner-registration
             configMap:
