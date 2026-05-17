@@ -35,6 +35,9 @@ spec:
               name: runner-registration
           - name: docker-sock
             emptyDir: {}
+          - name: runner-cache
+            persistentVolumeClaim:
+              claimName: forgejo-runner-cache
         restartPolicy: Never
         shareProcessNamespace: true
         containers:
@@ -67,6 +70,8 @@ spec:
               - name: runner-config
                 mountPath: /config
                 readOnly: false
+              - name: runner-cache
+                mountPath: /cache
           - name: daemon
             image: docker:29.5.0-dind
             command:

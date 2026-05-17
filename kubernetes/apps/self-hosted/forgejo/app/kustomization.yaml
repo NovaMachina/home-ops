@@ -8,5 +8,6 @@ resources:
   - ./tcproute.yaml
   - ./configmap.yaml
   - ./runner-scaler.yaml
+  - ./runner-cache-pvc.yaml
 components:
   - ../../../../components/volsync

@@ -1,0 +1,13 @@
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: forgejo-runner-cache
+  namespace: self-hosted
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 20Gi
+  storageClassName: ceph-filesystem
