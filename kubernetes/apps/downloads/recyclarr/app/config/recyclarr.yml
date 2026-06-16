@@ -20,6 +20,9 @@ sonarr:
     quality_profiles:
       - name: WEB-1080p
       - name: WEB-2160p
+      - trash_id: 20e0fc959f1f1704bed501f23bdae76f
+        reset_unmatched_scores:
+          enabled: true
 
     custom_formats:
       # HDR Formats
