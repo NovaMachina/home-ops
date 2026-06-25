@@ -4,7 +4,7 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app victoria-crds
+  name: &app victoria-metrics-crds
   namespace: &namespace monitoring
 spec:
   targetNamespace: *namespace
@@ -25,31 +25,6 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app victoria-operator
-  namespace: &namespace monitoring
-spec:
-  targetNamespace: *namespace
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *app
-  dependsOn:
-    - name: cert-manager
-      namespace: cert-manager
-    - name: victoria-crds
-  path: ./kubernetes/apps/monitoring/victoria/operator
-  prune: true
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
-    namespace: flux-system
-  interval: 1h
-  retryInterval: 2m
-  timeout: 5m
----
-# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
-apiVersion: kustomize.toolkit.fluxcd.io/v1
-kind: Kustomization
-metadata:
   name: &app victoria-metrics
   namespace: &namespace monitoring
 spec:
@@ -58,7 +33,8 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   dependsOn:
-    - name: victoria-operator
+    - name: victoria-metrics-crds
+      namespace: *namespace
   path: ./kubernetes/apps/monitoring/victoria/metrics
   prune: true
   sourceRef:
@@ -80,8 +56,6 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  dependsOn:
-    - name: victoria-operator
   path: ./kubernetes/apps/monitoring/victoria/logs
   prune: true
   sourceRef:
@@ -103,8 +77,6 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  dependsOn:
-    - name: victoria-operator
   path: ./kubernetes/apps/monitoring/victoria/traces
   prune: true
   sourceRef:

@@ -3,16 +3,42 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &appname grafana
+  name: &appname grafana-operator
   namespace: &namespace monitoring
 spec:
   targetNamespace: *namespace
   commonMetadata:
     labels:
       app.kubernetes.io/name: *appname
-  interval: 30m
-  timeout: 5m
+  interval: 1h
   path: "./kubernetes/apps/monitoring/grafana/app"
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  wait: true
+  dependsOn:
+    - name: onepassword-store
+      namespace: external-secrets
+  postBuild:
+    substituteFrom:
+      - name: cluster-secrets
+        kind: Secret
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &appname grafana-instance
+  namespace: &namespace monitoring
+spec:
+  targetNamespace: *namespace
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *appname
+  interval: 1h
+  path: "./kubernetes/apps/monitoring/grafana/instance"
   prune: true
   sourceRef:
     kind: GitRepository
@@ -20,8 +46,8 @@ spec:
     namespace: flux-system
   wait: false
   dependsOn:
-    - name: onepassword-store
-      namespace: external-secrets
+    - name: grafana-operator
+      namespace: monitoring
   postBuild:
     substituteFrom:
       - name: cluster-secrets

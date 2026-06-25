@@ -9,3 +9,15 @@ spec:
   chartRef:
     kind: OCIRepository
     name: victoria-metrics-operator-crds
+  maxHistory: 2
+  install:
+    crds: CreateReplace
+    remediation:
+      retries: 2
+  upgrade:
+    crds: CreateReplace
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false

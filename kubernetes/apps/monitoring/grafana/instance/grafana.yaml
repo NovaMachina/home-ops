@@ -1,0 +1,121 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/grafana.integreatly.org/grafana_v1beta1.json
+apiVersion: grafana.integreatly.org/v1beta1
+kind: Grafana
+metadata:
+  name: grafana
+  labels:
+    dashboards: grafana
+    grafana.internal/instance: grafana
+spec:
+  config:
+    analytics:
+      check_for_updates: "false"
+      check_for_plugin_updates: "false"
+      feedback_links_enabled: "false"
+      reporting_enabled: "false"
+    auth:
+      disable_login_form: "false"
+    auth.anonymous:
+      enabled: "false"
+    auth.generic_oauth:
+      enabled: "true"
+      name: authentik
+      scopes: openid email profile
+      auth_url: https://auth.jacob-williams.me/application/o/authorize/
+      token_url: https://auth.jacob-williams.me/application/o/token/
+      api_url: https://auth.jacob-williams.me/application/o/userinfo/
+      # Optionally map user groups to Grafana roles
+      role_attribute_path: contains(groups[*], 'Grafana Admins') && 'Admin' || contains(groups[*], 'Grafana Editors') && 'Editor' || 'Viewer'
+      # enabled: "true"
+      # name: Authentik
+      # allow_sign_up: "true"
+      # allow_assign_grafana_admin: "true"
+      # skip_org_role_sync: "false"
+      # scopes: openid profile email groups
+      # groups_attribute_path: groups
+      # role_attribute_path: contains(groups[*], 'grafana-admins') && 'Admin' || contains(groups[*], 'grafana-editors') && 'Editor' || 'Viewer'
+      # auth_url: https://auth.rphilipsen.nl/api/oidc/authorization
+      # token_url: https://auth.rphilipsen.nl/api/oidc/token
+      # api_url: https://auth.rphilipsen.nl/api/oidc/userinfo
+      # auth_style: InParams
+      # use_pkce: "true"
+      # client_id: $__env{GF_AUTH_GENERIC_OAUTH_CLIENT_ID}
+      # client_secret: $__env{GF_AUTH_GENERIC_OAUTH_CLIENT_SECRET}
+      # login_attribute_path: preferred_username
+      # name_attribute_path: name
+      # email_attribute_path: email
+    log:
+      mode: console
+    metrics:
+      enabled: "true"
+    news:
+      news_feed_enabled: "false"
+    plugins:
+      plugin_admin_enabled: "false"
+    security:
+      angular_support_enabled: "true"
+    server:
+      enable_gzip: "true"
+      root_url: https://grafana.jacob-williams.me
+  deployment:
+    spec:
+      strategy:
+        type: Recreate
+      template:
+        spec:
+          containers:
+            - name: grafana
+              env:
+                - name: GF_INSTALL_PLUGINS
+                  value: victoriametrics-logs-datasource
+                - name: GF_SECURITY_ADMIN_PASSWORD
+                  valueFrom:
+                    secretKeyRef:
+                      name: grafana-admin-password-secret
+                      key: GF_SECURITY_ADMIN_PASSWORD
+                - name: GF_AUTH_GENERIC_OAUTH_CLIENT_ID
+                  valueFrom:
+                    secretKeyRef:
+                      name: grafana-admin-password-secret
+                      key: GF_AUTH_GENERIC_OAUTH_CLIENT_ID
+                - name: GF_AUTH_GENERIC_OAUTH_CLIENT_SECRET
+                  valueFrom:
+                    secretKeyRef:
+                      name: grafana-admin-password-secret
+                      key: GF_AUTH_GENERIC_OAUTH_CLIENT_SECRET
+              securityContext:
+                allowPrivilegeEscalation: false
+                readOnlyRootFilesystem: true
+                capabilities: {drop: ["ALL"]}
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 1000
+            runAsGroup: 1000
+            fsGroup: 1000
+            fsGroupChangePolicy: OnRootMismatch
+          volumes:
+            - name: grafana-data
+              persistentVolumeClaim:
+                claimName: grafana-pvc
+  httpRoute:
+    spec:
+      hostnames:
+        - "grafana.${SECRET_DOMAIN}"
+      parentRefs:
+        - name: internal
+          namespace: network
+          sectionName: https
+      rules:
+        - backendRefs:
+            - name: grafana-service
+              port: 3000
+  persistentVolumeClaim:
+    spec:
+      accessModes:
+        - ReadWriteOnce
+      resources:
+        requests:
+          storage: 10Gi
+      storageClassName: ceph-block
+  disableDefaultSecurityContext: All
