@@ -9,7 +9,7 @@ resources:
   - ./grafana/ks.yaml
   - ./kube-state-metrics/ks.yaml
   - ./node-exporter/ks.yaml
-  # - ./open-telemetry/ks.yaml
+  - ./open-telemetry/ks.yaml
   - ./prometheus-operator/ks.yaml
   - ./silence-operator/ks.yaml
   - ./speedtest-exporter/ks.yaml
