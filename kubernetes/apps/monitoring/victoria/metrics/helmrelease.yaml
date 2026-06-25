@@ -112,7 +112,7 @@ spec:
       enabled: true
 
     kube-state-metrics:
-      enabled: false
+      enabled: true
 
     kubelet:
       enabled: true
