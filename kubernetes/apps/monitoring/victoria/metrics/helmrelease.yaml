@@ -44,12 +44,13 @@ spec:
       create: true
 
     alertmanager:
-      enabled: true
-      spec:
-        disableNamespaceMatcher: true
+      enabled: false
 
     vmalert:
       enabled: true
+      spec:
+        notifiers:
+          - url: http://alertmanager.monitoring.svc:9093
 
     grafana:
       enabled: false
