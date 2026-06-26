@@ -45,7 +45,7 @@ spec:
         compression: bzip2
         maxParallel: 8
       destinationPath: s3://cloudnative-pg-vector/
-      endpointURL: http://10.0.0.14:10106/
+      endpointURL: http://10.0.0.14:20188/
       # Note: serverName version needs to be inclemented
       # when recovering from an existing cnpg cluster
       serverName: &currentCluster postgres16-v10
