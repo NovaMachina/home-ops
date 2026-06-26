@@ -73,7 +73,7 @@ spec:
               - name: runner-cache
                 mountPath: /cache
           - name: daemon
-            image: docker:29.5.0-dind
+            image: docker:29.6.1-dind
             command:
               - sh
               - -c
