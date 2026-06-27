@@ -50,9 +50,9 @@ spec:
         allowPrivilegeEscalation: false
       metrics:
         service:
-          enabled: true
+          enabled: false
         serviceMonitor:
-          enabled: true
+          enabled: false
     rabbitmqImage:
       repository: rabbitmq
       tag: 4.3.2-management-alpine
