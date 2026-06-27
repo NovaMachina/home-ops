@@ -9,4 +9,4 @@ resources:
   - ./cloudnative-pg/ks.yaml
   - ./dragonfly/ks.yaml
   - ./mongodb/ks.yaml
-  - ./rabbitmq/ks.yaml
+  # - ./rabbitmq/ks.yaml
