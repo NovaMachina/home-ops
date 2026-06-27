@@ -8,6 +8,7 @@ spec:
   chartRef:
     kind: OCIRepository
     name: rabbitmq-culster-operator
+    namespace: database
   interval: 30m
   values:
     resources:
