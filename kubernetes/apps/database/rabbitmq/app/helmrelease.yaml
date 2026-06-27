@@ -7,7 +7,7 @@ metadata:
 spec:
   chartRef:
     kind: OCIRepository
-    name: rabbitmq-culster-operator
+    name: rabbitmq-cluster-operator
     namespace: database
   interval: 30m
   values:
