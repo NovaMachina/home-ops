@@ -18,6 +18,15 @@ spec:
       limits:
         memory: 256Mi
     clusterOperator:
+      rbac:
+        clusterRole:
+          extraRules:
+            - apiGroups:
+                - rabbitmq.com
+              resources:
+                - rabbitmqclusters/status
+              verbs:
+                - patch
       image:
         repository: ghcr.io/rabbitmq/cluster-operator
         tag: 2.21.1
