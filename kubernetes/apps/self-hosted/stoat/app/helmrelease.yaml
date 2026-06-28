@@ -32,7 +32,7 @@ spec:
           app:
             image:
               repository: ghcr.io/stoatchat/api
-              tag: 20251023-1
+              tag: v0.13.7@sha256:3ffa4e60f655b33bf92b7afb7ba6ef4c9ecadbaa33374c204204c144419c3ac7
             resources:
               requests:
                 cpu: 10m
@@ -47,7 +47,7 @@ spec:
           app:
             image:
               repository: ghcr.io/stoatchat/events
-              tag: 20251023-1
+              tag: v0.13.7@sha256:0a8b01998a4d589bb0ab9c2b03ba643aaa654c58287392c12b5cb8fc65aeeb26
             resources:
               requests:
                 cpu: 10m
@@ -61,8 +61,8 @@ spec:
         containers:
           app:
             image:
-              repository: ghcr.io/revoltchat/client
-              tag: master
+              repository: ghcr.io/stoatchat/for-web
+              tag: 6c24e46@sha256:66882458b657db03ae24096ca4ae66c4eb44a2ddd6c92fa37c8dbe40ee5c2d55
             env:
               REVOLT_PUBLIC_URL: https://chat.jacob-williams.me/api
             resources:
@@ -79,7 +79,7 @@ spec:
           app:
             image:
               repository: ghcr.io/stoatchat/file-server
-              tag: 20251023-1
+              tag: v0.13.7@sha256:134ae1b6c5cee73886b0b7068bbef822f74ae0ba66e87f0f183fb5323f4dba80
             resources:
               requests:
                 cpu: 10m
@@ -94,7 +94,7 @@ spec:
           app:
             image:
               repository: ghcr.io/stoatchat/proxy
-              tag: 20251023-1
+              tag: v0.13.7@sha256:b3e48e0c41f69fe499a9c7c75c4eb6e0b2d415c49ee2b242932584fd61d5cbce
             resources:
               requests:
                 cpu: 10m
@@ -109,7 +109,7 @@ spec:
           app:
             image:
               repository: ghcr.io/stoatchat/gifbox
-              tag: 20251023-1
+              tag: v0.13.7@sha256:38d9704d46ddb221b71150f56c32f418422b3ccefbc915e03043e071fefc716e
             resources:
               requests:
                 cpu: 10m
@@ -124,7 +124,7 @@ spec:
           app:
             image:
               repository: ghcr.io/stoatchat/crond
-              tag: 20251023-1
+              tag: v0.13.7@sha256:9e0182cc9cdc61207bc8d55a3354b6f3caf938bab8d7006f2022631183d14eec
             resources:
               requests:
                 cpu: 10m
@@ -139,7 +139,7 @@ spec:
           app:
             image:
               repository: ghcr.io/stoatchat/pushd
-              tag: 20251023-1
+              tag: v0.13.7@sha256:22f5d056d732c3bbda6343b863eed2c56344559997388cca37a0fd0009131692
             resources:
               requests:
                 cpu: 10m
