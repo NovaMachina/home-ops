@@ -3,22 +3,22 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app stoat
-  namespace: &namespace self-hosted
+  name: stoat
+  namespace: self-hosted
 spec:
   commonMetadata:
     labels:
-      app.kubernetes.io/name: *app
-  targetNamespace: *namespace
+      app.kubernetes.io/name: stoat
+  targetNamespace: self-hosted
   dependsOn:
+    - name: onepassword-store
+      namespace: external-secrets
     - name: mongodb-operator
       namespace: database
     - name: rabbitmq-cluster-operator
       namespace: database
     - name: dragonfly
       namespace: database
-    - name: onepassword-store
-      namespace: external-secrets
     - name: rook-ceph-cluster
       namespace: rook-ceph
   path: ./kubernetes/apps/self-hosted/stoat/app
@@ -35,7 +35,5 @@ spec:
     substituteFrom:
       - name: cluster-secrets
         kind: Secret
-      - name: stoat-flux-vars
-        kind: Secret
     substitute:
-      APP: *app
+      APP: stoat

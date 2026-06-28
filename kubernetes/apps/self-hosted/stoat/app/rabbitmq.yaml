@@ -8,11 +8,24 @@ spec:
   persistence:
     storageClassName: ceph-block
     storage: 5Gi
-  rabbitmq:
-    # ${STOAT_RABBITMQ_PASSWORD} is substituted by Flux from stoat-flux-vars Secret
-    additionalConfig: |
-      default_user = stoat
-      default_pass = ${STOAT_RABBITMQ_PASSWORD}
+  override:
+    statefulSet:
+      spec:
+        template:
+          spec:
+            containers:
+              - name: rabbitmq
+                env:
+                  - name: RABBITMQ_DEFAULT_USER
+                    valueFrom:
+                      secretKeyRef:
+                        name: stoat-rabbit-secret
+                        key: username
+                  - name: RABBITMQ_DEFAULT_PASS
+                    valueFrom:
+                      secretKeyRef:
+                        name: stoat-rabbit-secret
+                        key: password
   service:
     type: ClusterIP
   resources:

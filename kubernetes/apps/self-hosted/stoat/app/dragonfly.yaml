@@ -1,22 +1,4 @@
 ---
-apiVersion: external-secrets.io/v1
-kind: ExternalSecret
-metadata:
-  name: stoat-dragonfly-secret
-spec:
-  refreshInterval: 5m
-  secretStoreRef:
-    kind: ClusterSecretStore
-    name: onepassword
-  target:
-    name: stoat-dragonfly-secret
-    creationPolicy: Owner
-  data:
-    - secretKey: password
-      remoteRef:
-        key: stoat
-        property: DRAGONFLY_PASSWORD
----
 apiVersion: dragonflydb.io/v1alpha1
 kind: Dragonfly
 metadata:
