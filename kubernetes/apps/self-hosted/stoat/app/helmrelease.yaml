@@ -1,0 +1,230 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: stoat
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: app-template
+      version: 4.6.2
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s-labs
+        namespace: flux-system
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      strategy: rollback
+      retries: 3
+  values:
+    controllers:
+      api:
+        type: deployment
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          app:
+            image:
+              repository: ghcr.io/stoatchat/api
+              tag: 20251023-1
+            resources:
+              requests:
+                cpu: 10m
+              limits:
+                memory: 256Mi
+
+      events:
+        type: deployment
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          app:
+            image:
+              repository: ghcr.io/stoatchat/events
+              tag: 20251023-1
+            resources:
+              requests:
+                cpu: 10m
+              limits:
+                memory: 128Mi
+
+      web:
+        type: deployment
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          app:
+            image:
+              repository: ghcr.io/revoltchat/client
+              tag: master
+            env:
+              REVOLT_PUBLIC_URL: https://chat.jacob-williams.me/api
+            resources:
+              requests:
+                cpu: 10m
+              limits:
+                memory: 256Mi
+
+      file-server:
+        type: deployment
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          app:
+            image:
+              repository: ghcr.io/stoatchat/file-server
+              tag: 20251023-1
+            resources:
+              requests:
+                cpu: 10m
+              limits:
+                memory: 512Mi
+
+      proxy:
+        type: deployment
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          app:
+            image:
+              repository: ghcr.io/stoatchat/proxy
+              tag: 20251023-1
+            resources:
+              requests:
+                cpu: 10m
+              limits:
+                memory: 256Mi
+
+      gifbox:
+        type: deployment
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          app:
+            image:
+              repository: ghcr.io/stoatchat/gifbox
+              tag: 20251023-1
+            resources:
+              requests:
+                cpu: 10m
+              limits:
+                memory: 256Mi
+
+      crond:
+        type: deployment
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          app:
+            image:
+              repository: ghcr.io/stoatchat/crond
+              tag: 20251023-1
+            resources:
+              requests:
+                cpu: 10m
+              limits:
+                memory: 128Mi
+
+      pushd:
+        type: deployment
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          app:
+            image:
+              repository: ghcr.io/stoatchat/pushd
+              tag: 20251023-1
+            resources:
+              requests:
+                cpu: 10m
+              limits:
+                memory: 128Mi
+
+    persistence:
+      config:
+        type: secret
+        name: stoat-config
+        advancedMounts:
+          api:
+            app:
+              - path: /Revolt.toml
+                subPath: Revolt.toml
+                readOnly: true
+          events:
+            app:
+              - path: /Revolt.toml
+                subPath: Revolt.toml
+                readOnly: true
+          file-server:
+            app:
+              - path: /Revolt.toml
+                subPath: Revolt.toml
+                readOnly: true
+          proxy:
+            app:
+              - path: /Revolt.toml
+                subPath: Revolt.toml
+                readOnly: true
+          gifbox:
+            app:
+              - path: /Revolt.toml
+                subPath: Revolt.toml
+                readOnly: true
+          crond:
+            app:
+              - path: /Revolt.toml
+                subPath: Revolt.toml
+                readOnly: true
+          pushd:
+            app:
+              - path: /Revolt.toml
+                subPath: Revolt.toml
+                readOnly: true
+
+    service:
+      api:
+        controller: api
+        ports:
+          http:
+            port: 14702
+      events:
+        controller: events
+        ports:
+          http:
+            port: 14703
+      web:
+        controller: web
+        ports:
+          http:
+            port: 5000
+      file-server:
+        controller: file-server
+        ports:
+          http:
+            port: 14704
+      proxy:
+        controller: proxy
+        ports:
+          http:
+            port: 14705
+      gifbox:
+        controller: gifbox
+        ports:
+          http:
+            port: 14706
+      crond:
+        controller: crond
+        ports:
+          http:
+            port: 14707
+      pushd:
+        controller: pushd
+        ports:
+          http:
+            port: 14708

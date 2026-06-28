@@ -1,0 +1,23 @@
+---
+apiVersion: rabbitmq.com/v1beta1
+kind: RabbitmqCluster
+metadata:
+  name: stoat-rabbit
+spec:
+  replicas: 1
+  persistence:
+    storageClassName: ceph-block
+    storage: 5Gi
+  rabbitmq:
+    # ${STOAT_RABBITMQ_PASSWORD} is substituted by Flux from stoat-flux-vars Secret
+    additionalConfig: |
+      default_user = stoat
+      default_pass = ${STOAT_RABBITMQ_PASSWORD}
+  service:
+    type: ClusterIP
+  resources:
+    requests:
+      cpu: 10m
+      memory: 128Mi
+    limits:
+      memory: 256Mi

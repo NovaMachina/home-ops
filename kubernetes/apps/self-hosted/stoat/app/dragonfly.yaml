@@ -1,0 +1,46 @@
+---
+apiVersion: external-secrets.io/v1
+kind: ExternalSecret
+metadata:
+  name: stoat-dragonfly-secret
+spec:
+  refreshInterval: 5m
+  secretStoreRef:
+    kind: ClusterSecretStore
+    name: onepassword
+  target:
+    name: stoat-dragonfly-secret
+    creationPolicy: Owner
+  data:
+    - secretKey: password
+      remoteRef:
+        key: stoat
+        property: DRAGONFLY_PASSWORD
+---
+apiVersion: dragonflydb.io/v1alpha1
+kind: Dragonfly
+metadata:
+  name: stoat-dragonfly
+spec:
+  image: ghcr.io/dragonflydb/dragonfly:v1.32.0
+  replicas: 1
+  env:
+    - name: MAX_MEMORY
+      valueFrom:
+        resourceFieldRef:
+          resource: limits.memory
+          divisor: 1Mi
+    - name: REDIS_PASSWORD
+      valueFrom:
+        secretKeyRef:
+          name: stoat-dragonfly-secret
+          key: password
+  args:
+    - --maxmemory=$(MAX_MEMORY)Mi
+    - --proactor_threads=2
+  resources:
+    requests:
+      cpu: 10m
+      memory: 64Mi
+    limits:
+      memory: 128Mi
