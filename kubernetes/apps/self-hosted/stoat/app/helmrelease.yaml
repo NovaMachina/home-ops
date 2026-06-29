@@ -152,6 +152,21 @@ spec:
               limits:
                 memory: 128Mi
 
+      voice-ingress:
+        type: deployment
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          app:
+            image:
+              repository: ghcr.io/stoatchat/voice-ingress
+              tag: v0.13.7@sha256:0174b42b7bbc7a9ecb2ea41f977e3e1a62e7d759ecd43e53631af590df049adc
+            resources:
+              requests:
+                cpu: 10m
+              limits:
+                memory: 128Mi
+
       livekit:
         type: deployment
         annotations:
@@ -210,6 +225,11 @@ spec:
               - path: /Revolt.toml
                 subPath: Revolt.toml
                 readOnly: true
+          voice-ingress:
+            app:
+              - path: /Revolt.toml
+                subPath: Revolt.toml
+                readOnly: true
 
       livekit-config:
         type: secret
@@ -262,6 +282,11 @@ spec:
         ports:
           http:
             port: 14708
+      voice-ingress:
+        controller: voice-ingress
+        ports:
+          http:
+            port: 8500
       livekit:
         controller: livekit
         ports:
