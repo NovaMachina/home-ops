@@ -60,6 +60,15 @@ spec:
         - name: stoat-file-server
           port: 14704
 
+    # File server direct attachment URLs (no prefix strip)
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /attachments
+      backendRefs:
+        - name: stoat-file-server
+          port: 14704
+
     # Proxy (january) — strip /january prefix
     - matches:
         - path:
