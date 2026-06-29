@@ -152,6 +152,24 @@ spec:
               limits:
                 memory: 128Mi
 
+      livekit:
+        type: deployment
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          app:
+            image:
+              repository: ghcr.io/stoatchat/livekit-server
+              tag: v1.9.6
+            args:
+              - "--config"
+              - "/etc/livekit.yaml"
+            resources:
+              requests:
+                cpu: 10m
+              limits:
+                memory: 256Mi
+
     persistence:
       config:
         type: secret
@@ -191,6 +209,16 @@ spec:
             app:
               - path: /Revolt.toml
                 subPath: Revolt.toml
+                readOnly: true
+
+      livekit-config:
+        type: secret
+        name: stoat-livekit-config
+        advancedMounts:
+          livekit:
+            app:
+              - path: /etc/livekit.yaml
+                subPath: livekit.yaml
                 readOnly: true
 
     service:
@@ -234,3 +262,34 @@ spec:
         ports:
           http:
             port: 14708
+      livekit:
+        controller: livekit
+        ports:
+          http:
+            port: 7880
+      livekit-rtc:
+        controller: livekit
+        type: LoadBalancer
+        annotations:
+          io.cilium/lb-ipam-ips: 10.0.40.52
+        ports:
+          rtc-1: {port: 12321, protocol: UDP}
+          rtc-2: {port: 12322, protocol: UDP}
+          rtc-3: {port: 12323, protocol: UDP}
+          rtc-4: {port: 12324, protocol: UDP}
+          rtc-5: {port: 12325, protocol: UDP}
+          rtc-6: {port: 12326, protocol: UDP}
+          rtc-7: {port: 12327, protocol: UDP}
+          rtc-8: {port: 12328, protocol: UDP}
+          rtc-9: {port: 12329, protocol: UDP}
+          rtc-10: {port: 12330, protocol: UDP}
+          rtc-11: {port: 12331, protocol: UDP}
+          rtc-12: {port: 12332, protocol: UDP}
+          rtc-13: {port: 12333, protocol: UDP}
+          rtc-14: {port: 12334, protocol: UDP}
+          rtc-15: {port: 12335, protocol: UDP}
+          rtc-16: {port: 12336, protocol: UDP}
+          rtc-17: {port: 12337, protocol: UDP}
+          rtc-18: {port: 12338, protocol: UDP}
+          rtc-19: {port: 12339, protocol: UDP}
+          rtc-20: {port: 12340, protocol: UDP}
