@@ -64,7 +64,13 @@ spec:
               repository: ghcr.io/stoatchat/for-web
               tag: 6c24e46@sha256:66882458b657db03ae24096ca4ae66c4eb44a2ddd6c92fa37c8dbe40ee5c2d55
             env:
+              HOSTNAME: https://chat.jacob-williams.me
               REVOLT_PUBLIC_URL: https://chat.jacob-williams.me/api
+              VITE_API_URL: https://chat.jacob-williams.me/api
+              VITE_WS_URL: wss://chat.jacob-williams.me/ws
+              VITE_MEDIA_URL: https://chat.jacob-williams.me/autumn
+              VITE_PROXY_URL: https://chat.jacob-williams.me/january
+              VITE_CFG_ENABLE_VIDEO: true
             resources:
               requests:
                 cpu: 10m
