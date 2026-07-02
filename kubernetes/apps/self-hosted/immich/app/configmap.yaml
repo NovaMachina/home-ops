@@ -20,6 +20,6 @@ data:
   REDIS_DBINDEX: "1"
   REDIS_PORT: "6379"
   #DB
-  DB_HOSTNAME: 'postgres16-rw.database.svc.cluster.local'
+  DB_HOSTNAME: 'immich-postgres-rw.self-hosted.svc.cluster.local'
   DB_PORT: "5432"
   DB_DATABASE_NAME: "immich"
