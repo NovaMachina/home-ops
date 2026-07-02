@@ -84,6 +84,21 @@ spec:
         - name: stoat-proxy
           port: 14705
 
+    # Gifbox (Tenor proxy) — strip /gifbox prefix
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /gifbox
+      filters:
+        - type: URLRewrite
+          urlRewrite:
+            path:
+              type: ReplacePrefixMatch
+              replacePrefixMatch: /
+      backendRefs:
+        - name: stoat-gifbox
+          port: 14706
+
     # Web frontend — catch-all
     - matches:
         - path:

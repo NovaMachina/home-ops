@@ -70,6 +70,7 @@ spec:
               VITE_WS_URL: wss://chat.jacob-williams.me/ws
               VITE_MEDIA_URL: https://chat.jacob-williams.me/autumn
               VITE_PROXY_URL: https://chat.jacob-williams.me/january
+              VITE_GIFBOX_URL: https://chat.jacob-williams.me/gifbox
               VITE_CFG_ENABLE_VIDEO: true
             resources:
               requests:
