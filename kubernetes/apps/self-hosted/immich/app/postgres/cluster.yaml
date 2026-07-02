@@ -6,12 +6,9 @@ metadata:
   name: immich-postgres
 spec:
   instances: 3
-  # NOTE: transitional image bundling both pgvecto.rs (vectors.so) and
-  # VectorChord (vchord.so) so Immich can be switched over from one to the
-  # other without downtime. Swap to the official
-  # ghcr.io/tensorchord/cloudnative-vectorchord image once the extension
-  # migration is complete.
-  imageName: ghcr.io/corentingiraud/cnpg-pgvector-vectorchord:16-migration
+  # NOTE: pin VectorChord <0.5 until Immich is upgraded past v2.1.0
+  # (v1.138.0 rejects VectorChord >=0.5, see immich-app/immich#21164).
+  imageName: ghcr.io/tensorchord/cloudnative-vectorchord:16.9-0.4.2
   primaryUpdateStrategy: unsupervised
   storage:
     size: 10Gi
@@ -25,7 +22,6 @@ spec:
       shared_buffers: 256MB
     shared_preload_libraries:
       - "vchord.so"
-      - "vectors.so"
   nodeMaintenanceWindow:
     inProgress: false
     reusePVC: true
