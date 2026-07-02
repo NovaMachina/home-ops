@@ -7,12 +7,20 @@ vars:
 
 tasks:
   backup:
-    desc: Perform manual backup of postgres db
+    desc: Perform manual backup of a postgres db [NS=database] [CLUSTER=postgres16]
     preconditions:
       - which kubectl minijinja-cli
       - test -f "{{.POSTGRES_TASK_RESOURCES_DIR}}/backup.yaml.j2"
+      - kubectl --namespace {{.NS}} get cluster {{.CLUSTER}}
+    vars:
+      NS: '{{.NS | default "database"}}'
+      CLUSTER: '{{.CLUSTER | default "postgres16"}}'
+      JOB: "{{.CLUSTER}}-manual"
+    env:
+      NS: "{{.NS}}"
+      CLUSTER: "{{.CLUSTER}}"
     cmds:
       - minijinja-cli {{.POSTGRES_TASK_RESOURCES_DIR}}/backup.yaml.j2 | kubectl apply --server-side --filename -
-      - until kubectl --namespace database get backup/postgres-manual &>/dev/null; do sleep 5; done
-      - kubectl --namespace database wait backup/postgres-manual --for=jsonpath='{.status.phase}'=completed --timeout=5m
-      - kubectl --namespace database delete backup/postgres-manual
+      - until kubectl --namespace {{.NS}} get backup/{{.JOB}} &>/dev/null; do sleep 5; done
+      - kubectl --namespace {{.NS}} wait backup/{{.JOB}} --for=jsonpath='{.status.phase}'=completed --timeout=5m
+      - kubectl --namespace {{.NS}} delete backup/{{.JOB}}
