@@ -1,0 +1,81 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/postgresql.cnpg.io/cluster_v1.json
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: immich-postgres
+spec:
+  instances: 3
+  # NOTE: transitional image bundling both pgvecto.rs (vectors.so) and
+  # VectorChord (vchord.so) so Immich can be switched over from one to the
+  # other without downtime. Swap to the official
+  # ghcr.io/tensorchord/cloudnative-vectorchord image once the extension
+  # migration is complete.
+  imageName: ghcr.io/corentingiraud/cnpg-pgvector-vectorchord:16-migration
+  primaryUpdateStrategy: unsupervised
+  storage:
+    size: 10Gi
+    storageClass: ceph-block
+  superuserSecret:
+    name: immich-postgres-superuser
+  enableSuperuserAccess: true
+  postgresql:
+    parameters:
+      max_connections: "400"
+      shared_buffers: 256MB
+    shared_preload_libraries:
+      - "vchord.so"
+      - "vectors.so"
+  nodeMaintenanceWindow:
+    inProgress: false
+    reusePVC: true
+  resources:
+    requests:
+      cpu: 10m
+      memory: 300Mi
+    limits:
+      memory: 1Gi
+  monitoring:
+    enablePodMonitor: true
+  backup:
+    retentionPolicy: 30d
+    barmanObjectStore:
+      data:
+        compression: bzip2
+      wal:
+        compression: bzip2
+        maxParallel: 8
+      destinationPath: s3://pg-immich-backup/
+      endpointURL: http://10.0.0.14:30188/
+      serverName: immich-postgres-v1
+      s3Credentials:
+        accessKeyId:
+          name: immich-postgres-superuser
+          key: aws-access-key-id
+        secretAccessKey:
+          name: immich-postgres-superuser
+          key: aws-secret-access-key
+        region:
+          name: immich-postgres-s3-region
+          key: aws-region
+  bootstrap:
+    initdb:
+      database: immich
+      owner: immich
+      secret:
+        name: immich-postgres-owner
+      import:
+        type: microservice
+        databases:
+          - immich
+        source:
+          externalCluster: postgres16-source
+  externalClusters:
+    - name: postgres16-source
+      connectionParameters:
+        host: postgres16-rw.database.svc.cluster.local
+        user: immich
+        dbname: immich
+      password:
+        name: immich-secret
+        key: DB_PASSWORD

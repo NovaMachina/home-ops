@@ -6,4 +6,5 @@ resources:
   - ./externalsecret.yaml
   - ./machine-learning
   - ./microservices
+  - ./postgres
   - ./server
