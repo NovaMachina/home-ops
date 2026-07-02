@@ -6,8 +6,8 @@ metadata:
   name: immich-postgres
 spec:
   instances: 3
-  # NOTE: pin VectorChord <0.5 until Immich is upgraded past v2.1.0
-  # (v1.138.0 rejects VectorChord >=0.5, see immich-app/immich#21164).
+  # Immich is on v3.0.0, which accepts VectorChord >=0.3 <2.0, so 0.4.2 is
+  # not a hard pin anymore -- bump freely within that range.
   imageName: ghcr.io/tensorchord/cloudnative-vectorchord:16.9-0.4.2
   primaryUpdateStrategy: unsupervised
   storage:
