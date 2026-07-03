@@ -1,0 +1,153 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: unifi-os-server
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: app-template
+      version: 4.6.2
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s-labs
+        namespace: flux-system
+  maxHistory: 2
+  install:
+    createNamespace: true
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      strategy: rollback
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    controllers:
+      unifi-os-server:
+        replicas: 1
+        strategy: Recreate
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          app:
+            image:
+              repository: ghcr.io/lemker/unifi-os-server
+              tag: v1.3.0@sha256:445c3350bdb44ac68a7770e151a9fe17c7336cf8f4682316e0b66ac05faa6916
+              pullPolicy: IfNotPresent
+            env:
+              HOST_IP:
+                valueFrom:
+                  fieldRef:
+                    fieldPath: status.hostIP
+              UOS_SYSTEM_IP: "10.0.40.51"
+            lifecycle:
+              postStart:
+                exec:
+                  command:
+                    - /bin/bash
+                    - -c
+                    - echo $HOST_IP host.docker.internal >> /etc/hosts
+            probes:
+              liveness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /api/ping
+                    port: 80
+                  initialDelaySeconds: 10
+                  periodSeconds: 60
+                  timeoutSeconds: 5
+                  successThreshold: 1
+                  failureThreshold: 3
+              readiness:
+                enabled: false
+              startup:
+                enabled: false
+            securityContext:
+              privileged: true
+              allowPrivilegeEscalation: true
+              readOnlyRootFilesystem: false
+              capabilities: {drop: ["ALL"]}
+            resources:
+              requests:
+                cpu: 250m
+                memory: 2Gi
+              limits:
+                memory: 6Gi
+        pod:
+          securityContext:
+            runAsNonRoot: false
+            runAsUser: 0
+            runAsGroup: 0
+            fsGroup: 0
+            fsGroupChangePolicy: OnRootMismatch
+            seccompProfile: {type: RuntimeDefault}
+    service:
+      app:
+        controller: unifi-os-server
+        type: LoadBalancer
+        annotations:
+          external-dns.alpha.kubernetes.io/hostname: "unifi.${SECRET_DOMAIN}"
+          io.cilium/lb-ipam-ips: 10.0.40.51
+        ports:
+          https:
+            port: 443
+            protocol: TCP
+          communication:
+            port: 8080
+            protocol: TCP
+          speedtest:
+            port: 6789
+            protocol: TCP
+          id-hub:
+            port: 9543
+            protocol: TCP
+          hotspot-0:
+            port: 8880
+            protocol: TCP
+          hotspot-1:
+            port: 8881
+            protocol: TCP
+          hotspot-2:
+            port: 8882
+            protocol: TCP
+          hotspot-tls:
+            port: 8444
+            protocol: TCP
+          stun:
+            port: 3478
+            protocol: UDP
+          syslog:
+            port: 5514
+            protocol: UDP
+          discovery:
+            port: 10003
+            protocol: UDP
+    serviceAccount:
+      unifi-os-server: {}
+    persistence:
+      data:
+        existingClaim: unifi-os-server
+        advancedMounts:
+          unifi-os-server:
+            app:
+              - path: /persistent
+                subPath: persistent
+              - path: /var/log
+                subPath: log
+              - path: /data
+                subPath: data
+              - path: /srv
+                subPath: srv
+              - path: /var/lib/unifi
+                subPath: unifi
+              - path: /var/lib/mongodb
+                subPath: mongodb
+              - path: /etc/rabbitmq/ssl
+                subPath: rabbitmq

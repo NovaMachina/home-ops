@@ -10,6 +10,7 @@ resources:
   - ./immich/ks.yaml
   - ./dashboard/ks.yaml
   # - ./unifi/ks.yaml
+  - ./unifi-os-server/ks.yaml
   - ./paperless/ks.yaml
   - ./wikijs/ks.yaml
   # - ./lounge/ks.yaml

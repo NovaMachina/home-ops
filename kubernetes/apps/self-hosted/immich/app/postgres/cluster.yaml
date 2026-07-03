@@ -60,18 +60,3 @@ spec:
       owner: immich
       secret:
         name: immich-postgres-owner
-      import:
-        type: microservice
-        databases:
-          - immich
-        source:
-          externalCluster: postgres16-source
-  externalClusters:
-    - name: postgres16-source
-      connectionParameters:
-        host: postgres16-rw.database.svc.cluster.local
-        user: immich
-        dbname: immich
-      password:
-        name: immich-secret
-        key: DB_PASSWORD
