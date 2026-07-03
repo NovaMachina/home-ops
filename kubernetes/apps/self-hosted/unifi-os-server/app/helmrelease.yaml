@@ -95,10 +95,9 @@ spec:
         annotations:
           io.cilium/lb-ipam-ips: 10.0.40.51
         ports:
-          # UOS serves its web UI over HTTPS and force-redirects HTTP->HTTPS
-          # (ignoring X-Forwarded-Proto), so it must be reached over TLS directly.
-          # Point a DNS host override (e.g. AdGuard) at this LB IP so the browser
-          # negotiates TLS directly with UOS's own cert.
+          # Web UI. Reached via the internal gateway, which terminates TLS with the
+          # valid wildcard cert (satisfies HSTS) and re-encrypts to this HTTPS port
+          # (see route below + tls-policy.yaml). Devices still adopt via the LB IP.
           https:
             port: 443
             protocol: TCP
@@ -134,6 +133,28 @@ spec:
             protocol: UDP
     serviceAccount:
       unifi-os-server: {}
+    route:
+      # Terminate TLS at the internal gateway (valid wildcard cert -> HSTS ok) and
+      # re-encrypt to the UOS HTTPS backend; BackendTLSPolicy (tls-policy.yaml)
+      # tells Envoy to trust UOS's self-signed cert. Using an HTTPRoute (not a
+      # TLSRoute) is required so the browser gets the trusted gateway cert.
+      main:
+        enabled: true
+        hostnames:
+          - "unifi.${SECRET_DOMAIN}"
+        parentRefs:
+          - name: internal
+            namespace: network
+            sectionName: https
+        rules:
+          - matches:
+              - path:
+                  type: PathPrefix
+                  value: /
+            backendRefs:
+              - name: unifi-os-server
+                kind: Service
+                port: 443
     persistence:
       data:
         existingClaim: unifi-os-server

@@ -1,0 +1,31 @@
+---
+# UniFi OS Server's self-signed backend cert (CN/SAN unifi.local), captured
+# from the running pod. Referenced by tls-policy.yaml so Envoy trusts UOS
+# when it re-encrypts to :443. Public cert only (no key). NOTE: UOS regenerates
+# this if its cert store is wiped (fresh PVC); re-capture and update if so.
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: unifi-os-server-ca
+data:
+  ca.crt: |-
+    -----BEGIN CERTIFICATE-----
+    MIIDNTCCAh2gAwIBAgIJdthh0CF5KcyVMA0GCSqGSIb3DQEBCwUAMBYxFDASBgNV
+    BAMTC3VuaWZpLmxvY2FsMB4XDTI2MDcwMzAxMjExMloXDTI4MTAwNTAxMjExMlow
+    FjEUMBIGA1UEAxMLdW5pZmkubG9jYWwwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAw
+    ggEKAoIBAQDAW2BTCFJSwxvbFgcZW0FpgTesW3Y4EzXw5O46rjVZ77rqUdeUDLHQ
+    8fqJ9Ioch4MaXfX6BEWASmoJ/PYLEpsUwnW52d9Lyc+5IC8x0aDekowp4qpbIpPC
+    La8dX7AD8+EsPbtON7Er+2p1vs05c0T5IMsBtpcdkHcV+exF63l3D/EijKdhEkjI
+    +LmnNz4nzMtXI54Y832AVKePlPJ6och2p+nj7n36JIifFjJsZPLplMhNkKAealfO
+    nwm++BIF1zf8P+F0v997Y2zkDaY/9y1x/mi5U/Zr9vACEuJ30TRjfZqxJ1a3oaw8
+    FLQ3UArVwgofvm1Z2N0zJ2nPJ2E15ut9AgMBAAGjgYUwgYIwCwYDVR0PBAQDAgL0
+    MDEGA1UdJQQqMCgGCCsGAQUFBwMBBggrBgEFBQcDAgYIKwYBBQUHAwMGCCsGAQUF
+    BwMIMEAGA1UdEQQ5MDeCC3VuaWZpLmxvY2Fsgglsb2NhbGhvc3SCBVs6OjFdhwR/
+    AAABhxD+gAAAAAAAAAAAAAAAAAABMA0GCSqGSIb3DQEBCwUAA4IBAQCjsUy8mVZ5
+    V/q9Z9TR0F8YNAlKII4zBcfAgAd6wnxvNdc7hGr0fGQ2n6Ta5KQdkQ7d0CV25EkC
+    pauSQ2jizmzdjYVsCWFmzwBJj+dzeyUHBlY6PqwSYcexdVj9XghiFn78/DLz7Scb
+    lIctc8p0HFmooBNkNXtdys1NsumdvhRhQJp0fZdpwczSsyPGxoT14eaFE7df7ARr
+    RYaNwCumkn+lrHWu8bu9eqOVNl4rEfVfW0hHT8mqm72kc/2Qb94hU8r0i37lMGKk
+    aQVmyArmnYF03elwy3JiawHknBYHRYHU2XqWXFHXiKMO6corf3vzqCfPaNZSGlmq
+    GcMBaxdq+fTU
+    -----END CERTIFICATE-----
