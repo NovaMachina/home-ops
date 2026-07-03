@@ -93,9 +93,14 @@ spec:
         controller: unifi-os-server
         type: LoadBalancer
         annotations:
-          external-dns.alpha.kubernetes.io/hostname: "unifi.${SECRET_DOMAIN}"
           io.cilium/lb-ipam-ips: 10.0.40.51
         ports:
+          # Web UI over plain HTTP; Envoy terminates TLS at the internal gateway
+          # and proxies here, so no BackendTLSPolicy is needed (unlike the old
+          # HTTPS-only jacobalberty controller). Devices still adopt via the LB IP.
+          http:
+            port: 80
+            protocol: TCP
           https:
             port: 443
             protocol: TCP
@@ -131,6 +136,24 @@ spec:
             protocol: UDP
     serviceAccount:
       unifi-os-server: {}
+    route:
+      main:
+        enabled: true
+        hostnames:
+          - "unifi.${SECRET_DOMAIN}"
+        parentRefs:
+          - name: internal
+            namespace: network
+            sectionName: https
+        rules:
+          - matches:
+              - path:
+                  type: PathPrefix
+                  value: /
+            backendRefs:
+              - name: unifi-os-server
+                kind: Service
+                port: 80
     persistence:
       data:
         existingClaim: unifi-os-server
