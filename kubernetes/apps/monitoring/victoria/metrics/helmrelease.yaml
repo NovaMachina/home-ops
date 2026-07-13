@@ -42,6 +42,12 @@ spec:
 
     defaultRules:
       create: true
+      groups:
+        kube-prometheus-general.rules:
+          rules:
+            "count:up0":
+              spec:
+                expr: count(up == 0) without(instance,pod,node) or vector(0)
 
     alertmanager:
       enabled: false

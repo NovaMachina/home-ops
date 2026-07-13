@@ -95,13 +95,6 @@ spec:
         - record: job:django_db_execute_total:sum_rate30s
           expr: sum(rate(django_db_execute_total[30s])) by (alias, vendor)
 
-    - name: authentik Aggregate migrations
-      rules:
-        - record: job:django_migrations_applied_total:max
-          expr: max(django_migrations_applied_total) by (job, connection)
-        - record: job:django_migrations_unapplied_total:max
-          expr: max(django_migrations_unapplied_total) by (job, connection)
-
     - name: authentik Alerts
       rules:
         - alert: NoWorkersConnected
