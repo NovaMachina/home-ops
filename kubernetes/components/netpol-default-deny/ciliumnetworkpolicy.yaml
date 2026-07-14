@@ -1,0 +1,25 @@
+---
+# yaml-language-server: $schema=https://datreeio.github.io/CRDs-catalog/cilium.io/ciliumnetworkpolicy_v2.json
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: default-deny
+spec:
+  endpointSelector: {}
+  ingress:
+    # kubelet health-check probes are sourced from the node itself, not any pod
+    # namespace. Without this, readiness/liveness/startup probes get blocked and
+    # pods are marked unready or restarted (caused an outage on first attempt).
+    - fromEntities:
+        - host
+  egress:
+    - toEndpoints:
+        - matchLabels:
+            io.kubernetes.pod.namespace: kube-system
+            app.kubernetes.io/name: coredns
+      toPorts:
+        - ports:
+            - port: "53"
+              protocol: UDP
+            - port: "53"
+              protocol: TCP
