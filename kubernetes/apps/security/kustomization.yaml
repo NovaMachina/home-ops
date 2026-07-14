@@ -6,7 +6,5 @@ namespace: security
 resources:
   - ./authentik/ks.yaml
   - ./keycloak/ks.yaml
-  - ./ciliumnetworkpolicy.yaml
 components:
   - ../../components/common
-  - ../../components/netpol-default-deny
