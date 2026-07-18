@@ -47,7 +47,7 @@ spec:
     msgTopologyOperator:
       image:
         repository: ghcr.io/rabbitmq/messaging-topology-operator
-        tag: 1.19.3
+        tag: 1.20.0
       podSecurityContext:
         fsGroup: 1000
       containerSecurityContext:
