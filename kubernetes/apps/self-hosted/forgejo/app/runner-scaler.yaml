@@ -42,7 +42,7 @@ spec:
         shareProcessNamespace: true
         containers:
           - name: runner
-            image: code.forgejo.org/forgejo/runner:12.10.1
+            image: code.forgejo.org/forgejo/runner:12.13.1
             command:
               - sh
               - -c
