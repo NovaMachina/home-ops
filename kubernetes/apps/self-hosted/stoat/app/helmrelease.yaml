@@ -116,7 +116,7 @@ spec:
           app:
             image:
               repository: ghcr.io/stoatchat/gifbox
-              tag: v0.13.7@sha256:38d9704d46ddb221b71150f56c32f418422b3ccefbc915e03043e071fefc716e
+              tag: v0.14.3@sha256:a9778c0e802d510ffcd9a6ed922e6deff4341bc12cc96d8f7c7e6bd2d95a6806
             resources:
               requests:
                 cpu: 10m
