@@ -131,7 +131,7 @@ spec:
           app:
             image:
               repository: ghcr.io/stoatchat/crond
-              tag: v0.13.7@sha256:9e0182cc9cdc61207bc8d55a3354b6f3caf938bab8d7006f2022631183d14eec
+              tag: v0.14.3@sha256:82a50b7a3dcadbaaf6d198f7b06b3a68b74a8eeb0657c95f3ca1fb1541fbcd6c
             resources:
               requests:
                 cpu: 10m
