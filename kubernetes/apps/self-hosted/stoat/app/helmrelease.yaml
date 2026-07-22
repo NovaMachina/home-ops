@@ -47,7 +47,7 @@ spec:
           app:
             image:
               repository: ghcr.io/stoatchat/events
-              tag: v0.13.7@sha256:0a8b01998a4d589bb0ab9c2b03ba643aaa654c58287392c12b5cb8fc65aeeb26
+              tag: v0.14.3@sha256:00a737a5809ede02536bfeeee46502e79dbbedb8abf29322b792ade2edeed4fb
             resources:
               requests:
                 cpu: 10m
