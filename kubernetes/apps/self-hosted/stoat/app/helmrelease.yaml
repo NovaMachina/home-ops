@@ -146,7 +146,7 @@ spec:
           app:
             image:
               repository: ghcr.io/stoatchat/pushd
-              tag: v0.13.7@sha256:22f5d056d732c3bbda6343b863eed2c56344559997388cca37a0fd0009131692
+              tag: v0.14.3@sha256:a859e97f00d6d426d80ea5ef11c5d5cc99075246387ddb913967e18d16018961
             resources:
               requests:
                 cpu: 10m
