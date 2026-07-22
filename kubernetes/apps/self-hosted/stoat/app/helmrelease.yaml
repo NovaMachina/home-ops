@@ -161,7 +161,7 @@ spec:
           app:
             image:
               repository: ghcr.io/stoatchat/voice-ingress
-              tag: v0.13.7@sha256:0174b42b7bbc7a9ecb2ea41f977e3e1a62e7d759ecd43e53631af590df049adc
+              tag: v0.14.3@sha256:86b5f46ba6dd3c0132ea0417813cfed2f899d4d83aa2cba1d936cef98bf91bbd
             resources:
               requests:
                 cpu: 10m
