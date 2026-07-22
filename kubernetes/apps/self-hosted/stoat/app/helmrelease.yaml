@@ -32,7 +32,7 @@ spec:
           app:
             image:
               repository: ghcr.io/stoatchat/api
-              tag: v0.13.7@sha256:3ffa4e60f655b33bf92b7afb7ba6ef4c9ecadbaa33374c204204c144419c3ac7
+              tag: v0.14.3@sha256:d69dfef56f671a56950d6c1ad836c8938938275fcb210db52742370057e5a099
             resources:
               requests:
                 cpu: 10m
