@@ -42,7 +42,7 @@ spec:
         shareProcessNamespace: true
         containers:
           - name: runner
-            image: code.forgejo.org/forgejo/runner:12.10.1
+            image: code.forgejo.org/forgejo/runner:12.13.2
             command:
               - sh
               - -c
@@ -101,12 +101,14 @@ spec:
   minReplicaCount: 0
   maxReplicaCount: 20
   pollingInterval: 30
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 3
   triggers:
     - type: forgejo-runner
       metadata:
         name: "runner"
         address: "http://forgejo.self-hosted.svc.cluster.local:3000/"
         global: "true"
-        labels: "ubuntu-20,docker,java-25"
+        labels: "ubuntu-20,docker,java-25,node-20,node-22,node-26,base-runner,trivy"
       authenticationRef:
         name: forgejo-runner-creds
