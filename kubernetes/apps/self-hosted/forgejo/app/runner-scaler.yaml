@@ -101,6 +101,8 @@ spec:
   minReplicaCount: 0
   maxReplicaCount: 20
   pollingInterval: 30
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 3
   triggers:
     - type: forgejo-runner
       metadata:
