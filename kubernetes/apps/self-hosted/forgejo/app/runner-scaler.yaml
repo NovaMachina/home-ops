@@ -40,6 +40,13 @@ spec:
               claimName: forgejo-runner-cache
         restartPolicy: Never
         shareProcessNamespace: true
+        affinity:
+          nodeAffinity:
+            requiredDuringSchedulingIgnoredDuringExecution:
+              nodeSelectorTerms:
+                - matchExpressions:
+                    - key: node-role.kubernetes.io/control-plane
+                      operator: DoesNotExist
         containers:
           - name: runner
             image: code.forgejo.org/forgejo/runner:12.13.2
@@ -59,6 +66,11 @@ spec:
             securityContext:
               privileged: true
               runAsUser: 0
+            resources:
+              requests:
+                memory: 256Mi
+              limits:
+                memory: 512Mi
             volumeMounts:
               - name: docker-sock
                 mountPath: /var/run
@@ -97,6 +109,11 @@ spec:
             securityContext:
               privileged: true
               runAsUser: 0
+            resources:
+              requests:
+                memory: 2Gi
+              limits:
+                memory: 6Gi
             volumeMounts:
               - name: docker-sock
                 mountPath: /var/run
