@@ -78,7 +78,11 @@ spec:
               - sh
               - -c
               - |
-                dockerd-entrypoint.sh 2>&1 &
+                # -G 963 matches the DOCKER_GID baked into the app user's docker
+                # group in registry.jacob-williams.me/dev/runner (halsey/containers
+                # runners/all/Dockerfile); without it the socket's group won't
+                # match what that image expects.
+                dockerd-entrypoint.sh -G 963 2>&1 &
 
                 until [ -f /data/runner-done ]; do
                   sleep 5
