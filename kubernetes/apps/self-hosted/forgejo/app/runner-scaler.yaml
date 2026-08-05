@@ -121,7 +121,7 @@ spec:
                 mountPath: /data
   minReplicaCount: 0
   maxReplicaCount: 20
-  pollingInterval: 30
+  pollingInterval: 5
   successfulJobsHistoryLimit: 3
   failedJobsHistoryLimit: 3
   triggers:
