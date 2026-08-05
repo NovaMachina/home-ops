@@ -111,7 +111,7 @@ spec:
               runAsUser: 0
             resources:
               requests:
-                memory: 2Gi
+                memory: 512Mi
               limits:
                 memory: 6Gi
             volumeMounts:
