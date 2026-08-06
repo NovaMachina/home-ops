@@ -6,7 +6,7 @@ metadata:
   namespace: self-hosted
 spec:
   accessModes:
-    - ReadWriteMany
+    - ReadWriteOnce
   resources:
     requests:
       storage: 20Gi
