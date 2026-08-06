@@ -33,6 +33,9 @@ spec:
           - name: runner-registration
             secret:
               secretName: forgejo-runner-registration
+          - name: runner-actions-cache
+            persistentVolumeClaim:
+              claimName: forgejo-runner-actions-cache
           - name: docker-sock
             emptyDir: {}
         restartPolicy: Never
@@ -79,6 +82,8 @@ spec:
               - name: runner-config
                 mountPath: /config
                 readOnly: false
+              - name: runner-actions-cache
+                mountPath: /data/.cache/act
           - name: daemon
             image: docker:29.6.1-dind
             command:
