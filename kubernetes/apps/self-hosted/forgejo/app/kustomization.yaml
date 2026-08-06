@@ -9,5 +9,6 @@ resources:
   - ./tcproute.yaml
   - ./runner-scaler.yaml
   - ./runner-cache-pvc.yaml
+  - ./runner-actions-cache-pvc.yaml
 components:
   - ../../../../components/volsync
