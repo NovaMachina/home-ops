@@ -130,6 +130,6 @@ spec:
         name: "runner"
         address: "http://forgejo.self-hosted.svc.cluster.local:3000/"
         global: "true"
-        labels: "docker,node-26,java-25,trivy,buildah,hadolint,osv,checkov,base-runner"
+        labels: "docker,node-26,node-24,java-25,trivy,buildah,hadolint,osv,checkov,base-runner"
       authenticationRef:
         name: forgejo-runner-creds
