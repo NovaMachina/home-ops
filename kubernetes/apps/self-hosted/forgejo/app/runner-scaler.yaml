@@ -36,6 +36,9 @@ spec:
           - name: runner-actions-cache
             persistentVolumeClaim:
               claimName: forgejo-runner-actions-cache
+          - name: runner-tool-cache
+            persistentVolumeClaim:
+              claimName: forgejo-runner-tool-cache
           - name: docker-sock
             emptyDir: {}
         restartPolicy: Never
@@ -84,6 +87,8 @@ spec:
                 readOnly: false
               - name: runner-actions-cache
                 mountPath: /data/.cache/act
+              - name: runner-tool-cache
+                mountPath: /opt/hostedtoolcache
           - name: daemon
             image: docker:29.6.1-dind
             command:
@@ -119,6 +124,8 @@ spec:
                 mountPath: /var/run
               - name: runner-data
                 mountPath: /data
+              - name: runner-tool-cache
+                mountPath: /opt/hostedtoolcache
   minReplicaCount: 0
   maxReplicaCount: 20
   pollingInterval: 5
