@@ -86,7 +86,7 @@ spec:
           app:
             image:
               repository: ghcr.io/stoatchat/file-server
-              tag: v0.13.7@sha256:134ae1b6c5cee73886b0b7068bbef822f74ae0ba66e87f0f183fb5323f4dba80
+              tag: v0.15.1@sha256:becd5d4bc81b3541cf79b385f6c7c6de7dcbdb2be898a6eb45aea2a5c14df2c4
             resources:
               requests:
                 cpu: 10m
