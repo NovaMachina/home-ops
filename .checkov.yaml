@@ -1,0 +1,9 @@
+---
+framework:
+  - kubernetes
+soft-fail: true
+compact: true
+skip-path:
+  - "**/*.sops.yaml"
+  - .git/**
+  - talos/clusterconfig/**

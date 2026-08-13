@@ -2,8 +2,10 @@
 # yaml-language-server: $schema=https://taskfile.dev/schema.json
 version: '3'
 
-set: [pipefail]
-shopt: [globstar]
+set:
+  - pipefail
+shopt:
+  - globstar
 
 vars:
   BOOTSTRAP_DIR: '{{.ROOT_DIR}}/bootstrap'
@@ -23,6 +25,7 @@ env:
 includes:
   bootstrap: .taskfiles/bootstrap
   kubernetes: .taskfiles/kubernetes
+  lint: .taskfiles/lint
   postgres: .taskfiles/postgres
   talos: .taskfiles/talos
   volsync: .taskfiles/volsync

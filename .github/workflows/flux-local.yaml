@@ -4,7 +4,8 @@ name: "Flux Local"
 
 on:
   pull_request:
-    branches: ["main"]
+    branches:
+      - "main"
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.number || github.ref }}
@@ -49,7 +50,9 @@ jobs:
       pull-requests: write
     strategy:
       matrix:
-        resources: ["helmrelease", "kustomization"]
+        resources:
+          - "helmrelease"
+          - "kustomization"
       max-parallel: 4
       fail-fast: false
     if: ${{ needs.pre-job.outputs.any_changed == 'true' }}
@@ -107,9 +110,36 @@ jobs:
             ${{ steps.diff.outputs.diff }}
             ```
 
+  checkov:
+    name: Checkov
+    needs: pre-job
+    runs-on: ubuntu-latest
+    if: ${{ needs.pre-job.outputs.any_changed == 'true' }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
+
+      - name: Render manifests
+        uses: docker://ghcr.io/allenporter/flux-local:v7.11.0
+        with:
+          args: >-
+            build all /github/workspace/kubernetes/flux/cluster
+            --enable-helm --skip-secrets
+            --output-file /github/workspace/rendered.yaml
+
+      - name: Run Checkov
+        uses: bridgecrewio/checkov-action@1246d92f57abae29d5db5f9aeeed2a9813e52d7d # v12.3117.0
+        with:
+          file: rendered.yaml
+          config_file: .checkov.yaml
+          soft_fail: true
+
   flux-local-status:
     name: Flux Local Success
-    needs: ["test", "diff"]
+    needs:
+      - "test"
+      - "diff"
+      - "checkov"
     runs-on: ubuntu-latest
     if: ${{ always() }}
     steps:

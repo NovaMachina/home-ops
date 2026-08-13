@@ -1,0 +1,15 @@
+---
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+version: "3"
+
+tasks:
+  checkov:
+    desc: Run Checkov against rendered Kubernetes manifests
+    preconditions:
+      - which flux-local checkov
+    vars:
+      RENDERED_FILE: "{{.ROOT_DIR}}/.checkov-rendered.yaml"
+    cmds:
+      - flux-local build all {{.KUBERNETES_DIR}}/flux/cluster --enable-helm --skip-secrets --output-file {{.RENDERED_FILE}}
+      - checkov -f {{.RENDERED_FILE}} --config-file {{.ROOT_DIR}}/.checkov.yaml
+      - defer: rm -f {{.RENDERED_FILE}}
