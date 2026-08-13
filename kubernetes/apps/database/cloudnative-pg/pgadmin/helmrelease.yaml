@@ -43,7 +43,7 @@ spec:
           main:
             image:
               repository: docker.io/dpage/pgadmin4
-              tag: 9.8@sha256:d115bcd737940a6cfb61a54439d50de8b850e0782e2363102c9fa761f4022f49
+              tag: 9.17@sha256:2f4ce946ddf8360680d7eff4eaba1d91859eb6b4003e6623bad5c63a322c2f4d
             env:
               PGADMIN_UID: "5050"
               PGADMIN_CONFIG_ENHANCED_COOKIE_PROTECTION: "False" # required behind Envoy reverse proxy
