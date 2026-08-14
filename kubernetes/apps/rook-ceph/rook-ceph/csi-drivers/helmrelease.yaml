@@ -35,6 +35,13 @@ spec:
       rbd:
         enabled: true
         name: rook-ceph.rbd.csi.ceph.com # csi-provisioner-name
+        # Chart default is "none", which omits the csi-snapshotter sidecar
+        # entirely. Without it, VolumeSnapshots (and therefore every
+        # VolSync-backed app on ceph-block, i.e. most apps in this cluster)
+        # get created but never become ready -- discovered live when the
+        # sonarr ReplicationSource's snapshot sat at readyToUse: false
+        # indefinitely after this chart's initial install.
+        snapshotPolicy: volumeSnapshot
       cephfs:
         enabled: true
         name: rook-ceph.cephfs.csi.ceph.com # csi-provisioner-name
