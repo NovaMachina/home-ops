@@ -77,3 +77,6 @@ securityContext:
       - SYS_RESOURCE
 socketLB:
   hostNamespaceOnly: true
+# Pin to the version we're upgrading from during minor-version upgrades to
+# minimize datapath disruption. Bump this alongside each completed hop.
+upgradeCompatibility: "1.18"
