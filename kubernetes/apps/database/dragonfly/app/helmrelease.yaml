@@ -31,7 +31,8 @@ spec:
             image:
               repository: ghcr.io/dragonflydb/operator
               tag: v1.6.1@sha256:b11411142935f92ed0ec30a5ddeb31680e09ab66beecb827cb0224f1c4238638
-            command: ["/manager"]
+            command:
+              - "/manager"
             args:
               - --health-probe-bind-address=:8081
               - --metrics-bind-address=:8080
@@ -68,8 +69,9 @@ spec:
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
-              capabilities: { drop: ["ALL"] }
+              capabilities: {drop: ["ALL"]}
         pod:
+          automountServiceAccountToken: true
           securityContext:
             runAsUser: 65534
             runAsGroup: 65534
@@ -94,6 +96,7 @@ spec:
     serviceMonitor:
       app:
         serviceName: *app
+        jobLabel: app.kubernetes.io/name
         endpoints:
           - port: metrics
             scheme: http
