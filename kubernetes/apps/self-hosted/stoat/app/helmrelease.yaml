@@ -101,7 +101,7 @@ spec:
           app:
             image:
               repository: ghcr.io/stoatchat/proxy
-              tag: v0.13.7@sha256:b3e48e0c41f69fe499a9c7c75c4eb6e0b2d415c49ee2b242932584fd61d5cbce
+              tag: v0.15.1@sha256:7b4ab6e698490c315e418cfc4d419d5874a662e9246276994305750187b1f2e2
             resources:
               requests:
                 cpu: 10m
