@@ -90,7 +90,7 @@ spec:
               - name: runner-tool-cache
                 mountPath: /opt/hostedtoolcache
           - name: daemon
-            image: docker:29.6.1-dind
+            image: docker:29.7.2-dind
             command:
               - sh
               - -c
