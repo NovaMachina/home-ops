@@ -1,0 +1,31 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/networking.k8s.io/networkpolicy_v1.json
+# Supplemental to the NetworkPolicy the dragonfly-operator manages for this
+# Dragonfly instance (which only allows same-namespace ingress). Kubernetes
+# NetworkPolicies are additive, so this widens ingress on the redis port to
+# the other namespaces with apps that talk to this shared dragonfly instance
+# (immich, paperless in self-hosted; authentik in security) without touching
+# the operator-owned policy, which would just get reset on reconcile.
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: dragonfly-cross-namespace
+spec:
+  podSelector:
+    matchLabels:
+      app: dragonfly
+      app.kubernetes.io/name: dragonfly
+      app.kubernetes.io/part-of: dragonfly
+  policyTypes:
+    - Ingress
+  ingress:
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: self-hosted
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: security
+      ports:
+        - port: 6379
+          protocol: TCP
