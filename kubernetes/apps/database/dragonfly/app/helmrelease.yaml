@@ -72,6 +72,13 @@ spec:
               capabilities: {drop: ["ALL"]}
         pod:
           automountServiceAccountToken: true
+          labels:
+            # Required by the NetworkPolicy the operator generates for each
+            # Dragonfly instance, which only allows port 9999 (admin/role
+            # checks) from pods carrying this label. Upstream's own manifests
+            # set it on the operator Deployment; app-template doesn't, so we
+            # set it here to keep operator -> instance connectivity working.
+            control-plane: controller-manager
           securityContext:
             runAsUser: 65534
             runAsGroup: 65534
