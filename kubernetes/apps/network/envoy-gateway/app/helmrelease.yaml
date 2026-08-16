@@ -12,7 +12,8 @@ spec:
   driftDetection:
     mode: enabled
     ignore:
-      - paths: [/spec/replicas]
+      - paths:
+          - /spec/replicas
   install:
     crds: CreateReplace
     remediation:
@@ -23,6 +24,10 @@ spec:
     remediation:
       retries: 3
   values:
+    config:
+      envoyGateway:
+        extensionApis:
+          enableBackend: true
     hpa:
       enabled: true
       minReplicas: 1
