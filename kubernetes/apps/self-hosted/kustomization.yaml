@@ -16,3 +16,4 @@ resources:
   # - ./lounge/ks.yaml
   - ./forgejo/ks.yaml
   - ./stoat/ks.yaml
+  - ./garage/ks.yaml
