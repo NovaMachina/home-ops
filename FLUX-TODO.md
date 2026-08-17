@@ -451,3 +451,51 @@ Do this after item 3 (cosign), since signature verification is the stronger guar
 digest pinning is complementary rather than a substitute.
 
 **Done when:** every OCIRepository has a digest, and Renovate PRs update both fields together.
+
+---
+
+## 13. Re-enable the `rook` mgr module once Ceph is patched
+
+- [ ] **Flip `mgr.modules[rook].enabled` back to `true` when the upstream bug is fixed**
+
+`kubernetes/apps/rook-ceph/rook-ceph/cluster/helmrelease.yaml` disables the Ceph `rook` mgr
+module (the orchestrator backend) as a **workaround**, added 2026-08-17. This is not a
+permanent design choice and should be reverted as soon as it is safe.
+
+Why it is off: Ceph 20.2.3 (Tentacle) calls `get_hardware_metrics()` unconditionally from the
+prometheus mgr module's `collect()`, which invokes `node_proxy_fullreport()`
+(`/usr/share/ceph/mgr/prometheus/module.py:2172`). Only the **cephadm** orchestrator implements
+that method; the **rook** backend inherits `raise NotImplementedError()`
+(`orchestrator/_interface.py:363`). The mgr records each exception as a crash report — one every
+15s (`mgr/prometheus/scrape_interval`) — until the crash module hits
+`RuntimeError: dictionary changed size during iteration` (`crash/module.py:101`) and wedges in
+permanent EIO, giving `MGR_MODULE_ERROR` → `HEALTH_ERR`. There is no config option gating the
+call, which is why the module had to go.
+
+Cost while disabled: `ceph orch` commands, and the Ceph dashboard's Hosts / Physical Disks
+(Inventory) / Services pages and device actions. Nothing else in the repo uses the orchestrator,
+and the data path is entirely unaffected (CSI talks to mons/OSDs directly).
+
+**Check before flipping** — inspect the new Ceph image, do not assume a version number is enough:
+
+```sh
+IMG=quay.io/ceph/ceph:vX.Y.Z   # the tag from cephImage in the HelmRelease
+docker run --rm "$IMG" sh -c '
+  grep -n -A6 "def get_hardware_metrics" /usr/share/ceph/mgr/prometheus/module.py
+  grep -n "node_proxy_fullreport" /usr/share/ceph/mgr/rook/module.py'
+```
+
+It is safe to re-enable when **either** `get_hardware_metrics()` is gated behind a config option
+or an orchestrator-capability check, **or** `rook/module.py` implements `node_proxy_fullreport`.
+
+Note the entry must stay in the list with `enabled: false` rather than being deleted: Rook's
+`configureMgrModules()` iterates only over modules present in the spec, so removing the entry is
+a no-op that would silently leave the module enabled.
+
+Related: rook/rook#16887 and #16852 are *different* prometheus-module bugs and do not cover this
+one. Also worth considering: upstream a 3-line `node_proxy_fullreport` override returning `{}` in
+Rook's orchestrator, which retires this workaround permanently.
+
+**Done when:** `enabled: true` is restored, this item and the inline comment block are removed,
+and `ceph health detail` stays clean with no new dirs under `/var/lib/ceph/crash/` on the active
+mgr's node for 5+ minutes (>20 scrape intervals).
