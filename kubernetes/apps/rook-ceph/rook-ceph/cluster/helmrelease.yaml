@@ -52,7 +52,18 @@ spec:
           - name: pg_autoscaler
             enabled: true
           - name: rook
-            enabled: true
+            # DISABLED 2026-08-17 as a workaround, NOT a permanent choice.
+            # Ceph 20.2.3 prometheus module calls node_proxy_fullreport()
+            # (prometheus/module.py:2172), which the Rook orchestrator backend does
+            # not implement (orchestrator/_interface.py:363). Each call is recorded
+            # as a crash report every 15s until the crash module wedges -> HEALTH_ERR.
+            # Disabling makes orch_is_available() false so the call is skipped.
+            # RE-ENABLE (set true) once upstream gates get_hardware_metrics() or Rook
+            # implements node_proxy_fullreport. Re-check on every Ceph upgrade.
+            # Cost while disabled: `ceph orch` + dashboard Hosts/Inventory/Services.
+            # NOTE: must stay listed with enabled:false -- Rook only iterates modules
+            # present in the spec, so deleting this entry would NOT disable it.
+            enabled: false
       network:
         provider: host
         connections:
