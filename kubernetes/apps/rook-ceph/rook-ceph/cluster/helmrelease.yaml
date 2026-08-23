@@ -35,6 +35,12 @@ spec:
       repository: quay.io/ceph/ceph
       tag: v20.2.3
     cephClusterSpec:
+      # TEMPORARY: the v20.2.4->v20.2.3 downgrade above is stuck because
+      # Rook refuses any cephVersion change while ceph health is HEALTH_ERR
+      # (AUTH_INSECURE_* from the v20.2.4 cephx key-type regression this
+      # revert is meant to fix). Remove once the cluster reports HEALTH_OK
+      # again on v20.2.3.
+      skipUpgradeChecks: true
       cephConfig:
         global:
           bdev_enable_discard: "true" # quote
