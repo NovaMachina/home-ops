@@ -30,7 +30,10 @@ spec:
           name: "rook.${SECRET_DOMAIN}"
           path: "/"
     toolbox:
-      enabled: false
+      # TEMPORARY: enabled to run `ceph health detail` / `ceph auth dump-keys`
+      # while verifying the cephx key rotation below. Set back to false once
+      # confirmed clean.
+      enabled: true
     cephImage:
       # v20.2.3 is NOT an option: once a mon has run v20.2.4 it persists the
       # cephx_auth_aes256k on-disk feature, which a v20.2.3 mon binary
@@ -42,6 +45,37 @@ spec:
       repository: quay.io/ceph/ceph
       tag: v20.2.4
     cephClusterSpec:
+      security:
+        cephx:
+          # CVE-2025-30156: Ceph v20.2.4 added the aes256k cephx cipher and
+          # flags every daemon/client still on the old `aes` cipher via
+          # AUTH_INSECURE_* health checks. Rotate daemon keys (mon/mgr/osd/
+          # mds) now - Rook drives the restart itself, no client impact.
+          daemon:
+            keyRotationPolicy: KeyGeneration
+            keyGeneration: 1
+            # csi (and allowedCiphers) intentionally left untouched: aes256k
+            # kernel support only landed in Linux 7.0, Talos is on 6.12.57.
+            # Rotating CSI node keys now would break every kernel RBD/CephFS
+            # mount. Revisit once Talos ships kernel >= 7.0. Do NOT set
+            # allowedCiphers to aes256k-only before then - doing so before
+            # client.admin/CSI are rotated risks locking out cluster admin
+            # access entirely.
+      healthCheck:
+        # The four checks below are the client/CSI-side half of the same
+        # CVE-2025-30156 warning set, deferred until CSI can rotate (see
+        # security.cephx comment above). AUTH_INSECURE_SERVICE_KEY_TYPE and
+        # AUTH_INSECURE_SERVICE_TICKETS are NOT muted - the daemon rotation
+        # above should clear those for real.
+        muteHealthWarning:
+          AUTH_INSECURE_CLIENT_KEY_TYPE:
+            policy: mute
+          AUTH_INSECURE_KEYS_ALLOWED:
+            policy: mute
+          AUTH_INSECURE_KEYS_CREATABLE:
+            policy: mute
+          AUTH_INSECURE_ROTATING_SERVICE_KEY_TYPE:
+            policy: mute
       cephConfig:
         global:
           bdev_enable_discard: "true" # quote
