@@ -6,6 +6,11 @@ metadata:
   name: rook-ceph-cluster
 spec:
   interval: 30m
+  # Rolling OSD upgrades on this cluster (one OSD at a time, full PG recovery
+  # between each) routinely take longer than Helm's 5m default upgrade
+  # timeout, which then stalls the HelmRelease (Stalled: RetriesExceeded)
+  # even though the underlying CephCluster is still healing fine.
+  timeout: 15m
   chartRef:
     kind: OCIRepository
     name: rook-ceph-cluster
@@ -28,7 +33,7 @@ spec:
       enabled: false
     cephImage:
       repository: quay.io/ceph/ceph
-      tag: v20.2.4
+      tag: v20.2.3
     cephClusterSpec:
       cephConfig:
         global:
