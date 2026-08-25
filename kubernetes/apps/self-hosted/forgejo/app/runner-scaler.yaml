@@ -64,6 +64,11 @@ spec:
 
                 cp /config/.runner /data/.runner
 
+                # job containers run as arbitrary non-root UIDs and bind-mount this
+                # PVC at the same path; ceph-filesystem provisions it root:root 0755
+                # by default, so open it up like /tmp so any UID can mkdir in it.
+                chmod 1777 /opt/hostedtoolcache
+
                 forgejo-runner -c /registration/registration.yaml one-job
                 touch /data/runner-done
             securityContext:
