@@ -6,14 +6,8 @@ namespace: self-hosted
 components:
   - ../../components/common
 resources:
-  # - ./donetick/ks.yaml
   - ./immich/ks.yaml
-  - ./dashboard/ks.yaml
-  # - ./unifi/ks.yaml
   - ./unifi-os-server/ks.yaml
   - ./paperless/ks.yaml
-  - ./wikijs/ks.yaml
-  # - ./lounge/ks.yaml
   - ./forgejo/ks.yaml
-  - ./stoat/ks.yaml
   - ./garage/ks.yaml
