@@ -42,6 +42,14 @@ spec:
 
     defaultRules:
       create: true
+      rules:
+        # Fires whenever a recording-rule group's last evaluation yields 0 samples
+        # for 30m. On an idle cluster, groups like kube-scheduler.rules legitimately
+        # produce nothing (histogram_quantile over all-zero rate windows), so this
+        # info-severity alert only ever flaps. Actual eval errors are still caught
+        # by RecordingRuleFailures (vmalert_recording_rules_errors_total > 0).
+        RecordingRulesNoData:
+          create: false
       groups:
         kube-prometheus-general.rules:
           rules:

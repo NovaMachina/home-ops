@@ -23,7 +23,10 @@ spec:
     worker:
       config:
         core:
-          sources: ["pci", "system", "usb"]
+          sources:
+            - "pci"
+            - "system"
+            - "usb"
       tolerations:
         - key: "node-role.kubernetes.io/master"
           operator: "Exists"
@@ -31,5 +34,8 @@ spec:
           operator: "Exists"
         - effect: "NoSchedule"
           operator: "Exists"
+    # Chart's built-in PodMonitor (prometheus.enable) hardcodes `port: metrics`,
+    # but NFD 0.18.x exposes metrics on the port named `http`, so it matches zero
+    # targets (ScrapePoolHasNoTargets). Ship our own VMPodScrape instead.
     prometheus:
-      enable: true
+      enable: false
