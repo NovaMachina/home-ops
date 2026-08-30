@@ -104,6 +104,9 @@ spec:
           - name: internal
             namespace: network
             sectionName: https
+          - name: external
+            namespace: network
+            sectionName: https
         rules:
           - backendRefs:
               - {}
