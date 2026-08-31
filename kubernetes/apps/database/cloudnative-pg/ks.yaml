@@ -45,6 +45,11 @@ spec:
   wait: true
   interval: 30m
   timeout: 5m
+  healthCheckExprs:
+    - apiVersion: postgresql.cnpg.io/v1
+      kind: Cluster
+      current: status.conditions.exists(c, c.type == 'Ready' && c.status == 'True') && status.readyInstances == status.instances
+      failed: status.conditions.exists(c, c.type == 'Ready' && c.status == 'False')
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1

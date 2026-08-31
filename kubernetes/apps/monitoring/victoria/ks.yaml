@@ -42,6 +42,20 @@ spec:
     namespace: flux-system
   interval: 1h
   timeout: 5m
+  wait: true
+  healthCheckExprs:
+    - apiVersion: operator.victoriametrics.com/v1beta1
+      kind: VMSingle
+      current: status.updateStatus == 'operational'
+      failed: status.updateStatus == 'failed'
+    - apiVersion: operator.victoriametrics.com/v1beta1
+      kind: VMAgent
+      current: status.updateStatus == 'operational'
+      failed: status.updateStatus == 'failed'
+    - apiVersion: operator.victoriametrics.com/v1beta1
+      kind: VMAlert
+      current: status.updateStatus == 'operational'
+      failed: status.updateStatus == 'failed'
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1

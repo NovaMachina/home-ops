@@ -115,10 +115,10 @@ Most upstream charts here are cosign-signed with keyless GitHub OIDC. Add:
 
 ```yaml
 verify:
-  provider: cosign
-  matchOIDCIdentity:
-    - issuer: "^https://token\\.actions\\.githubusercontent\\.com$"
-      subject: "^https://github\\.com/<org>/<repo>.*$"
+    provider: cosign
+    matchOIDCIdentity:
+        - issuer: "^https://token\\.actions\\.githubusercontent\\.com$"
+          subject: "^https://github\\.com/<org>/<repo>.*$"
 ```
 
 with `<org>/<repo>` matching the chart's publishing repository. **Verify signature presence
@@ -156,7 +156,7 @@ Add to the remaining HelmReleases:
 
 ```yaml
 driftDetection:
-  mode: enabled
+    mode: enabled
 ```
 
 Roll out namespace by namespace. For charts whose resources are legitimately mutated by
@@ -188,23 +188,25 @@ Only 6 set `maxHistory`, so Helm release Secrets accumulate in etcd indefinitely
 
 Apply this baseline to each HelmRelease lacking it:
 
+R} tokens it actually finds), but it is a behavioral change, so the diff won't be clean in CI. If you want a truly empty diff you'd need to scope the patch (e.g. a label selector) rather than applying it to kind: Kustomization globally.
+
 ```yaml
-  install:
+install:
     remediation:
-      retries: 3
-  upgrade:
+        retries: 3
+upgrade:
     cleanupOnFail: true
     remediation:
-      strategy: rollback
-      retries: 3
-  maxHistory: 2
+        strategy: rollback
+        retries: 3
+maxHistory: 2
 ```
 
 Two exceptions to handle deliberately:
 
 - CRD-only releases (e.g. `kubernetes/apps/monitoring/prometheus-operator/crds/`,
   `kubernetes/apps/monitoring/victoria/crds/`) should keep `crds: CreateReplace` and should
-  **not** use `strategy: rollback` — rolling back CRDs can drop stored versions. Use
+  **not** use `strategy: rollback` — rolling back CRDs can drop stored versions. UseConfig
   `retries: 3` with the default `strategy: uninstall` omitted, or leave remediation off with
   an explanatory comment.
 - Bootstrap-critical releases (`cilium`, `external-secrets`) may warrant
@@ -213,129 +215,6 @@ Two exceptions to handle deliberately:
 
 **Done when:** every HelmRelease has an explicit remediation policy or an inline comment
 explaining its absence.
-
----
-
-## 6. Normalize `ks.yaml` fields across all apps
-
-- [ ] **Fix missing `prune`, `wait`, `retryInterval`, `timeout`, `commonMetadata`**
-
-These are consistency gaps, not outright bugs, but they make failures behave unpredictably.
-Re-derive each list before editing:
-
-```sh
-cd kubernetes
-for f in $(find apps -name ks.yaml); do grep -q 'prune: true'    $f || echo "prune: $f"; done
-for f in $(find apps -name ks.yaml); do grep -q 'wait:'          $f || echo "wait: $f"; done
-for f in $(find apps -name ks.yaml); do grep -q 'retryInterval:' $f || echo "retry: $f"; done
-for f in $(find apps -name ks.yaml); do grep -q 'timeout:'       $f || echo "timeout: $f"; done
-for f in $(find apps -name ks.yaml); do grep -q 'commonMetadata' $f || echo "meta: $f"; done
-```
-
-Findings at review time:
-
-- **`prune` missing (1):** `apps/rook-ceph/rook-ceph/ks.yaml` — resources deleted from git
-  are currently orphaned in-cluster. Add `prune: true`, but review what would be pruned on
-  the next reconcile *before* merging, since this is a storage layer.
-- **`wait` missing (8):** `network/envoy-gateway`, `volsync-system/volsync`,
-  `monitoring/victoria`, `kube-system/snapshot-controller`,
-  `actions-runner-system/actions-runner-controller`, `security/authentik`,
-  `security/keycloak`, `database/rabbitmq`. Several of these are `dependsOn` targets for
-  other apps, so those dependencies do not actually gate on readiness today. Set
-  `wait: true` unless the app is known to never reach a healthy status (in which case add
-  `healthChecks`, see item 9, and comment the reason).
-- **`retryInterval` missing (35):** all of `downloads/`, all of `monitoring/`, plus
-  `network/external-dns`, `network/envoy-gateway`, `network/multus`, `system/*`,
-  `kube-system/descheduler`, `rook-ceph`, `external-secrets/*`, `database/mongodb`,
-  `openebs`, `self-hosted/paperless`. Without it, a transient failure is retried at the
-  full `interval` (30m–1h) instead of quickly. Set `retryInterval: 1m` (or `2m`, matching
-  `kubernetes/flux/cluster/ks.yaml`) uniformly.
-- **`timeout` missing (1):** `apps/monitoring/grafana/ks.yaml` — add `timeout: 5m`.
-- **`commonMetadata` missing (2):** `apps/database/mongodb/ks.yaml`,
-  `apps/database/rabbitmq/ks.yaml` — add the
-  `commonMetadata.labels.app.kubernetes.io/name: *app` block used by every other ks.
-
-Also pick a rule for `interval` and apply it: currently 55 files use `30m` and 30 use `1h`
-with no discernible pattern. Since a GitHub `Receiver` webhook already triggers on push
-(`kubernetes/apps/flux-system/flux-instance/app/receiver.yaml`), the interval is only a
-safety net — `1h` everywhere is defensible and reduces API churn.
-
-**Done when:** all five greps above return empty, and `flux-local diff kustomization` shows
-no change to rendered workloads.
-
----
-
-## 7. Hoist `postBuild.substituteFrom` into the `cluster-apps` patch
-
-- [ ] **Remove ~45 repetitions of the `cluster-secrets` substitution block**
-
-`kubernetes/flux/cluster/ks.yaml` already hoists SOPS decryption into every child
-Kustomization via a `patches[].target` matching
-`group: kustomize.toolkit.fluxcd.io, kind: Kustomization`. The same mechanism can supply
-`postBuild.substituteFrom`, which is currently repeated in 45 of 65 `ks.yaml` files:
-
-```sh
-grep -rl 'name: cluster-secrets' kubernetes/apps --include=ks.yaml | wc -l
-```
-
-Extend the existing patch in `kubernetes/flux/cluster/ks.yaml`:
-
-```yaml
-        spec:
-          decryption:
-            provider: sops
-            secretRef:
-              name: sops-age
-          postBuild:
-            substituteFrom:
-              - name: cluster-secrets
-                kind: Secret
-```
-
-Then delete the per-app `postBuild.substituteFrom` blocks. **Keep** the per-app
-`postBuild.substitute` blocks (27 files use them for `APP`, `VOLSYNC_CAPACITY`, etc.) —
-Kustomize strategic merge combines `substitute` from the app with `substituteFrom` from the
-patch. Verify this merge behaviour holds on one app first before doing the bulk edit.
-
-Note: this interacts with item 2. If item 2 is done first, `cluster-secrets` only needs to
-exist in `flux-system`. Either order works; just re-check the other item's assumptions.
-
-**Done when:** no `ks.yaml` under `kubernetes/apps/` contains `substituteFrom`, and
-`flux-local diff` is empty (substituted values must be byte-identical).
-
----
-
-## 8. Consolidate Helm chart sources
-
-- [ ] **Move stray HelmRepositories out of app directories, prefer OCI**
-
-`kubernetes/flux/meta/repos/` holds 3 HelmRepositories, but four apps ship their own
-privately scoped one:
-
-- `kubernetes/apps/database/mongodb/app/helmrepository.yaml`
-- `kubernetes/apps/kube-system/descheduler/app/helmrepository.yaml`
-- `kubernetes/apps/openebs/openebs/app/helmrepository.yaml`
-- `kubernetes/apps/system/harbor/app/helmrepository.yaml`
-
-Preferred fix: migrate all four to `OCIRepository` + `chartRef`, since all four charts are
-published to OCI registries and 33 HelmReleases in this repo already use that pattern.
-Copy the shape from `kubernetes/apps/monitoring/grafana/app/ocirepository.yaml`. This
-removes the HelmRepository entirely and makes chart sourcing uniform.
-
-Fallback if a chart has no OCI distribution: move the HelmRepository into
-`kubernetes/flux/meta/repos/`, register it in that directory's `kustomization.yaml`, and
-update the HelmRelease `sourceRef` to `namespace: flux-system`.
-
-Confirm Renovate still tracks the version afterwards — `.renovaterc.json5` has a `flux`
-manager plus helm datasource rules; OCI chart tags are picked up by the `flux` manager, but
-check that the migrated entries appear in the next Renovate dry run rather than silently
-going stale.
-
-While here: OCIRepository `interval` values are scattered across 5m/10m/15m/30m/1h. Pick
-one (`1h` is fine given the push webhook) and apply it uniformly.
-
-**Done when:** `grep -rl 'kind: HelmRepository' kubernetes/apps` returns nothing, and all
-remaining HelmRepositories live under `kubernetes/flux/meta/repos/`.
 
 ---
 
@@ -437,7 +316,7 @@ grep -rc 'digest:' kubernetes/apps --include='ocirepository.yaml' | grep -v ':0'
 Tags are mutable, so a re-pushed upstream tag silently changes what the cluster runs. Add:
 
 ```yaml
-  ref:
+ref:
     tag: 1.2.3
     digest: sha256:...
 ```
@@ -492,7 +371,7 @@ Note the entry must stay in the list with `enabled: false` rather than being del
 `configureMgrModules()` iterates only over modules present in the spec, so removing the entry is
 a no-op that would silently leave the module enabled.
 
-Related: rook/rook#16887 and #16852 are *different* prometheus-module bugs and do not cover this
+Related: rook/rook#16887 and #16852 are _different_ prometheus-module bugs and do not cover this
 one. Also worth considering: upstream a 3-line `node_proxy_fullreport` override returning `{}` in
 Rook's orchestrator, which retires this workaround permanently.
 
