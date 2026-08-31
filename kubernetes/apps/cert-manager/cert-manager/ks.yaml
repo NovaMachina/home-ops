@@ -21,7 +21,6 @@ spec:
       - name: cluster-secrets
         kind: Secret
   prune: true
-  retryInterval: 2m
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -55,7 +54,6 @@ spec:
       - name: cluster-secrets
         kind: Secret
   prune: true
-  retryInterval: 2m
   sourceRef:
     kind: GitRepository
     name: flux-system
