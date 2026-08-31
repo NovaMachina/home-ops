@@ -5,10 +5,10 @@ kind: Kustomization
 metadata:
   name: &appname rabbitmq-cluster-operator
   namespace: &namespace database
+spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *appname
-spec:
   interval: 1h
   path: "./kubernetes/apps/database/rabbitmq/app"
   prune: true
