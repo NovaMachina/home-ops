@@ -23,8 +23,5 @@ spec:
     - name: cloudnative-pg-cluster
       namespace: database
   postBuild:
-    substituteFrom:
-      - name: cluster-secrets
-        kind: Secret
     substitute:
       APP: *app

@@ -20,9 +20,6 @@ spec:
   prune: true
   wait: false
   postBuild:
-    substituteFrom:
-      - name: cluster-secrets
-        kind: Secret
     substitute:
       APP: *appname
       VOLSYNC_CAPACITY: 50Gi

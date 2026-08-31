@@ -25,7 +25,3 @@ spec:
   wait: true
   interval: 30m
   timeout: 5m
-  postBuild:
-    substituteFrom:
-      - name: cluster-secrets
-        kind: Secret
