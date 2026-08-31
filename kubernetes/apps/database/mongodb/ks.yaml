@@ -5,10 +5,10 @@ kind: Kustomization
 metadata:
   name: &appname mongodb-operator
   namespace: database
+spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *appname
-spec:
   dependsOn:
     - name: prometheus-operator-crds
       namespace: monitoring
