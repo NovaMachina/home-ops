@@ -43,7 +43,7 @@ spec:
       # AUTH_INSECURE_* HEALTH_ERR this was meant to fix needs a cephx key
       # rotation instead, not a version downgrade.
       repository: quay.io/ceph/ceph
-      tag: v20.2.4
+      tag: v21.1.0
     cephClusterSpec:
       security:
         cephx:
