@@ -10,7 +10,7 @@ TALOS_DIR = "{{config_root}}/talos"
 
 [tools]
 lefthook = "2.1.11"
-"aqua:cilium/cilium-cli" = "0.19.7"
+"aqua:cilium/cilium-cli" = "0.20.0"
 "aqua:budimanjojo/talhelper" = "3.1.16"
 "aqua:cli/cli" = "2.98.0"
 "aqua:cloudflare/cloudflared" = "2026.8.2"
