@@ -52,7 +52,7 @@ spec:
                       operator: DoesNotExist
         containers:
           - name: runner
-            image: code.forgejo.org/forgejo/runner:13.0.0
+            image: code.forgejo.org/forgejo/runner:13.1.0
             command:
               - sh
               - -c
