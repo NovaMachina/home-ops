@@ -37,6 +37,14 @@ spec:
   values:
     hubble:
       enabled: true
+      tls:
+        auto:
+          # Default "helm" generates certs once and reuses them forever via the
+          # chart's lookup(), so they silently expire after certValidityDuration
+          # and never renew. cronJob re-issues them on a schedule.
+          method: cronJob
+          certValidityDuration: 365
+          schedule: "0 0 1 */4 *"
       metrics:
         enabled:
           - dns:query
