@@ -11,3 +11,4 @@ resources:
   - ./paperless/ks.yaml
   - ./forgejo/ks.yaml
   - ./garage/ks.yaml
+  - ./flagsmith/ks.yaml
