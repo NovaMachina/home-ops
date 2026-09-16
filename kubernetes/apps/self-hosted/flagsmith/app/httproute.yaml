@@ -1,0 +1,20 @@
+---
+# yaml-language-server: $schema=https://schemas.tholinka.dev/gateway.networking.k8s.io/httproute_v1.json
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: flagsmith
+spec:
+  hostnames:
+    - flagsmith.${SECRET_DOMAIN}
+  parentRefs:
+    - name: internal
+      namespace: network
+      sectionName: https
+    - name: external
+      namespace: network
+      sectionName: https
+  rules:
+    - backendRefs:
+        - name: flagsmith
+          port: 8000

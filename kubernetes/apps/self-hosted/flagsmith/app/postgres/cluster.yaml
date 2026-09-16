@@ -1,0 +1,58 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/postgresql.cnpg.io/cluster_v1.json
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: flagsmith-postgres
+spec:
+  instances: 1
+  imageName: ghcr.io/cloudnative-pg/postgresql:16
+  primaryUpdateStrategy: unsupervised
+  storage:
+    size: 5Gi
+    storageClass: ceph-block
+  superuserSecret:
+    name: flagsmith-postgres-superuser
+  enableSuperuserAccess: true
+  postgresql:
+    parameters:
+      max_connections: "200"
+      shared_buffers: 128MB
+  nodeMaintenanceWindow:
+    inProgress: false
+    reusePVC: true
+  resources:
+    requests:
+      cpu: 10m
+      memory: 200Mi
+    limits:
+      memory: 512Mi
+  monitoring:
+    enablePodMonitor: true
+  backup:
+    retentionPolicy: 30d
+    barmanObjectStore:
+      data:
+        compression: bzip2
+      wal:
+        compression: bzip2
+        maxParallel: 8
+      destinationPath: s3://pg-flagsmith-backup/
+      endpointURL: http://10.0.0.14:30188/
+      serverName: flagsmith-postgres-v1
+      s3Credentials:
+        accessKeyId:
+          name: flagsmith-postgres-superuser
+          key: aws-access-key-id
+        secretAccessKey:
+          name: flagsmith-postgres-superuser
+          key: aws-secret-access-key
+        region:
+          name: flagsmith-postgres-s3-region
+          key: aws-region
+  bootstrap:
+    initdb:
+      database: flagsmith
+      owner: flagsmith
+      secret:
+        name: flagsmith-postgres-owner
