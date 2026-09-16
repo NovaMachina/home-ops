@@ -1,0 +1,27 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.bjw-s.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: flagger
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: flagger
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  values:
+    crd:
+      create: true
+    # Envoy Gateway implements the standard Gateway API, HTTPRoute v1
+    meshProvider: gatewayapi:v1
+    # VictoriaMetrics single-node exposes a Prometheus-compatible query API
+    metricsServer: http://vmsingle-vmetrics.monitoring.svc.cluster.local.:8428
+    serviceMonitor:
+      enabled: true
