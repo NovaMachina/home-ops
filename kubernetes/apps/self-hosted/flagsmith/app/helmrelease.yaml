@@ -31,7 +31,7 @@ spec:
           app:
             image:
               repository: flagsmith/flagsmith
-              tag: 2.169.0
+              tag: 2.273.0
             envFrom:
               - secretRef:
                   name: flagsmith-secret
