@@ -1,0 +1,105 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: chaptarr
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: app-template
+      version: 5.1.0
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s-labs
+        namespace: flux-system
+  dependsOn:
+    - name: rook-ceph-cluster
+      namespace: rook-ceph
+  values:
+    controllers:
+      chaptarr:
+        annotations:
+          reloader.stakater.com/auto: "true"
+
+        # Image entrypoint drops privileges via PUID/PGID, so it must start as root.
+        pod:
+          securityContext:
+            fsGroup: 2000
+            fsGroupChangePolicy: "OnRootMismatch"
+
+        containers:
+          app:
+            image:
+              repository: chaptarr/chaptarr
+              tag: 0.9.925
+            env:
+              PUID: "2000"
+              PGID: "2000"
+              UMASK: "002"
+              TZ: America/Chicago
+              CHAPTARR__AUTH__APIKEY:
+                valueFrom:
+                  secretKeyRef:
+                    name: chaptarr-secret
+                    key: api_key
+              CHAPTARR__AUTH__METHOD: External
+              CHAPTARR__AUTH__REQUIRED: DisabledForLocalAddresses
+              CHAPTARR__SERVER__PORT: &port 8789
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  tcpSocket:
+                    port: *port
+                  initialDelaySeconds: 10
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 6
+              readiness: *probes
+            resources:
+              requests:
+                cpu: 20m
+                memory: 384Mi
+              limits:
+                memory: 2Gi
+            securityContext:
+              allowPrivilegeEscalation: false
+              capabilities:
+                drop:
+                  - ALL
+                add:
+                  - CHOWN
+                  - SETUID
+                  - SETGID
+                  - FOWNER
+                  - DAC_OVERRIDE
+
+    service:
+      app:
+        controller: chaptarr
+        ports:
+          http:
+            port: *port
+
+    persistence:
+      config:
+        existingClaim: chaptarr
+      media:
+        type: nfs
+        server: ${SECRET_NFS_SERVER}
+        path: /mnt/pool0/Media
+        globalMounts:
+          - path: /data/nas-media
+
+    route:
+      main:
+        enabled: true
+        hostnames:
+          - "chaptarr.${SECRET_DOMAIN}"
+        parentRefs:
+          - name: internal
+            namespace: network
+            sectionName: https

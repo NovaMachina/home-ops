@@ -48,6 +48,13 @@ spec:
                     name: unpackerr-secret
                     key: RADARR_API_KEY
               UN_RADARR_0_PATHS_0: /data/nas-media/downloads/qbittorrent/radarr
+              UN_READARR_0_URL: http://chaptarr.downloads.svc.cluster.local:8789
+              UN_READARR_0_API_KEY:
+                valueFrom:
+                  secretKeyRef:
+                    name: unpackerr-secret
+                    key: CHAPTARR_API_KEY
+              UN_READARR_0_PATHS_0: /data/nas-media/downloads/qbittorrent/chaptarr
             resources:
               requests:
                 cpu: 10m
