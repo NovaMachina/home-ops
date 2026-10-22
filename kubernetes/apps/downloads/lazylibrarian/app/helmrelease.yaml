@@ -1,0 +1,97 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: lazylibrarian
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: app-template
+      version: 5.1.0
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s-labs
+        namespace: flux-system
+  dependsOn:
+    - name: rook-ceph-cluster
+      namespace: rook-ceph
+  values:
+    controllers:
+      lazylibrarian:
+        annotations:
+          reloader.stakater.com/auto: "true"
+
+        # Image entrypoint drops privileges via PUID/PGID, so it must start as root.
+        pod:
+          securityContext:
+            fsGroup: 2000
+            fsGroupChangePolicy: "OnRootMismatch"
+
+        containers:
+          app:
+            image:
+              repository: ghcr.io/linuxserver/lazylibrarian
+              tag: latest
+            env:
+              PUID: "2000"
+              PGID: "2000"
+              UMASK: "002"
+              TZ: America/Chicago
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  tcpSocket:
+                    port: 5299
+                  initialDelaySeconds: 10
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 6
+              readiness: *probes
+            resources:
+              requests:
+                cpu: 20m
+                memory: 384Mi
+              limits:
+                memory: 2Gi
+            securityContext:
+              allowPrivilegeEscalation: false
+              capabilities:
+                drop:
+                  - ALL
+                add:
+                  - CHOWN
+                  - SETUID
+                  - SETGID
+                  - FOWNER
+                  - DAC_OVERRIDE
+
+    service:
+      app:
+        controller: lazylibrarian
+        ports:
+          http:
+            port: 5299
+
+    persistence:
+      config:
+        existingClaim: lazylibrarian
+      media:
+        type: nfs
+        server: ${SECRET_NFS_SERVER}
+        path: /mnt/pool0/Media
+        globalMounts:
+          - path: /data/nas-media
+
+    route:
+      main:
+        enabled: true
+        hostnames:
+          - "lazylibrarian.${SECRET_DOMAIN}"
+        parentRefs:
+          - name: internal
+            namespace: network
+            sectionName: https
