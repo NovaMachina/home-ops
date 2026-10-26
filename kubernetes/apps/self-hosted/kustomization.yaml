@@ -12,3 +12,4 @@ resources:
   - ./forgejo/ks.yaml
   - ./garage/ks.yaml
   - ./flagsmith/ks.yaml
+  - ./teddycloud/ks.yaml
