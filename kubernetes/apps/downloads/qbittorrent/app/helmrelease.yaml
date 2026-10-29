@@ -49,7 +49,7 @@ spec:
               WIREGUARD_ENDPOINT_PORT: 51820
             envFrom:
               - secretRef:
-                  name: wireguard-nyc-secret
+                  name: wireguard-az-secret
             lifecycle:
               postStart:
                 exec:
