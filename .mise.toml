@@ -7,6 +7,7 @@ KUBERNETES_DIR = "{{config_root}}/kubernetes"
 ROOT_DIR = "{{config_root}}"
 SCRIPTS_DIR = "{{config_root}}/scripts"
 TALOS_DIR = "{{config_root}}/talos"
+TERRAFORM_DIR = "{{config_root}}/terraform"
 
 [tools]
 lefthook = "2.1.11"
@@ -30,3 +31,4 @@ lefthook = "2.1.11"
 yamlfmt = "latest"
 talosctl = "latest"
 "pipx:flux-local" = "latest"
+opentofu = "1.12.0"

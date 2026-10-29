@@ -1,0 +1,52 @@
+---
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+version: "3"
+
+vars:
+  TF: tofu
+
+tasks:
+  init:
+    desc: Initialise the Terraform working directory
+    dir: "{{.TERRAFORM_DIR}}"
+    cmd: "{{.TF}} init -backend-config=backend.tfbackend {{.CLI_ARGS}}"
+    preconditions:
+      - test -f {{.TERRAFORM_DIR}}/versions.tf
+      - which {{.TF}}
+
+  plan:
+    desc: Show a plan
+    dir: "{{.TERRAFORM_DIR}}"
+    cmd: "{{.TF}} plan {{.CLI_ARGS}}"
+    preconditions:
+      - test -f {{.TERRAFORM_DIR}}/secrets.sops.yaml
+      - test -f {{.SOPS_AGE_KEY_FILE}}
+      - which {{.TF}}
+
+  apply:
+    desc: Apply changes
+    dir: "{{.TERRAFORM_DIR}}"
+    cmd: "{{.TF}} apply {{.CLI_ARGS}}"
+    preconditions:
+      - test -f {{.TERRAFORM_DIR}}/secrets.sops.yaml
+      - test -f {{.SOPS_AGE_KEY_FILE}}
+      - which {{.TF}}
+
+  fmt:
+    desc: Format all Terraform files
+    dir: "{{.TERRAFORM_DIR}}"
+    cmd: "{{.TF}} fmt -recursive"
+
+  validate:
+    desc: Validate the configuration
+    dir: "{{.TERRAFORM_DIR}}"
+    cmd: "{{.TF}} validate"
+
+  edit-secrets:
+    desc: Open the encrypted secrets file in $EDITOR
+    dir: "{{.TERRAFORM_DIR}}"
+    cmd: sops secrets.sops.yaml
+    preconditions:
+      - test -f {{.TERRAFORM_DIR}}/secrets.sops.yaml
+      - test -f {{.SOPS_AGE_KEY_FILE}}
+      - which sops

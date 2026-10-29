@@ -1,0 +1,24 @@
+# Local state and backups (using local backend for now)
+*.tfstate
+*.tfstate.*
+*.tfstate.backup
+*.tfbackend
+
+# Crash logs
+crash.log
+crash.*.log
+
+# Provider plugins / lock cache
+.terraform/
+.terraform.tofu/
+
+# Plan output
+*.tfplan
+
+# Unencrypted secrets — only the *.sops.yaml (encrypted) form is committed
+secrets.yaml
+*.decrypted*.yaml
+
+# tfvars may contain sensitive values
+*.auto.tfvars
+!*.auto.tfvars.example
