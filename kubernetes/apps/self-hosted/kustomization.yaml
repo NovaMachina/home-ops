@@ -13,3 +13,4 @@ resources:
   - ./garage/ks.yaml
   - ./flagsmith/ks.yaml
   - ./teddycloud/ks.yaml
+  - ./actual/ks.yaml
