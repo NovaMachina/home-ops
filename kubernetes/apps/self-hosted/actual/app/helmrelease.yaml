@@ -33,6 +33,12 @@ spec:
             env:
               TZ: America/Chicago
               ACTUAL_PORT: &port 5006
+              ACTUAL_LOGIN_METHOD: openid
+              ACTUAL_OPENID_AUTH_METHOD: openid
+              ACTUAL_OPENID_SERVER_HOSTNAME: https://actual.${SECRET_DOMAIN}
+            envFrom:
+              - secretRef:
+                  name: actual-secret
             probes:
               liveness: &probes
                 enabled: true
