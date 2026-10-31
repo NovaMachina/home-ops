@@ -32,7 +32,7 @@ spec:
           app:
             image:
               repository: ghcr.io/unpackerr/unpackerr
-              tag: 0.16.1
+              tag: v1.0.1
             env:
               UN_SONARR_0_URL: http://sonarr.downloads.svc.cluster.local:8989
               UN_SONARR_0_API_KEY:
