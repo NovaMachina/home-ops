@@ -151,6 +151,12 @@ spec:
               - path:
                   type: PathPrefix
                   value: /
+            filters:
+              # BackendTLSPolicy makes Envoy rewrite Host to unifi.local, which fails
+              # UOS nginx's websocket Origin==Host check (400). Restore the real Host.
+              - type: URLRewrite
+                urlRewrite:
+                  hostname: "unifi.${SECRET_DOMAIN}"
             backendRefs:
               - name: unifi-os-server
                 kind: Service

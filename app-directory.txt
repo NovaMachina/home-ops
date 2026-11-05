@@ -1,0 +1,247 @@
+kubernetes/apps
+├── cert-manager
+│   ├── cert-manager
+│   │   ├── app
+│   │   ├── ks.yaml
+│   │   └── tls
+│   └── kustomization.yaml
+├── database
+│   ├── cloudnative-pg
+│   │   ├── app
+│   │   ├── cluster
+│   │   ├── ks.yaml
+│   │   └── pgadmin
+│   ├── dragonfly
+│   │   ├── app
+│   │   ├── cluster
+│   │   └── ks.yaml
+│   ├── kustomization.yaml
+│   ├── mongodb
+│   │   ├── app
+│   │   └── ks.yaml
+│   └── rabbitmq
+│       ├── app
+│       └── ks.yaml
+├── downloads
+│   ├── autobrr
+│   │   ├── app
+│   │   └── ks.yaml
+│   ├── cross-seed
+│   │   ├── app
+│   │   └── ks.yaml
+│   ├── kustomization.yaml
+│   ├── lazylibrarian
+│   │   ├── app
+│   │   └── ks.yaml
+│   ├── prowlarr
+│   │   ├── app
+│   │   └── ks.yaml
+│   ├── qbittorrent
+│   │   ├── app
+│   │   └── ks.yaml
+│   ├── qui
+│   │   ├── app
+│   │   └── ks.yaml
+│   ├── radarr
+│   │   ├── app
+│   │   └── ks.yaml
+│   ├── recyclarr
+│   │   ├── app
+│   │   └── ks.yaml
+│   ├── seasonpackarr
+│   │   ├── app
+│   │   └── ks.yaml
+│   ├── sonarr
+│   │   ├── app
+│   │   └── ks.yaml
+│   └── unpackerr
+│       ├── app
+│       └── ks.yaml
+├── external-secrets
+│   ├── external-secrets
+│   │   ├── app
+│   │   ├── ks.yaml
+│   │   └── stores
+│   ├── kustomization.yaml
+│   └── onepassword-connect
+│       ├── app
+│       └── ks.yaml
+├── flagger-system
+│   ├── flagger
+│   │   ├── app
+│   │   └── ks.yaml
+│   └── kustomization.yaml
+├── flux-system
+│   ├── flux-instance
+│   │   ├── app
+│   │   └── ks.yaml
+│   ├── flux-operator
+│   │   ├── app
+│   │   └── ks.yaml
+│   └── kustomization.yaml
+├── home-automation
+│   ├── frigate
+│   │   ├── app
+│   │   └── ks.yaml
+│   ├── home-assistant
+│   │   ├── app
+│   │   └── ks.yaml
+│   ├── kustomization.yaml
+│   └── zwave
+│       ├── app
+│       └── ks.yaml
+├── kube-system
+│   ├── cilium
+│   │   ├── app
+│   │   ├── gateway
+│   │   └── ks.yaml
+│   ├── coredns
+│   │   ├── app
+│   │   └── ks.yaml
+│   ├── descheduler
+│   │   ├── app
+│   │   └── ks.yaml
+│   ├── kustomization.yaml
+│   ├── metrics-server
+│   │   ├── app
+│   │   └── ks.yaml
+│   ├── reloader
+│   │   ├── app
+│   │   └── ks.yaml
+│   ├── snapshot-controller
+│   │   ├── app
+│   │   └── ks.yaml
+│   └── spegel
+│       ├── app
+│       └── ks.yaml
+├── media
+│   ├── jellyfin
+│   │   ├── app
+│   │   └── ks.yaml
+│   ├── jellyseerr
+│   │   ├── app
+│   │   └── ks.yaml
+│   └── kustomization.yaml
+├── monitoring
+│   ├── alertmanager
+│   │   ├── app
+│   │   └── ks.yaml
+│   ├── blackbox-exporter
+│   │   ├── app
+│   │   └── ks.yaml
+│   ├── grafana
+│   │   ├── app
+│   │   ├── dashboards
+│   │   ├── instance
+│   │   └── ks.yaml
+│   ├── kube-state-metrics
+│   │   ├── app
+│   │   └── ks.yaml
+│   ├── kustomization.yaml
+│   ├── open-telemetry
+│   │   ├── collectors
+│   │   ├── ks.yaml
+│   │   └── operator
+│   ├── prometheus-operator
+│   │   ├── crds
+│   │   └── ks.yaml
+│   ├── silence-operator
+│   │   ├── app
+│   │   ├── ks.yaml
+│   │   └── silences
+│   ├── speedtest-exporter
+│   │   ├── app
+│   │   └── ks.yaml
+│   └── victoria
+│       ├── crds
+│       ├── ks.yaml
+│       ├── logs
+│       ├── metrics
+│       └── traces
+├── network
+│   ├── cloudflared
+│   │   ├── app
+│   │   └── ks.yaml
+│   ├── envoy-gateway
+│   │   ├── app
+│   │   ├── config
+│   │   └── ks.yaml
+│   ├── external-dns
+│   │   ├── cloudflare
+│   │   └── ks.yaml
+│   ├── kustomization.yaml
+│   └── multus
+│       ├── app
+│       ├── ks.yaml
+│       └── networks
+├── openebs
+│   ├── kustomization.yaml
+│   └── openebs
+│       ├── app
+│       └── ks.yaml
+├── rook-ceph
+│   ├── kustomization.yaml
+│   └── rook-ceph
+│       ├── cluster
+│       ├── csi-drivers
+│       ├── ks.yaml
+│       └── operator
+├── security
+│   ├── ciliumnetworkpolicy.yaml
+│   ├── keycloak
+│   │   ├── app
+│   │   └── ks.yaml
+│   └── kustomization.yaml
+├── self-hosted
+│   ├── actual
+│   │   ├── app
+│   │   └── ks.yaml
+│   ├── flagsmith
+│   │   ├── app
+│   │   └── ks.yaml
+│   ├── forgejo
+│   │   ├── app
+│   │   └── ks.yaml
+│   ├── garage
+│   │   ├── app
+│   │   └── ks.yaml
+│   ├── immich
+│   │   ├── app
+│   │   └── ks.yaml
+│   ├── kustomization.yaml
+│   ├── paperless
+│   │   ├── app
+│   │   └── ks.yaml
+│   ├── scratch
+│   ├── teddycloud
+│   │   ├── app
+│   │   └── ks.yaml
+│   └── unifi-os-server
+│       ├── app
+│       └── ks.yaml
+├── system
+│   ├── generic-device-plugin
+│   │   ├── app
+│   │   └── ks.yaml
+│   ├── harbor
+│   │   ├── app
+│   │   └── ks.yaml
+│   ├── intel-device-plugins
+│   │   ├── gpu
+│   │   ├── ks.yaml
+│   │   └── operator
+│   ├── keda
+│   │   ├── app
+│   │   └── ks.yaml
+│   ├── kustomization.yaml
+│   └── node-feature-discovery
+│       ├── app
+│       ├── ks.yaml
+│       └── rules
+└── volsync-system
+    ├── kustomization.yaml
+    └── volsync
+        ├── app
+        └── ks.yaml
+
+163 directories, 82 files
