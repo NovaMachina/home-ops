@@ -8,6 +8,9 @@ resources:
   - ./externalsecret.yaml
   - ./tcproute.yaml
   - ./runner-scaler.yaml
+  - ./runner-k8s-ocirepository.yaml
+  - ./runner-k8s-externalsecret.yaml
+  - ./runner-k8s-helmrelease.yaml
   - ./runner-cache-pvc.yaml
   - ./runner-actions-cache-pvc.yaml
   - ./runner-tool-cache-pvc.yaml

@@ -1,0 +1,105 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.jacob-williams.me/helm.toolkit.fluxcd.io/helmrelease_v2.json
+# Trial of eleboucher/runner-k8s-plugin, running alongside the KEDA ScaledJob runner (runner-scaler.yaml).
+# Jobs opt in with `runs-on: k8s-docker` / `k8s-base`.
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: forgejo-runner-k8s
+spec:
+  interval: 30m
+  chartRef:
+    kind: OCIRepository
+    name: forgejo-runner-k8s
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      strategy: rollback
+      retries: 3
+  valuesFrom:
+    # runnerConfig (contains the cache secret)
+    - kind: Secret
+      name: forgejo-runner-k8s-values
+      valuesKey: values.yaml
+  values:
+    forgejo:
+      url: http://forgejo.self-hosted.svc.cluster.local:3000/
+      existingSecret: forgejo-runner-k8s-secret
+    image:
+      repository: code.forgejo.org/forgejo/runner
+      tag: 13.2.0
+    podSpecs:
+      # DinD as a native sidecar, plain TCP on localhost (pod-local only).
+      podspec-dind.yaml: |
+        initContainers:
+          - name: toolcache-perms
+            image: busybox:1.37
+            command: [sh, -c, "chmod 1777 /opt/hostedtoolcache"]
+            securityContext:
+              runAsUser: 0
+            volumeMounts:
+              - {name: tool-cache, mountPath: /opt/hostedtoolcache}
+          - name: dind
+            image: docker:29.7.2-dind
+            restartPolicy: Always
+            securityContext:
+              privileged: true
+              runAsUser: 0
+            env:
+              - {name: DOCKER_TLS_CERTDIR, value: ""}
+            resources:
+              requests: {memory: 512Mi}
+              limits: {memory: 6Gi}
+            startupProbe:
+              exec:
+                command: [docker, -H, "tcp://localhost:2375", info]
+              initialDelaySeconds: 3
+              periodSeconds: 1
+              failureThreshold: 60
+            volumeMounts:
+              - {name: docker-storage, mountPath: /var/lib/docker}
+              - {name: tool-cache, mountPath: /opt/hostedtoolcache}
+        containers:
+          - name: main
+            image: registry.jacob-williams.me/ghcr.io/catthehacker/ubuntu:act-latest
+            imagePullPolicy: IfNotPresent
+            env:
+              - {name: DOCKER_HOST, value: "tcp://localhost:2375"}
+              - {name: RUNNER_TOOL_CACHE, value: /opt/hostedtoolcache}
+            resources:
+              requests: {cpu: 100m, memory: 512Mi}
+              limits: {memory: 4Gi}
+            volumeMounts:
+              - {name: tool-cache, mountPath: /opt/hostedtoolcache}
+        volumes:
+          - name: docker-storage
+            emptyDir: {}
+          - name: tool-cache
+            persistentVolumeClaim:
+              claimName: forgejo-runner-tool-cache
+        affinity:
+          nodeAffinity:
+            requiredDuringSchedulingIgnoredDuringExecution:
+              nodeSelectorTerms:
+                - matchExpressions:
+                    - {key: node-role.kubernetes.io/control-plane, operator: DoesNotExist}
+        restartPolicy: Never
+      # No Docker daemon: plain steps in a tool image.
+      podspec-base.yaml: |-
+        containers:
+          - name: main
+            image: registry.jacob-williams.me/dev/base-runner:1.0.0
+            imagePullPolicy: IfNotPresent
+            resources:
+              requests: {cpu: 100m, memory: 256Mi}
+              limits: {memory: 2Gi}
+        affinity:
+          nodeAffinity:
+            requiredDuringSchedulingIgnoredDuringExecution:
+              nodeSelectorTerms:
+                - matchExpressions:
+                    - {key: node-role.kubernetes.io/control-plane, operator: DoesNotExist}
+        restartPolicy: Never
