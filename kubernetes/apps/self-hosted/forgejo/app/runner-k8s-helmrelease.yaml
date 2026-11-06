@@ -43,7 +43,7 @@ spec:
             volumeMounts:
               - {name: tool-cache, mountPath: /opt/hostedtoolcache}
           - name: dind
-            image: docker:29.7.2-dind
+            image: docker:29.9.3-dind
             restartPolicy: Always
             securityContext:
               privileged: true
