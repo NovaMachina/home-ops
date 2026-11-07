@@ -36,7 +36,7 @@ spec:
       podspec-dind.yaml: |
         initContainers:
           - name: toolcache-perms
-            image: busybox:1.37
+            image: busybox:1.38
             command: [sh, -c, "chmod 1777 /opt/hostedtoolcache"]
             securityContext:
               runAsUser: 0
@@ -91,7 +91,7 @@ spec:
       podspec-base.yaml: |-
         initContainers:
           - name: toolcache-perms
-            image: busybox:1.37
+            image: busybox:1.38
             command: [sh, -c, "chmod 1777 /opt/hostedtoolcache"]
             securityContext:
               runAsUser: 0
