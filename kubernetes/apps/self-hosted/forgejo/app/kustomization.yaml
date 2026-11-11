@@ -7,6 +7,7 @@ resources:
   - ./runner-cache-server-helmrelease.yaml
   - ./externalsecret.yaml
   - ./tcproute.yaml
+  - ./backendtrafficpolicy.yaml
   - ./runner-scaler.yaml
   - ./runner-k8s-ocirepository.yaml
   - ./runner-k8s-externalsecret.yaml
