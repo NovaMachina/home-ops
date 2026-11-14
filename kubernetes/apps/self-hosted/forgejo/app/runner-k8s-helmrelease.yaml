@@ -30,7 +30,7 @@ spec:
       existingSecret: forgejo-runner-k8s-secret
     image:
       repository: code.forgejo.org/forgejo/runner
-      tag: 13.2.0
+      tag: 13.2.1
     podSpecs:
       # DinD as a native sidecar, plain TCP on localhost (pod-local only).
       podspec-dind.yaml: |
